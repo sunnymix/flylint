@@ -1,14 +1,40 @@
+# Java
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+## Java build
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+## Gradle
 .gradle
-/build/
-
-# Ignore Gradle GUI config
+!gradle/wrapper/gradle-wrapper.jar
+local.properties
+### Ignore Gradle GUI config
 gradle-app.setting
-
-# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
-!gradle-wrapper.jar
-
-# Cache of project
+### Cache of project
 .gradletasknamecache
+## Spring
+application-local.properties
 
-# # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
-# gradle/wrapper/gradle-wrapper.properties
+# Intellij
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+# Vscode
+.vscode/
+
+# Nodejs
+node_modules

@@ -1,0 +1,23 @@
+.header {
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.body {
+  padding: 60px 10px 10px;
+}
+
+html,
+body,
+.body {
+  background-color: #ffffff;
+}
+
+html {
+  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: scroll;
+}

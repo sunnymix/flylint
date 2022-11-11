@@ -1,0 +1,23 @@
+.nav {
+  display: flex;
+  background-color: #fff;
+  box-shadow: 0 1px 1px 0 #00000010;
+  padding: 10px;
+}
+
+.nav_item {
+  position: relative;
+  cursor: pointer;
+  margin-right: 10px;
+  padding: 0 10px;
+  height: 30px;
+  line-height: 30px;
+  font-weight: 500;
+  color: #444;
+  border-radius: 6px;
+}
+
+.nav_item:hover,
+.nav_item.active {
+  background-color: #00000010;
+}

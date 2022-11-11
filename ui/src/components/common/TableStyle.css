@@ -1,0 +1,40 @@
+table.simple {
+  border-collapse: collapse;
+  width: 100%;
+  border-left: 1px solid #dedede;
+  border-right: 1px solid #dedede;
+}
+
+table.auto {
+  width: auto;
+}
+
+table.simple th,
+table.simple td {
+  padding: 6px 20px;
+  vertical-align: middle;
+  border-top: 1px solid #dedede;
+  border-bottom: 1px solid #dedede;
+}
+
+table.simple tbody tr {
+  background-color: #fff;
+}
+
+table.simple tbody tr:hover {
+  background-color: #f8f8f8;
+  cursor: pointer;
+}
+
+table.simple thead tr {
+  text-align: left;
+  font-weight: 500;
+  background-color: #f8f8f8;
+}
+
+.simple_tail {
+  background-color: #fff;
+  border: 1px solid #dedede;
+  padding: 6px 20px;
+  border-radius: 2px;
+}

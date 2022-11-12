@@ -1,0 +1,125 @@
+buildscript {
+    ext {
+        // Spring
+        springBootVersion = '3.0.0-RC2'
+        springDependencyVersion = '1.1.0'
+        lombokVersion = '1.18.24'
+        // Dao
+        mysqlVersion = '8.0.30'
+        jooqVersion = '3.17.5'
+        jooqPluginVersion = '6.0.1'
+    }
+}
+
+plugins {
+    // Spring
+    id 'org.springframework.boot' version "$springBootVersion"
+    id 'io.spring.dependency-management' version "$springDependencyVersion"
+    id 'java'
+    // Dao
+    id 'nu.studer.jooq' version "$jooqPluginVersion"
+}
+
+group = 'com.sunnymix'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://repo.spring.io/milestone' }
+}
+
+dependencies {
+    // Spring
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly "org.projectlombok:lombok:$lombokVersion"
+    annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    // Dao
+    runtimeOnly "mysql:mysql-connector-java:$mysqlVersion"
+    implementation "org.springframework.boot:spring-boot-starter-jooq"
+    compileOnly "org.jooq:jooq-meta:$jooqVersion"
+    compileOnly "org.jooq:jooq-codegen:$jooqVersion"
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+sourceSets {
+    orgmain {
+        java.srcDirs files('src/main/java', 'gensrc/main/java')
+    }
+}
+
+jooq {
+    version = jooqVersion
+
+    dependencies {
+        jooqGenerator "mysql:mysql-connector-java:$mysqlVersion"
+    }
+
+    configurations {
+        main {
+            def schema = 'flylint'
+            def basePackageName = 'com.sunnymix.flylint.dao.jooq'
+            def targetDirectory = "$projectDir/gensrc/main/java"
+
+            generateSchemaSourceOnCompilation = false
+
+            generationTool {
+                logging = org.jooq.meta.jaxb.Logging.INFO
+
+                jdbc {
+                    driver = 'com.mysql.jdbc.Driver'
+                    url = "$_dbHost/$schema?useUnicode=true&characterEncoding=UTF-8&useSSL=false"
+                    user = _dbUser
+                    password = _dbPassword
+                }
+
+                generator {
+                    name = 'org.jooq.codegen.DefaultGenerator'
+                    database {
+                        name = 'org.jooq.meta.mysql.MySQLDatabase'
+                        inputSchema = schema
+                        outputSchema = schema
+                        includes = '.*'
+                        excludes = 'flyway_schema_history'
+                        customTypes {
+                            customType {
+                                name = 'LocalDateTimeToOffsetDateTime'
+                                type = 'java.time.OffsetDateTime'
+                                converter = 'com.sunnymix.flylint.api.common.jooq.converter.LocalDateTimeToOffsetDateTimeConverter'
+                            }
+                        }
+                        forcedTypes {
+                            forcedType {
+                                name = 'LocalDateTimeToOffsetDateTime'
+                                includeExpression = '.*'
+                                includeTypes = '(?i:(TIMESTAMP|DATETIME)\\(\\d+\\))?'
+                                nullability = 'NOT_NULL'
+                            }
+                        }
+                    }
+                    generate {
+                        deprecated = false
+                        records = true
+                        immutablePojos = true
+                        fluentSetters = true
+                    }
+                    target {
+                        packageName = basePackageName
+                        directory = targetDirectory
+                    }
+                    strategy.name = 'org.jooq.codegen.DefaultGeneratorStrategy'
+                }
+            }
+        }
+    }
+}

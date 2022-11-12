@@ -26,10 +26,10 @@ export default forwardRef((props: WikiListProps, ref) => {
    * 响应：初始化
    */
   useEffect(() => {
-    WikiApi.basicQuery('', (wikis: BasicWiki[]) => {
+    WikiApi.query(null, (wikis: BasicWiki[]) => {
       setWikis(wikis);
     });
-  }, []);
+  }, [props.refreshSignal]);
 
   /**
    * 动作：点击 wiki

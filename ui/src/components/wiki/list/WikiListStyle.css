@@ -1,6 +1,7 @@
 .wiki_list_title {
-  margin-bottom: 2px;
+  margin-bottom: 10px;
   font-weight: 500;
+  padding: 0 10px;
 }
 
 .wiki {

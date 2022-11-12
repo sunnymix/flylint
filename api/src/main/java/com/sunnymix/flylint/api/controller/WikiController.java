@@ -36,8 +36,8 @@ public class WikiController {
     }
 
     @GetMapping("/{path}")
-    public Out<DetailWiki> get(@PathVariable String path) {
-        var wiki = wikiDao.get(path);
+    public Out<DetailWiki> detail(@PathVariable String path) {
+        var wiki = wikiDao.detail(path);
         return Out.ok(wiki);
     }
 

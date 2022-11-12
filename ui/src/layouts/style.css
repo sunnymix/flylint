@@ -28,4 +28,6 @@ html {
 .component_title {
   font-size: 120%;
   font-weight: 500;
+  margin-bottom: 10px;
+  padding: 0 10px;
 }

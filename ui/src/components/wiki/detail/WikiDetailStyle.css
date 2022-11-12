@@ -1,0 +1,14 @@
+
+.wiki_time {
+  margin-bottom: 10px;
+  padding: 0 10px;
+}
+
+.wiki_content {
+  border-top: 1px solid #eee;
+  padding: 10px;
+}
+
+.wiki_content p {
+  content: ' ';
+}

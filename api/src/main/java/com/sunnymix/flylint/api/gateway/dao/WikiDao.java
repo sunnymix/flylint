@@ -42,7 +42,7 @@ public class WikiDao {
             .fetchStreamInto(BasicWiki.class).toList();
     }
 
-    public Optional<DetailWiki> get(String path) {
+    public Optional<DetailWiki> detail(String path) {
         return dsl
             .select(WIKI.ID, WIKI.PATH, WIKI.TITLE, WIKI.CONTENT, WIKI.CREATED, WIKI.UPDATED)
             .from(WIKI)

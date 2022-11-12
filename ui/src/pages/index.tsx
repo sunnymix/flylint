@@ -1,6 +1,6 @@
 
 export default () => {
   return (
-  <>Home</>
+    <div className="component_title">Home</div>
   );
 };

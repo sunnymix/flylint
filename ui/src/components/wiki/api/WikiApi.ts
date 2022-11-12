@@ -19,7 +19,16 @@ const detail = (path: string, cb: (wiki: DetailWiki) => void) => {
     });
 };
 
+const updateContent = (path: string, content: string, cb: (success: boolean) => void) => {
+  axios.post(`${Constant.API_BASE}/wiki/${path}`, {content})
+    .then(res => {
+      const success = res.data?.success || false;
+      cb(success);
+    });
+};
+
 export default {
   query,
   detail,
+  updateContent,
 };

@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.OffsetDateTime;
+import java.util.Optional;
 
 /**
  * @author sunnymix
@@ -14,12 +14,9 @@ import java.time.OffsetDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BasicWiki {
+public class UpdateWiki {
 
-    private Long id;
-    private String path;
-    private String title;
-    private OffsetDateTime created;
-    private OffsetDateTime updated;
+    @Builder.Default
+    private Optional<String> content = Optional.empty();
 
 }

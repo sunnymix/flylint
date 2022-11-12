@@ -16,11 +16,11 @@ import java.time.OffsetDateTime;
 @AllArgsConstructor
 public class DetailWiki {
 
-    protected Long id;
-    protected String path;
-    protected String title;
-    protected String content;
-    protected OffsetDateTime created;
-    protected OffsetDateTime updated;
+    private Long id;
+    private String path;
+    private String title;
+    private String content;
+    private OffsetDateTime created;
+    private OffsetDateTime updated;
 
 }

@@ -2,13 +2,17 @@ package com.sunnymix.flylint.api.gateway.dao;
 
 import com.sunnymix.flylint.api.model.wiki.BasicWiki;
 import com.sunnymix.flylint.api.model.wiki.DetailWiki;
+import com.sunnymix.flylint.api.model.wiki.UpdateWiki;
+import com.sunnymix.flylint.dao.jooq.tables.records.WikiRecord;
 import lombok.Getter;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
+import org.jooq.UpdateSetMoreStep;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -49,6 +53,21 @@ public class WikiDao {
             .where(WIKI.PATH.eq(path))
             .limit(1)
             .fetchOptionalInto(DetailWiki.class);
+    }
+
+    public Boolean update(String path, UpdateWiki updateWiki) {
+        var firstStep = dsl.update(WIKI);
+        UpdateSetMoreStep<WikiRecord> setSteps = null;
+        if (updateWiki.getContent().isPresent()) {
+            setSteps = (setSteps != null ? setSteps : firstStep).set(WIKI.CONTENT, updateWiki.getContent().get());
+        }
+        if (setSteps == null) {
+            return false;
+        }
+
+        setSteps = setSteps.set(WIKI.UPDATED, OffsetDateTime.now());
+        int updateCount = setSteps.where(WIKI.PATH.eq(path)).execute();
+        return updateCount > 0;
     }
 
 }

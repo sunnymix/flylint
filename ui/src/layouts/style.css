@@ -21,3 +21,11 @@ html {
   overflow-x: auto;
   overflow-y: scroll;
 }
+
+/* component */
+/* ========= */
+
+.component_title {
+  font-size: 120%;
+  font-weight: 500;
+}

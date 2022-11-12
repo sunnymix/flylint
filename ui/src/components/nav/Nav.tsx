@@ -1,9 +1,8 @@
-import { Menu, Dropdown, Space, Button } from "antd";
+
+import "./NavStyle.css";
 import { ReactNode, useEffect, useState } from "react";
 import { history, useLocation, Link } from "umi";
-import "./NavStyle.css";
-import moment from "moment";
-import { CloudFilled } from "@ant-design/icons";
+import { HomeFilled } from "@ant-design/icons";
 
 interface NavItemProps {
   label: ReactNode,
@@ -13,7 +12,7 @@ interface NavItemProps {
 
 const items: NavItemProps[] = [
   {
-    label: <><CloudFilled /></>,
+    label: <><HomeFilled /></>,
     path: "/",
     key: "",
   },
@@ -50,12 +49,12 @@ export default (props: any) => {
   // --- ui
 
   return (
-  <div className='nav'>
-    {items.map((item: NavItemProps, index: number) => (
-      <div className={`nav_item ${(item.key == activeKey) && 'active'}`} key={index} onClick={() => handleTabClick(item.path)}>
-        {item.label}
-      </div>
-    ))}
-  </div>
+    <div className='nav'>
+      {items.map((item: NavItemProps, index: number) => (
+        <div className={`nav_item ${(item.key == activeKey) && 'active'}`} key={index} onClick={() => handleTabClick(item.path)}>
+          {item.label}
+        </div>
+      ))}
+    </div>
   )
 };

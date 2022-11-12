@@ -1,0 +1,17 @@
+.wiki_list_title {
+  margin-bottom: 2px;
+  font-weight: 500;
+}
+
+.wiki {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #eee transparent transparent transparent;
+  background-color: #fff;
+  padding: 10px;
+}
+
+.wiki:hover {
+  background-color: #eee;
+  cursor: pointer;
+}

@@ -1,7 +1,8 @@
 
+import WikiList from "@/components/wiki/list/WikiList";
 
 export default () => {
   return (
-  <>Wiki</>
+    <WikiList />
   );
 };

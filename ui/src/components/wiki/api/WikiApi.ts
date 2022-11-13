@@ -3,6 +3,14 @@ import axios from "axios";
 import Constant from "@/components/common/Constant";
 import { BasicWiki, DetailWiki } from "../model/WikiModel";
 
+const create = (cb: (path: string) => void) => {
+  axios.post(`${Constant.API_BASE}/wiki/create`, {})
+    .then(res => {
+      const path = res.data?.data || null;
+      cb(path);
+    });
+};
+
 const query = (keyword: string|null, cb: (wikis: BasicWiki[]) => void) => {
   axios.get(`${Constant.API_BASE}/wiki/query?keyword=${keyword || ''}`)
     .then(res => {
@@ -28,6 +36,7 @@ const updateContent = (path: string, content: string, cb: (success: boolean) => 
 };
 
 export default {
+  create,
   query,
   detail,
   updateContent,

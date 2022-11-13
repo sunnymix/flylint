@@ -26,8 +26,20 @@ public class WikiController {
     public String index() {
         StringBuilder sb = new StringBuilder();
         sb.append("controller: wiki. ");
-        sb.append("apis: ").append("query").append(". ");
+        sb.append("apis: ").append("create, query, detail, update").append(". ");
         return sb.toString();
+    }
+
+    @PostMapping("/create")
+    public Out<String> create() {
+        var path = wikiDao.create();
+        return Out.ok(path);
+    }
+
+    @PostMapping("/{path}")
+    public Out<Void> update(@PathVariable String path, @RequestBody UpdateWiki updateWiki) {
+        var success = wikiDao.update(path, updateWiki);
+        return Out.of(success);
     }
 
     @GetMapping("/query")
@@ -40,12 +52,6 @@ public class WikiController {
     public Out<DetailWiki> detail(@PathVariable String path) {
         var wiki = wikiDao.detail(path);
         return Out.ok(wiki);
-    }
-
-    @PostMapping("/{path}")
-    public Out<Void> update(@PathVariable String path, @RequestBody UpdateWiki updateWiki) {
-        var success = wikiDao.update(path, updateWiki);
-        return Out.of(success);
     }
 
 }

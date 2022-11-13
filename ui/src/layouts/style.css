@@ -25,9 +25,24 @@ html {
 /* component */
 /* ========= */
 
+.component_header {
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+}
+
 .component_title {
   font-size: 120%;
   font-weight: 500;
   margin-bottom: 10px;
-  padding: 0 10px;
+  margin-right: 10px;
+}
+
+.component_ops {
+  margin-bottom: 10px;
+  margin-right: 10px;
+}
+
+.component_op {
+  margin-right: 10px;
 }

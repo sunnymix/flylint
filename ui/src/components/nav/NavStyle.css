@@ -17,7 +17,11 @@
   border-radius: 6px;
 }
 
-.nav_item:hover,
+.nav_item:hover {
+  background: #00000010;
+}
+
 .nav_item.active {
-  background-color: #00000010;
+  color: #1890ff;
+  background-color: #1890ff10;
 }

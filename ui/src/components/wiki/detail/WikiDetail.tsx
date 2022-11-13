@@ -6,6 +6,7 @@ import Time from "@/components/common/Time";
 import "./WikiDetailStyle.css";
 import { createEditor, Descendant } from "slate";
 import { Slate, Editable, withReact } from "slate-react";
+import { Button } from "antd";
 
 export interface WikiDetailProps {
   path: string,
@@ -39,9 +40,17 @@ export default forwardRef((props: WikiDetailProps, ref) => {
     return <></>;
   }
 
-  
+  const fixContent = (content: any) => {
+    if (!content) {
+      return "[]";
+    }
+    if (content.trim().length === 0) {
+      return "[]";
+    }
+    return content;
+  };
 
-  const initialContent = JSON.parse(wiki.content);
+  const initialContent = JSON.parse(fixContent(wiki.content));
 
   const contentOnChange = (value: Descendant[]) => {
     const isAstChange = editor.operations.some(
@@ -60,7 +69,14 @@ export default forwardRef((props: WikiDetailProps, ref) => {
 
   return (
     <div>
-      <div className="component_title">{wiki.title}</div>
+      <div className="component_header">
+        <div className="component_title">{wiki.title}</div>
+        <div className="component_ops">
+          <Button className="component_op" size="small" type="default">Path</Button>
+          <Button className="component_op" size="small" type="default">Read</Button>
+          <Button className="component_op" size="small" type="primary">New</Button>
+        </div>
+      </div>
       <div className="wiki_time">{Time.formatDate(wiki.updated)}</div>
       <div className="wiki_content">
         <div className="wiki_content_editor">

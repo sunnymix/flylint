@@ -1,5 +1,6 @@
 package com.sunnymix.flylint.api.gateway.dao;
 
+import com.sunnymix.flylint.api.common.Id;
 import com.sunnymix.flylint.api.model.wiki.BasicWiki;
 import com.sunnymix.flylint.api.model.wiki.DetailWiki;
 import com.sunnymix.flylint.api.model.wiki.UpdateWiki;
@@ -31,6 +32,34 @@ public class WikiDao {
     @Qualifier("dslContext")
     private DSLContext dsl;
 
+    public String create() {
+        var path = "wiki-" + Id.newId();
+        var record = new WikiRecord();
+        record.setId(null);
+        record.setPath(path);
+        record.setTitle("未命名文档");
+        record.setContent("");
+        record.setCreated(OffsetDateTime.now());
+        record.setUpdated(OffsetDateTime.now());
+        dsl.executeInsert(record);
+        return path;
+    }
+
+    public Boolean update(String path, UpdateWiki updateWiki) {
+        var firstStep = dsl.update(WIKI);
+        UpdateSetMoreStep<WikiRecord> setSteps = null;
+        if (updateWiki.getContent().isPresent()) {
+            setSteps = (setSteps != null ? setSteps : firstStep).set(WIKI.CONTENT, updateWiki.getContent().get());
+        }
+        if (setSteps == null) {
+            return false;
+        }
+
+        setSteps = setSteps.set(WIKI.UPDATED, OffsetDateTime.now());
+        int updateCount = setSteps.where(WIKI.PATH.eq(path)).execute();
+        return updateCount > 0;
+    }
+
     public List<BasicWiki> query(Optional<String> keyword) {
         // Condition
         var conditions = new ArrayList<Condition>();
@@ -53,21 +82,6 @@ public class WikiDao {
             .where(WIKI.PATH.eq(path))
             .limit(1)
             .fetchOptionalInto(DetailWiki.class);
-    }
-
-    public Boolean update(String path, UpdateWiki updateWiki) {
-        var firstStep = dsl.update(WIKI);
-        UpdateSetMoreStep<WikiRecord> setSteps = null;
-        if (updateWiki.getContent().isPresent()) {
-            setSteps = (setSteps != null ? setSteps : firstStep).set(WIKI.CONTENT, updateWiki.getContent().get());
-        }
-        if (setSteps == null) {
-            return false;
-        }
-
-        setSteps = setSteps.set(WIKI.UPDATED, OffsetDateTime.now());
-        int updateCount = setSteps.where(WIKI.PATH.eq(path)).execute();
-        return updateCount > 0;
     }
 
 }

@@ -9,6 +9,32 @@
   padding: 10px;
 }
 
+.wiki_content h1,
+.wiki_content h1 * {
+  font-size: 1.6rem;
+  font-weight: 700;
+  padding: 0;
+  margin-bottom: 10px;
+}
+
+.wiki_content h2,
+.wiki_content h2 * {
+  font-size: 1.4rem;
+  font-weight: 700;
+  padding: 0;
+  margin-bottom: 10px;
+}
+
+.wiki_content h3,
+.wiki_content h3 * {
+  font-size: 1.2rem;
+  font-weight: 700;
+  padding: 0;
+  margin-bottom: 10px;
+}
+
+.wiki_content pre, 
 .wiki_content p {
-  content: ' ';
+  margin-bottom: 10px;
+  padding: 0;
 }

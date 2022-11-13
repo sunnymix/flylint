@@ -42,6 +42,12 @@ public class WikiController {
         return Out.of(success);
     }
 
+    @PostMapping("/{path}/remove")
+    public Out<Void> remove(@PathVariable String path) {
+        var success = wikiDao.remove(path);
+        return Out.of(success);
+    }
+
     @GetMapping("/query")
     public Out<List<BasicWiki>> query(@RequestParam(required = false) Optional<String> keyword) {
         var wikis = wikiDao.query(keyword);

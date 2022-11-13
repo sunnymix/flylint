@@ -6,7 +6,9 @@ import Time from "@/components/common/Time";
 import "./WikiDetailStyle.css";
 import { createEditor, Descendant } from "slate";
 import { Slate, Editable, withReact } from "slate-react";
-import { Button } from "antd";
+import { Button, Popconfirm } from "antd";
+import { WarningFilled } from "@ant-design/icons";
+import { history } from "umi";
 
 export interface WikiDetailProps {
   path: string,
@@ -39,6 +41,18 @@ export default forwardRef((props: WikiDetailProps, ref) => {
   if (!wiki) {
     return <></>;
   }
+
+  // ops
+  // ===
+
+  const clickDelete = () => {
+    WikiApi.remove(props.path, (success: boolean) => {
+      history.push("/wiki");
+    });
+  };
+
+  // content
+  // =======
 
   const fixContent = (content: any) => {
     if (!content) {
@@ -74,6 +88,9 @@ export default forwardRef((props: WikiDetailProps, ref) => {
         <div className="component_ops">
           <Button className="component_op" size="small" type="default">Path</Button>
           <Button className="component_op" size="small" type="default">Read</Button>
+          <Popconfirm onConfirm={clickDelete} title="Sure to delete this wiki?" okText="Confirm" icon="">
+            <Button className="component_op" size="small" type="default">Delete</Button>
+          </Popconfirm>
           <Button className="component_op" size="small" type="primary">New</Button>
         </div>
       </div>

@@ -60,6 +60,11 @@ public class WikiDao {
         return updateCount > 0;
     }
 
+    public Boolean remove(String path) {
+        int deleteCount = dsl.deleteFrom(WIKI).where(WIKI.PATH.eq(path)).execute();
+        return deleteCount > 0;
+    }
+
     public List<BasicWiki> query(Optional<String> keyword) {
         // Condition
         var conditions = new ArrayList<Condition>();

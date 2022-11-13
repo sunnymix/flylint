@@ -11,6 +11,22 @@ const create = (cb: (path: string) => void) => {
     });
 };
 
+const updateContent = (path: string, content: string, cb: (success: boolean) => void) => {
+  axios.post(`${Constant.API_BASE}/wiki/${path}`, {content})
+    .then(res => {
+      const success = res.data?.success || false;
+      cb(success);
+    });
+};
+
+const remove = (path: string, cb: (success: boolean) => void) => {
+  axios.post(`${Constant.API_BASE}/wiki/${path}/remove`, {})
+    .then(res => {
+      const success = res.data?.success || false;
+      cb(success);
+    });
+};
+
 const query = (keyword: string|null, cb: (wikis: BasicWiki[]) => void) => {
   axios.get(`${Constant.API_BASE}/wiki/query?keyword=${keyword || ''}`)
     .then(res => {
@@ -27,17 +43,10 @@ const detail = (path: string, cb: (wiki: DetailWiki) => void) => {
     });
 };
 
-const updateContent = (path: string, content: string, cb: (success: boolean) => void) => {
-  axios.post(`${Constant.API_BASE}/wiki/${path}`, {content})
-    .then(res => {
-      const success = res.data?.success || false;
-      cb(success);
-    });
-};
-
 export default {
   create,
+  updateContent,
+  remove,
   query,
   detail,
-  updateContent,
 };

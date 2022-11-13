@@ -17,6 +17,9 @@ import java.util.Optional;
 public class UpdateWiki {
 
     @Builder.Default
+    private Optional<String> title = Optional.empty();
+
+    @Builder.Default
     private Optional<String> content = Optional.empty();
 
 }

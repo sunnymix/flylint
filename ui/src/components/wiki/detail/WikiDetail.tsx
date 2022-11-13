@@ -47,16 +47,29 @@ export default forwardRef((props: WikiDetailProps, ref) => {
   // ops
   // ===
 
-  const clickUpdatePath = () => {
-    const newPath = prompt("Update path of this wiki:");
-    if (!newPath || newPath.length < 0) {
+  const clickUpdateTitle = () => {
+    const newTitle = prompt("Update title of this wiki:", wiki.title);
+    if (!newTitle || newTitle.trim().length < 0) {
       return;
     }
-    WikiApi.updatePath(props.path, newPath, (success: boolean, newPath: string) => {
-      if (!success) {
+    WikiApi.updateTitle(props.path, newTitle, (success: boolean, updatedTitle: string) => {
+      if (!success || !updatedTitle) {
         return;
       }
-      history.push(`/wiki/${newPath}`);
+      location.reload();
+    });
+  };
+
+  const clickUpdatePath = () => {
+    const newPath = prompt("Update path of this wiki:", props.path);
+    if (!newPath || newPath.trim().length < 0) {
+      return;
+    }
+    WikiApi.updatePath(props.path, newPath, (success: boolean, updatedPath: string) => {
+      if (!success || !updatedPath) {
+        return;
+      }
+      history.push(`/wiki/${updatedPath}`);
     });
   };
 
@@ -92,7 +105,7 @@ export default forwardRef((props: WikiDetailProps, ref) => {
 
     const content = JSON.stringify(value);
     WikiApi.updateContent(props.path, content, (success: boolean) => {
-      console.log(success);
+      console.log(`Content updated at ${Time.nowDatetime3()}, ${success ? 'success' : 'error'}`);
     });
   };
 
@@ -101,8 +114,8 @@ export default forwardRef((props: WikiDetailProps, ref) => {
       <div className="component_header">
         <div className="component_title">{wiki.title}</div>
         <div className="component_ops">
+          <Button className="component_op" size="small" type="default" onClick={clickUpdateTitle}>Rename</Button>
           <Button className="component_op" size="small" type="default" onClick={clickUpdatePath}>Path</Button>
-          <Button className="component_op" size="small" type="default">Read</Button>
           <Popconfirm onConfirm={clickDelete} title="Sure to delete this wiki?" okText="Confirm" icon="">
             <Button className="component_op" size="small" type="default">Delete</Button>
           </Popconfirm>

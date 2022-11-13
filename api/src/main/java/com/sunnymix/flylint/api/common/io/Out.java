@@ -35,6 +35,12 @@ public class Out<T> {
         return out;
     }
 
+    public static <T> Out<T> of(Optional<T> data) {
+        return data
+            .map(_data -> of(true, null, _data, null, null))
+            .orElse(error());
+    }
+
     public static <T> Out<T> of(Boolean success) {
         return of(success, null, null, null, null);
     }

@@ -1,13 +1,27 @@
 
 import moment from "moment"
 
-const format = (millis: string, format: string) => moment(new Date(millis)).format(format);
+const FORMAT_DATETIME = "YYYY-MM-DD HH:mm:ss";
 
-const formatDatetime = (millis: string): string => format(millis, 'YYYY-MM-DD HH:mm:ss')
+const FORMAT_DATETIME3 = "YYYY-MM-DD HH:mm:ss.SSS";
 
-const formatDate = (millis: string): String => format(millis, 'YYYY-MM-DD');
+const FORMAT_DATE = "YYYY-MM-DD";
+
+const formatFromMillis = (millis: string, format: string) => moment(new Date(millis)).format(format);
+
+const formatFromDate = (date: Date, format: string) => moment(date).format(format);
+
+const formatDatetime = (millis: string): string => formatFromMillis(millis, FORMAT_DATETIME)
+
+const formatDate = (millis: string): String => formatFromMillis(millis, FORMAT_DATE);
+
+const nowDatetime = () => formatFromDate(new Date(), FORMAT_DATETIME);
+
+const nowDatetime3 = () => formatFromDate(new Date(), FORMAT_DATETIME3);
 
 export default {
   formatDatetime,
   formatDate,
+  nowDatetime,
+  nowDatetime3,
 };

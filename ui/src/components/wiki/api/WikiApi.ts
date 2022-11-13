@@ -11,11 +11,12 @@ const create = (cb: (path: string) => void) => {
     });
 };
 
-const updateContent = (path: string, content: string, cb: (success: boolean) => void) => {
-  axios.post(`${Constant.API_BASE}/wiki/${path}/update/content`, {content})
+const updateTitle = (path: string, title: string, cb: (success: boolean, updatedTitle: string) => void) => {
+  axios.post(`${Constant.API_BASE}/wiki/${path}/update/title`, {title})
     .then(res => {
       const success = res.data?.success || false;
-      cb(success);
+      const updatedTitle = res.data?.data || null;
+      cb(success, updatedTitle);
     });
 };
 
@@ -25,6 +26,14 @@ const updatePath = (path: string, newPath: string, cb: (success: boolean, update
       const success = res.data?.success || false;
       const updatedPath = res.data?.data || null;
       cb(success, updatedPath);
+    });
+};
+
+const updateContent = (path: string, content: string, cb: (success: boolean) => void) => {
+  axios.post(`${Constant.API_BASE}/wiki/${path}/update/content`, {content})
+    .then(res => {
+      const success = res.data?.success || false;
+      cb(success);
     });
 };
 
@@ -54,8 +63,9 @@ const detail = (path: string, cb: (wiki: DetailWiki) => void) => {
 
 export default {
   create,
-  updateContent,
+  updateTitle,
   updatePath,
+  updateContent,
   remove,
   query,
   detail,

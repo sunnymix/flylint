@@ -3,6 +3,7 @@ package com.sunnymix.flylint.api.gateway.dao;
 import com.sunnymix.flylint.api.model.wiki.BasicWiki;
 import com.sunnymix.flylint.api.model.wiki.DetailWiki;
 import com.sunnymix.flylint.api.model.wiki.WikiPath;
+import com.sunnymix.flylint.api.model.wiki.WikiTitle;
 import com.sunnymix.flylint.dao.jooq.tables.records.WikiRecord;
 import lombok.Getter;
 import org.jooq.Condition;
@@ -35,7 +36,7 @@ public class WikiDao {
         var record = new WikiRecord();
         record.setId(null);
         record.setPath(path);
-        record.setTitle("未命名文档");
+        record.setTitle(new WikiTitle().title());
         record.setContent("");
         record.setCreated(OffsetDateTime.now());
         record.setUpdated(OffsetDateTime.now());
@@ -43,14 +44,20 @@ public class WikiDao {
         return path;
     }
 
-    public Boolean updateContent(String path, String content) {
+    public Optional<String> updateTitle(String path, String title) {
+        String fixTitle = new WikiTitle(title).title();
         var updateCount = dsl
             .update(WIKI)
-            .set(WIKI.CONTENT, content)
+            .set(WIKI.TITLE, fixTitle)
             .set(WIKI.UPDATED, OffsetDateTime.now())
             .where(WIKI.PATH.eq(path))
             .execute();
-        return updateCount > 0;
+
+        if (updateCount < 0) {
+            return Optional.empty();
+        }
+
+        return Optional.of(fixTitle);
     }
 
     public Optional<String> updatePath(String path, String newPath) {
@@ -63,7 +70,7 @@ public class WikiDao {
         if (exist(fixPath)) {
             return Optional.empty();
         }
-        
+
         var updateCount = dsl
             .update(WIKI)
             .set(WIKI.PATH, fixPath)
@@ -76,6 +83,16 @@ public class WikiDao {
         }
 
         return Optional.of(fixPath);
+    }
+
+    public Boolean updateContent(String path, String content) {
+        var updateCount = dsl
+            .update(WIKI)
+            .set(WIKI.CONTENT, content)
+            .set(WIKI.UPDATED, OffsetDateTime.now())
+            .where(WIKI.PATH.eq(path))
+            .execute();
+        return updateCount > 0;
     }
 
     public Boolean remove(String path) {

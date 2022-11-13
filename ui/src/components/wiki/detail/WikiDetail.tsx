@@ -15,6 +15,8 @@ export interface WikiDetailProps {
   refreshSignal?: string,
 };
 
+const initialEmptyContent = JSON.stringify([{"type":"paragraph","children":[{"text":""}]}]);
+
 export default forwardRef((props: WikiDetailProps, ref) => {
 
   const [wiki, setWiki] = useState<DetailWiki|null>(null);
@@ -56,10 +58,10 @@ export default forwardRef((props: WikiDetailProps, ref) => {
 
   const fixContent = (content: any) => {
     if (!content) {
-      return "[]";
+      return initialEmptyContent;
     }
     if (content.trim().length === 0) {
-      return "[]";
+      return initialEmptyContent;
     }
     return content;
   };

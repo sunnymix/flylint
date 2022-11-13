@@ -8,17 +8,17 @@ import java.util.UUID;
  */
 public class Id {
 
-    public static final int SIZE = 22;
+    public static final int DEFAULT_LENGTH = 22;
 
     public static String newId() {
-        return newId(SIZE);
+        return newId(DEFAULT_LENGTH);
     }
 
-    public static String newId(int size) {
-        int start = new Random().nextInt(32 - size);
+    public static String newId(int length) {
+        int start = new Random().nextInt(32 - length);
         return UUID
                 .randomUUID().toString().replace("-", "")
-                .substring(start, start + size)
+                .substring(start, start + length)
                 .toLowerCase();
     }
 

@@ -1,14 +1,12 @@
 package com.sunnymix.flylint.api.gateway.dao;
 
-import com.sunnymix.flylint.api.common.Id;
 import com.sunnymix.flylint.api.model.wiki.BasicWiki;
 import com.sunnymix.flylint.api.model.wiki.DetailWiki;
-import com.sunnymix.flylint.api.model.wiki.UpdateWiki;
+import com.sunnymix.flylint.api.model.wiki.WikiPath;
 import com.sunnymix.flylint.dao.jooq.tables.records.WikiRecord;
 import lombok.Getter;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
-import org.jooq.UpdateSetMoreStep;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -33,7 +31,7 @@ public class WikiDao {
     private DSLContext dsl;
 
     public String create() {
-        var path = "wiki-" + Id.newId();
+        var path = new WikiPath().path();
         var record = new WikiRecord();
         record.setId(null);
         record.setPath(path);
@@ -45,19 +43,39 @@ public class WikiDao {
         return path;
     }
 
-    public Boolean update(String path, UpdateWiki updateWiki) {
-        var firstStep = dsl.update(WIKI);
-        UpdateSetMoreStep<WikiRecord> setSteps = null;
-        if (updateWiki.getContent().isPresent()) {
-            setSteps = (setSteps != null ? setSteps : firstStep).set(WIKI.CONTENT, updateWiki.getContent().get());
-        }
-        if (setSteps == null) {
-            return false;
+    public Boolean updateContent(String path, String content) {
+        var updateCount = dsl
+            .update(WIKI)
+            .set(WIKI.CONTENT, content)
+            .set(WIKI.UPDATED, OffsetDateTime.now())
+            .where(WIKI.PATH.eq(path))
+            .execute();
+        return updateCount > 0;
+    }
+
+    public Optional<String> updatePath(String path, String newPath) {
+        String fixPath = new WikiPath(newPath).path();
+
+        if (fixPath.equals(path)) {
+            return Optional.empty();
         }
 
-        setSteps = setSteps.set(WIKI.UPDATED, OffsetDateTime.now());
-        int updateCount = setSteps.where(WIKI.PATH.eq(path)).execute();
-        return updateCount > 0;
+        if (exist(fixPath)) {
+            return Optional.empty();
+        }
+        
+        var updateCount = dsl
+            .update(WIKI)
+            .set(WIKI.PATH, fixPath)
+            .set(WIKI.UPDATED, OffsetDateTime.now())
+            .where(WIKI.PATH.eq(path))
+            .execute();
+
+        if (updateCount < 0) {
+            return Optional.empty();
+        }
+
+        return Optional.of(fixPath);
     }
 
     public Boolean remove(String path) {
@@ -87,6 +105,10 @@ public class WikiDao {
             .where(WIKI.PATH.eq(path))
             .limit(1)
             .fetchOptionalInto(DetailWiki.class);
+    }
+
+    public Boolean exist(String path) {
+        return detail(path).isPresent();
     }
 
 }

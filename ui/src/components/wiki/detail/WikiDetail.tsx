@@ -47,6 +47,19 @@ export default forwardRef((props: WikiDetailProps, ref) => {
   // ops
   // ===
 
+  const clickUpdatePath = () => {
+    const newPath = prompt("Update path of this wiki:");
+    if (!newPath || newPath.length < 0) {
+      return;
+    }
+    WikiApi.updatePath(props.path, newPath, (success: boolean, newPath: string) => {
+      if (!success) {
+        return;
+      }
+      history.push(`/wiki/${newPath}`);
+    });
+  };
+
   const clickDelete = () => {
     WikiApi.remove(props.path, (success: boolean) => {
       history.push("/wiki");
@@ -88,7 +101,7 @@ export default forwardRef((props: WikiDetailProps, ref) => {
       <div className="component_header">
         <div className="component_title">{wiki.title}</div>
         <div className="component_ops">
-          <Button className="component_op" size="small" type="default">Path</Button>
+          <Button className="component_op" size="small" type="default" onClick={clickUpdatePath}>Path</Button>
           <Button className="component_op" size="small" type="default">Read</Button>
           <Popconfirm onConfirm={clickDelete} title="Sure to delete this wiki?" okText="Confirm" icon="">
             <Button className="component_op" size="small" type="default">Delete</Button>

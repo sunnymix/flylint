@@ -21,6 +21,8 @@ export default forwardRef((props: WikiDetailProps, ref) => {
 
   const [wiki, setWiki] = useState<DetailWiki|null>(null);
 
+  const [updateTime, setUpdateTime] = useState<Date|null>(null);
+
   // editor type: BaseEditor & ReactEditor
   const [editor] = useState(() => withReact(createEditor()));
 
@@ -126,7 +128,7 @@ export default forwardRef((props: WikiDetailProps, ref) => {
 
     const content = JSON.stringify(value);
     WikiApi.updateContent(props.path, content, (success: boolean) => {
-      console.log(`Content updated at ${Time.nowDatetime3()}, ${success ? 'success' : 'error'}`);
+      setUpdateTime(new Date());
     });
   };
 
@@ -230,7 +232,10 @@ export default forwardRef((props: WikiDetailProps, ref) => {
           </Popconfirm>
         </div>
       </div>
-      <div className="wiki_time">{Time.formatDate(wiki.created)}</div>
+      <div className="wiki_time">
+        {Time.formatDate(wiki.created)}
+        {updateTime && (<> · Updated at {Time.nowDatetime3()}</>)}
+      </div>
       <div className="wiki_content">
         <div className="wiki_content_editor">
           <Slate editor={editor} value={initialContent} onChange={contentOnChange}>

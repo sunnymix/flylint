@@ -17,6 +17,7 @@ export default defineConfig({
         { path: "/", exact: true, component: "@/pages/index" },
         { path: "/wiki", exact: true, component: "@/pages/wiki" },
         { path: "/wiki/:path", exact: true, component: "@/pages/wiki" },
+        { path: "/media", exact: true, component: "@/pages/media" },
       ],
     },
   ],

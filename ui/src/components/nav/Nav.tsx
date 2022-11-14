@@ -21,6 +21,11 @@ const items: NavItemProps[] = [
     path: "/wiki",
     key: "wiki",
   },
+  {
+    label: <>Media</>,
+    path: "/media",
+    key: "media",
+  },
 ];
 
 export default (props: any) => {
@@ -33,9 +38,12 @@ export default (props: any) => {
   const pathname = location.pathname;
 
   useEffect(() => {
-    var key = '';
-    if (pathname.startsWith('/wiki')) {
-      key = 'wiki';
+    var key = "";
+    if (pathname.startsWith("/wiki")) {
+      key = "wiki";
+    }
+    if (pathname.startsWith("/media")) {
+      key = "media";
     }
     setActiveKey(key);
   }, [pathname]);

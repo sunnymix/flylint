@@ -6,8 +6,8 @@ import Time from "@/components/common/Time";
 import "./WikiDetailStyle.css";
 import { createEditor, Descendant, Editor, Transforms, Text, BaseEditor } from "slate";
 import { Slate, Editable, withReact, ReactEditor } from "slate-react";
+import { withHistory } from "slate-history";
 import { Button, Popconfirm } from "antd";
-import { WarningFilled } from "@ant-design/icons";
 import { history } from "umi";
 
 export interface WikiDetailProps {
@@ -24,7 +24,7 @@ export default forwardRef((props: WikiDetailProps, ref) => {
   const [updateTime, setUpdateTime] = useState<Date|null>(null);
 
   // editor type: BaseEditor & ReactEditor
-  const [editor] = useState(() => withReact(createEditor()));
+  const [editor] = useState(() => withReact(withHistory(createEditor())));
 
   useEffect(() => {
     if (!props.path) {

@@ -6,7 +6,7 @@ export default () => {
         <div className="component_title">Media</div>
       </div>
       <div className="component_body">
-        <p>Images, ...</p>
+        <p>Image, ...</p>
       </div>
     </div>
   );

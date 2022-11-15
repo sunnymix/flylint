@@ -1,11 +1,11 @@
 
-import { forwardRef, useCallback, useEffect, useState } from "react";
+import { Children, forwardRef, useCallback, useEffect, useState } from "react";
 import WikiApi from "../api/WikiApi";
 import { DetailWiki } from "../model/WikiModel";
 import Time from "@/components/common/Time";
 import "./WikiDetailStyle.css";
 import { createEditor, Descendant, Editor, Transforms, Text, BaseEditor } from "slate";
-import { Slate, Editable, withReact, ReactEditor } from "slate-react";
+import { Slate, Editable, withReact, ReactEditor, useSelected } from "slate-react";
 import { withHistory } from "slate-history";
 import { Button, Popconfirm } from "antd";
 import { history } from "umi";
@@ -305,6 +305,24 @@ const Leaf = (props: any) => {
     </span>
   );
 };
+
+const InlineSelection = () => {
+  return <span contentEditable={false} style={{fontSize:0}}>${String.fromCodePoint(160)}</span>
+};
+
+const LinkElement = (props: any) => {
+  const selected = useSelected();
+  return (
+    <a 
+      {...props.attributes} 
+      href={props.element.url} 
+      style={{boxShadow: selected ? "0 0 0 3px #ddd" : "0"}}
+      >
+      <InlineSelection />{props.children}<InlineSelection />
+    </a>
+  )
+};
+
 
 
 

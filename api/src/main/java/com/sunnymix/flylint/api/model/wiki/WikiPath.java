@@ -7,11 +7,9 @@ import com.sunnymix.flylint.api.common.Id;
  */
 public class WikiPath {
 
-    public static final String PREFIX = "wiki";
-
     public static final Integer MAX_LENGTH = 32;
 
-    private String path;
+    private final String path;
 
     public String path() {
         return path;
@@ -27,10 +25,7 @@ public class WikiPath {
 
     private String fixValue(String value) {
         if (value == null || value.isBlank()) {
-            return PREFIX + Id.newId();
-        }
-        if (value.indexOf(PREFIX) != 0) {
-            return fixLength(PREFIX + value);
+            return Id.newId();
         }
         return fixLength(value);
     }

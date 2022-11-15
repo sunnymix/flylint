@@ -64,8 +64,8 @@ export default forwardRef((props: WikiListProps, ref) => {
       </div>
       <div className="component_body">
         <div>
-          <h2>Subjects</h2>
-          <p>No subject.</p>
+          <h2>Subject</h2>
+          <p>Empty.</p>
         </div>
         <div>
           <hr/>

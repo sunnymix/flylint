@@ -2,7 +2,7 @@
 import "./NavStyle.css";
 import { ReactNode, useEffect, useState } from "react";
 import { history, useLocation, Link } from "umi";
-import { HomeFilled } from "@ant-design/icons";
+import { HomeFilled, SearchOutlined } from "@ant-design/icons";
 
 interface NavItemProps {
   label: ReactNode,
@@ -87,6 +87,9 @@ export default (props: any) => {
           {item.label}
         </div>
       ))}
+      <div className="nav_item">
+        <SearchOutlined />
+      </div>
     </div>
   )
 };

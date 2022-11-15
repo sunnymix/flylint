@@ -225,26 +225,29 @@ export default forwardRef((props: WikiDetailProps, ref) => {
       <div className="component_header">
         <div className="component_title">{wiki.title}</div>
         <div className="component_ops">
-          <Button className="component_op" size="small" type="default" onClick={clickUpdateTitle}>Rename</Button>
-          <Button className="component_op" size="small" type="default" onClick={clickUpdatePath}>Path</Button>
+          <Button className="component_op" size="small" shape="round" onClick={clickUpdateTitle}>Rename</Button>
+          <Button className="component_op" size="small" shape="round" onClick={clickUpdatePath}>Path</Button>
           <Popconfirm onConfirm={clickDelete} title="Sure to delete this wiki?" okText="Confirm" icon="">
-            <Button className="component_op" size="small" type="default">Delete</Button>
+            <Button className="component_op" size="small" shape="round">Delete</Button>
           </Popconfirm>
         </div>
       </div>
-      <div className="wiki_time">
-        {Time.formatDate(wiki.created)}
-        {updateTime && (<> · Updated at {Time.nowDatetime3()}</>)}
-      </div>
-      <div className="wiki_content">
-        <div className="wiki_content_editor">
-          <Slate editor={editor} value={initialContent} onChange={contentOnChange}>
-            <Editable
-              placeholder="Type Here ..."
-              renderElement={editableRenderElement}
-              renderLeaf={editableRenderLeaf}
-              onKeyDown={editableOnKeyDown} />
-          </Slate>
+      <div className="component_body">
+        <div className="wiki_time">
+          {Time.formatDate(wiki.created)}
+          {updateTime && (<> · Updated at {Time.nowDatetime3()}</>)}
+        </div>
+        <hr/>
+        <div className="wiki_content">
+          <div className="wiki_content_editor">
+            <Slate editor={editor} value={initialContent} onChange={contentOnChange}>
+              <Editable
+                placeholder="Type Here ..."
+                renderElement={editableRenderElement}
+                renderLeaf={editableRenderLeaf}
+                onKeyDown={editableOnKeyDown} />
+            </Slate>
+          </div>
         </div>
       </div>
     </div>

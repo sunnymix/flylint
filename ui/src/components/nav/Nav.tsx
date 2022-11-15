@@ -17,7 +17,7 @@ const items: NavItemProps[] = [
     key: "",
   },
   {
-    label: <>Wiki</>,
+    label: <>Library</>,
     path: "/wiki",
     key: "wiki",
   },
@@ -25,6 +25,21 @@ const items: NavItemProps[] = [
     label: <>Media</>,
     path: "/media",
     key: "media",
+  },
+  {
+    label: <>Draw</>,
+    path: "/draw",
+    key: "draw",
+  },
+  {
+    label: <>Tool</>,
+    path: "/tool",
+    key: "tool",
+  },
+  {
+    label: <>About</>,
+    path: "/about",
+    key: "about",
   },
 ];
 
@@ -44,6 +59,15 @@ export default (props: any) => {
     }
     if (pathname.startsWith("/media")) {
       key = "media";
+    }
+    if (pathname.startsWith("/draw")) {
+      key = "draw";
+    }
+    if (pathname.startsWith("/tool")) {
+      key = "tool";
+    }
+    if (pathname.startsWith("/about")) {
+      key = "about";
     }
     setActiveKey(key);
   }, [pathname]);

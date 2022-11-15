@@ -1,41 +1,8 @@
 
 .wiki_time {
-  margin-bottom: 10px;
-  padding: 0 10px;
-  color: #666;
+  color: #aaa;
 }
 
 .wiki_content {
-  border-top: 1px solid #eee;
   padding: 10px;
-}
-
-.wiki_content h1,
-.wiki_content h1 * {
-  font-size: 1.6rem;
-  font-weight: 700;
-  padding: 0;
-  margin-bottom: 10px;
-}
-
-.wiki_content h2,
-.wiki_content h2 * {
-  font-size: 1.4rem;
-  font-weight: 700;
-  padding: 0;
-  margin-bottom: 10px;
-}
-
-.wiki_content h3,
-.wiki_content h3 * {
-  font-size: 1.2rem;
-  font-weight: 700;
-  padding: 0;
-  margin-bottom: 10px;
-}
-
-.wiki_content pre, 
-.wiki_content p {
-  margin-bottom: 10px;
-  padding: 0;
 }

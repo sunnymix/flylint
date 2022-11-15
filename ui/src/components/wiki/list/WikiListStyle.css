@@ -1,13 +1,6 @@
-.wiki_list_title {
-  margin-bottom: 10px;
-  font-weight: 500;
-  padding: 0 10px;
-}
 
 .wiki {
-  border-width: 1px;
-  border-style: solid;
-  border-color: #eee transparent transparent transparent;
+  border-bottom: 1px solid #eee;
   background-color: #fff;
   padding: 10px;
 }
@@ -16,3 +9,5 @@
   background-color: #eee;
   cursor: pointer;
 }
+
+

@@ -6,12 +6,12 @@ import { useRouteMatch } from "umi";
 export default () => {
   const route = useRouteMatch();
   const params: any = route.params;
-  // wiki detail
-  if (params.path && params.path.length > 0) {
-    return <WikiDetail path={params.path} />
+
+  // wiki list
+  if (!params.path || params.path.length < 1) {
+    return <WikiList />
   }
   
-  return (
-    <WikiList />
-  );
+  // wiki detail
+  return <WikiDetail path={params.path} />
 };

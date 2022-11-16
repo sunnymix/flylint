@@ -57,18 +57,18 @@ export default forwardRef((props: WikiListProps, ref) => {
   return (
     <div>
       <div className="component_header">
-        <div className="component_title">Library</div>
+        <div className="component_title">Wiki</div>
         <div className="component_ops">
           <Button className="component_op" size="small" onClick={clickNewWiki}>Create</Button>
         </div>
       </div>
       <div className="component_body">
         <div>
-          <h2>Subject</h2>
+          <h2>Topic</h2>
           <div className="com_cards">
             <div className="com_card">
               <h3>书单</h3>
-              <div className="com_secondary">专题书籍列表</div>
+              <div className="com_secondary">书籍专题分类</div>
             </div>
             <div className="com_card">
               <h3>架构设计</h3>
@@ -81,7 +81,7 @@ export default forwardRef((props: WikiListProps, ref) => {
           </div>
         </div>
         <div>
-          <h2>Wiki</h2>
+          <h2>Recent</h2>
           <div className="wiki_list">
             {wikis.map((wiki: BasicWiki, index: number) => (
               <div className="wiki_list_item" key={wiki.id} onClick={() => clickWiki(wiki)}>

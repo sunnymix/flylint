@@ -17,7 +17,7 @@ const items: NavItemProps[] = [
     key: "",
   },
   {
-    label: <>Library</>,
+    label: <>Wiki</>,
     path: "/wiki",
     key: "wiki",
   },

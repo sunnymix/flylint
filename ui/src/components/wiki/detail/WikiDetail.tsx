@@ -1,5 +1,5 @@
 
-import { Children, forwardRef, useCallback, useEffect, useState } from "react";
+import { Children, forwardRef, useCallback, useEffect, useState, useMemo } from "react";
 import WikiApi from "../api/WikiApi";
 import { DetailWiki } from "../model/WikiModel";
 import Time from "@/components/common/Time";
@@ -10,7 +10,7 @@ import { withHistory } from "slate-history";
 import { Button, Popconfirm } from "antd";
 import { history } from "umi";
 import isUrl from "is-url";
-import { isHotkey } from "is-hotkey";
+import { isKeyHotkey } from "is-hotkey";
 
 export interface WikiDetailProps {
   path: string,
@@ -26,7 +26,10 @@ export default forwardRef((props: WikiDetailProps, ref) => {
   const [updateTime, setUpdateTime] = useState<Date|null>(null);
 
   // editor type: BaseEditor & ReactEditor
-  const [editor] = useState(() => withReact(withInlines(withHistory(createEditor()))));
+  const editor = useMemo(
+    () => withInlines(withHistory(withReact(createEditor()))),
+    []
+  );
 
   useEffect(() => {
     if (!props.path) {
@@ -146,7 +149,20 @@ export default forwardRef((props: WikiDetailProps, ref) => {
   // Editable: onKeyDown
   // ===================
 
-  const editableOnKeyDown = (event: any) => {
+  const editableOnKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    const { nativeEvent } = event;
+
+    if (isKeyHotkey('left', nativeEvent)) {
+      event.preventDefault();
+      Transforms.move(editor, {unit: "offset", reverse: true});
+      return;
+    }
+    if (isKeyHotkey('right', nativeEvent)) {
+      event.preventDefault();
+      Transforms.move(editor, {unit: "offset"});
+      return;
+    }
+
     if (!event.ctrlKey) {
       return;
     }

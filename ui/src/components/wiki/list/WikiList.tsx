@@ -4,8 +4,8 @@ import { BasicWiki } from "../model/WikiModel";
 import Time from "@/components/common/Time";
 import "./WikiListStyle.css";
 import { history } from "umi";
-import { Button } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { Button, Dropdown, MenuProps } from "antd";
+import { PlusOutlined, EllipsisOutlined } from "@ant-design/icons";
 import wiki from "@/pages/wiki";
 
 /**
@@ -51,15 +51,31 @@ export default forwardRef((props: WikiListProps, ref) => {
     });
   };
 
-  /**
-   * 组件
-   */
-  return (
+
+
+
+  const menuItems = [
+    {key: "new-wiki", label: <><Button type="link" size="small" onClick={clickNewWiki}>New Wiki</Button></>},
+  ];
+
+  const menuCom = (
+    <Dropdown menu={{items: menuItems}} className="com_op">
+      <Button size="small"><EllipsisOutlined /></Button>
+    </Dropdown>
+  );
+
+
+
+
+
+
+  
+  const com = (
     <div>
       <div className="com_header">
         <div className="com_title">Wiki</div>
         <div className="com_ops">
-          <Button className="com_op" size="small" onClick={clickNewWiki}>Create</Button>
+          {menuCom}
         </div>
       </div>
       <div className="com_body">
@@ -93,5 +109,9 @@ export default forwardRef((props: WikiListProps, ref) => {
         </div>
       </div>
     </div>
-  )
+  );
+
+
+
+  return com;
 });

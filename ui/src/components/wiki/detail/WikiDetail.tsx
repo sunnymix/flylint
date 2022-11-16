@@ -4,7 +4,9 @@ import WikiApi from "../api/WikiApi";
 import { DetailWiki } from "../model/WikiModel";
 import Time from "@/components/common/Time";
 import "./WikiDetailStyle.css";
-import { createEditor, Descendant, Editor, Transforms, Text, BaseEditor, Element as SlateElement, Range, Path, Point, Location } from "slate";
+import { 
+  createEditor, Descendant, Editor, Transforms, Text, BaseEditor, 
+  Element as SlateElement, Range, Path, Point, Location } from "slate";
 import { Slate, Editable, withReact, ReactEditor, useSelected } from "slate-react";
 import { withHistory } from "slate-history";
 import { Button, Popconfirm } from "antd";
@@ -149,7 +151,8 @@ export default forwardRef((props: WikiDetailProps, ref) => {
   // Editable: onKeyDown
   // ===================
 
-  const editableOnKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event: React.KeyboardEvent<HTMLDivElement>) => {
+  const editableOnKeyDown: React.KeyboardEventHandler<HTMLInputElement> = 
+    (event: React.KeyboardEvent<HTMLDivElement>) => {
     const { nativeEvent } = event;
 
     if (isKeyHotkey('left', nativeEvent)) {

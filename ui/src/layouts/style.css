@@ -49,6 +49,24 @@ html {
 
 .component_body {
   padding: 0 10px;
+  max-width: 800px;
+}
+
+.com_cards {
+  display: flex;
+}
+
+.com_card {
+  width: 30%;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #eee;
+  border-radius: 6px;
+}
+
+.com_secondary {
+  color: #666;
 }
 
 /* common */

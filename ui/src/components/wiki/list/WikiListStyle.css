@@ -1,11 +1,17 @@
 
-.wiki {
+.wiki_list_item {
+  display: flex;
+  justify-content: space-between;
   border-bottom: 1px solid #eee;
   background-color: #fff;
   padding: 10px;
 }
 
-.wiki:hover {
+.wiki_list_item_title {
+  margin-right: 10px;
+}
+
+.wiki_list_item:hover {
   background-color: #eee;
   cursor: pointer;
 }

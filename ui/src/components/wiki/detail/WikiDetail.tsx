@@ -4,11 +4,13 @@ import WikiApi from "../api/WikiApi";
 import { DetailWiki } from "../model/WikiModel";
 import Time from "@/components/common/Time";
 import "./WikiDetailStyle.css";
-import { createEditor, Descendant, Editor, Transforms, Text, BaseEditor } from "slate";
+import { createEditor, Descendant, Editor, Transforms, Text, BaseEditor, Element as SlateElement, Range } from "slate";
 import { Slate, Editable, withReact, ReactEditor, useSelected } from "slate-react";
 import { withHistory } from "slate-history";
 import { Button, Popconfirm } from "antd";
 import { history } from "umi";
+import isUrl from "is-url";
+import { isHotkey } from "is-hotkey";
 
 export interface WikiDetailProps {
   path: string,
@@ -24,7 +26,7 @@ export default forwardRef((props: WikiDetailProps, ref) => {
   const [updateTime, setUpdateTime] = useState<Date|null>(null);
 
   // editor type: BaseEditor & ReactEditor
-  const [editor] = useState(() => withReact(withHistory(createEditor())));
+  const [editor] = useState(() => withReact(withInlines(withHistory(createEditor()))));
 
   useEffect(() => {
     if (!props.path) {
@@ -112,6 +114,7 @@ export default forwardRef((props: WikiDetailProps, ref) => {
 
 
 
+
   
   
   // Slate: onChange
@@ -119,7 +122,7 @@ export default forwardRef((props: WikiDetailProps, ref) => {
 
   const contentOnChange = (value: Descendant[]) => {
     const isAstChange = editor.operations.some(
-      op => 'set_selection' !== op.type
+      (op: any) => 'set_selection' !== op.type
     );
 
     if (!isAstChange) {
@@ -151,35 +154,46 @@ export default forwardRef((props: WikiDetailProps, ref) => {
     switch (event.key) {
       case "1": {
         event.preventDefault();
-        CustomEditor.toggleHeadingOneBlock(editor);
+        MyEditor.toggleHeadingOneBlock(editor);
         break;
       }
 
       case "2": {
         event.preventDefault();
-        CustomEditor.toggleHeadingTwoBlock(editor);
+        MyEditor.toggleHeadingTwoBlock(editor);
         break;
       }
 
       case "3": {
         event.preventDefault();
-        CustomEditor.toggleHeadingThreeBlock(editor);
+        MyEditor.toggleHeadingThreeBlock(editor);
         break;
       }
 
       case "`": {
         event.preventDefault();
-        CustomEditor.toggleCodeBlock(editor);
+        MyEditor.toggleCodeBlock(editor);
         break;
       }
 
       case "b": {
         event.preventDefault();
-        CustomEditor.toggleBoldMark(editor);
+        MyEditor.toggleBoldMark(editor);
+        break;
+      }
+
+      case "k": {
+        event.preventDefault();
+        const url = window.prompt('Enter URL of the link:')
+        if (!url) {
+          return;
+        }
+        MyEditor.insertLink(editor, url);
         break;
       }
     }
   };
+
 
 
 
@@ -189,15 +203,17 @@ export default forwardRef((props: WikiDetailProps, ref) => {
   const editableRenderElement = (props: any) => {
     switch (props.element.type) {
       case "heading-one":
-        return <HeadingOne {...props} />;
+        return <HeadingOneCom {...props} />;
       case "heading-two":
-        return <HeadingTwo {...props} />;
+        return <HeadingTwoCom {...props} />;
       case "heading-three":
-        return <HeadingThree {...props} />;
-      case "code":
-        return <CodeElement {...props} />;
+        return <HeadingThreeCom {...props} />;
+      case "code-block":
+        return <CodeBlockCom {...props} />;
+      case "link":
+        return <LinkCom {...props} />;
       default:
-        return <DefaultElement {...props} />;
+        return <DefaultCom {...props} />;
     }
   };
 
@@ -207,7 +223,7 @@ export default forwardRef((props: WikiDetailProps, ref) => {
   // Editable: renderLeaf (Inlines)
   // ==============================
   const editableRenderLeaf = (props: any) => {
-    return <Leaf {...props}/>
+    return <LeafCom {...props}/>
   };
 
   
@@ -225,10 +241,10 @@ export default forwardRef((props: WikiDetailProps, ref) => {
       <div className="component_header">
         <div className="component_title">{wiki.title}</div>
         <div className="component_ops">
-          <Button className="component_op" size="small" shape="round" onClick={clickUpdateTitle}>Rename</Button>
-          <Button className="component_op" size="small" shape="round" onClick={clickUpdatePath}>Path</Button>
+          <Button className="component_op" size="small" onClick={clickUpdateTitle}>Rename</Button>
+          <Button className="component_op" size="small" onClick={clickUpdatePath}>Path</Button>
           <Popconfirm onConfirm={clickDelete} title="Sure to delete this wiki?" okText="Confirm" icon="">
-            <Button className="component_op" size="small" shape="round">Delete</Button>
+            <Button className="component_op" size="small">Delete</Button>
           </Popconfirm>
         </div>
       </div>
@@ -259,7 +275,7 @@ export default forwardRef((props: WikiDetailProps, ref) => {
 // Slate Elements
 // ==============
 
-const HeadingOne = (props: any) => {
+const HeadingOneCom = (props: any) => {
   const style = {textAlign: props.element.align};
   return (
     <h1 style={style} {...props.attributes}>
@@ -268,7 +284,7 @@ const HeadingOne = (props: any) => {
   );
 };
 
-const HeadingTwo = (props: any) => {
+const HeadingTwoCom = (props: any) => {
   const style = {textAlign: props.element.align};
   return (
     <h2 style={style} {...props.attributes}>
@@ -277,7 +293,7 @@ const HeadingTwo = (props: any) => {
   );
 };
 
-const HeadingThree = (props: any) => {
+const HeadingThreeCom = (props: any) => {
   const style = {textAlign: props.element.align};
   return (
     <h3 style={style} {...props.attributes}>
@@ -286,7 +302,7 @@ const HeadingThree = (props: any) => {
   );
 };
 
-const CodeElement = (props: any) => {
+const CodeBlockCom = (props: any) => {
   return (
     <pre {...props.attributes}>
       <code>{props.children}</code>
@@ -294,11 +310,11 @@ const CodeElement = (props: any) => {
   );
 };
 
-const DefaultElement = (props: any) => {
+const DefaultCom = (props: any) => {
   return <p {...props.attributes}>{props.children}</p>;
 };
 
-const Leaf = (props: any) => {
+const LeafCom = (props: any) => {
   return (
     <span {...props.attributes} style={{fontWeight: props.leaf.bold ? "bold" : "normal"}}>
       {props.children}
@@ -306,19 +322,27 @@ const Leaf = (props: any) => {
   );
 };
 
-const InlineSelection = () => {
-  return <span contentEditable={false} style={{fontSize:0}}>${String.fromCodePoint(160)}</span>
+const InlineSelectionCom = () => {
+  return (
+    <span contentEditable={false} style={{fontSize:0}}>
+      ${String.fromCodePoint(160)}
+    </span>
+  )
 };
 
-const LinkElement = (props: any) => {
+export type LinkElement = { type: "link"; url: string; children: Descendant[] };
+
+const LinkCom = (props: any) => {
   const selected = useSelected();
   return (
     <a 
-      {...props.attributes} 
-      href={props.element.url} 
-      style={{boxShadow: selected ? "0 0 0 3px #ddd" : "0"}}
+      {...props.attributes}
+      href={props.element.url}
+      style={{backgroundColor: selected ? "#eee" : "transparent"}}
       >
-      <InlineSelection />{props.children}<InlineSelection />
+      <InlineSelectionCom />
+      {props.children}
+      <InlineSelectionCom />
     </a>
   )
 };
@@ -330,7 +354,7 @@ const LinkElement = (props: any) => {
 // Editor helpers
 // ==============
 
-const CustomEditor = {
+const MyEditor = {
 
   isBoldMarkActive(editor: BaseEditor & ReactEditor) {
     const [isMatch] = Editor.nodes(editor, {
@@ -341,7 +365,7 @@ const CustomEditor = {
   },
 
   toggleBoldMark(editor: BaseEditor & ReactEditor) {
-    const isActive = CustomEditor.isBoldMarkActive(editor);
+    const isActive = MyEditor.isBoldMarkActive(editor);
     Transforms.setNodes(
       editor,
       {bold: isActive ? null : true, children: []},
@@ -351,29 +375,29 @@ const CustomEditor = {
 
   isCodeBlockActive(editor: BaseEditor & ReactEditor) {
     const [isMatch] = Editor.nodes(editor, {
-      match: (node: any) => node.type === "code",
+      match: (node: any) => node.type === "code-block" && MyEditor.isElement(editor, node),
     });
     return !!isMatch;
   },
 
   toggleCodeBlock(editor: BaseEditor & ReactEditor) {
-    const isActive = CustomEditor.isCodeBlockActive(editor);
+    const isActive = MyEditor.isCodeBlockActive(editor);
     Transforms.setNodes(
       editor,
-      {type: isActive ? null : "code", children: []},
+      {type: isActive ? null : "code-block", children: []},
       {match: (node: any) => Editor.isBlock(editor, node)},
     );
   },
 
   isHeadingOneBlockActive(editor: any) {
     const [isMatch] = Editor.nodes(editor, {
-      match: (node: any) => node.type === "heading-one",
+      match: (node: any) => node.type === "heading-one" && MyEditor.isElement(editor, node),
     });
     return !!isMatch;
   },
 
   toggleHeadingOneBlock(editor: any) {
-    const isActive = CustomEditor.isHeadingOneBlockActive(editor);
+    const isActive = MyEditor.isHeadingOneBlockActive(editor);
     Transforms.setNodes(
       editor,
       {type: isActive ? null : "heading-one", children: []},
@@ -383,13 +407,13 @@ const CustomEditor = {
 
   isHeadingTwoBlockActive(editor: any) {
     const [isMatch] = Editor.nodes(editor, {
-      match: (node: any) => node.type === "heading-two",
+      match: (node: any) => node.type === "heading-two" && MyEditor.isElement(editor, node),
     });
     return !!isMatch;
   },
 
   toggleHeadingTwoBlock(editor: any) {
-    const isActive = CustomEditor.isHeadingTwoBlockActive(editor);
+    const isActive = MyEditor.isHeadingTwoBlockActive(editor);
     Transforms.setNodes(
       editor,
       {type: isActive ? null : "heading-two", children: []},
@@ -399,13 +423,13 @@ const CustomEditor = {
 
   isHeadingThreeBlockActive(editor: any) {
     const [isMatch] = Editor.nodes(editor, {
-      match: (node: any) => node.type === "heading-three",
+      match: (node: any) => node.type === "heading-three" && MyEditor.isElement(editor, node),
     });
     return !!isMatch;
   },
 
   toggleHeadingThreeBlock(editor: any) {
-    const isActive = CustomEditor.isHeadingThreeBlockActive(editor);
+    const isActive = MyEditor.isHeadingThreeBlockActive(editor);
     Transforms.setNodes(
       editor,
       {type: isActive ? null : "heading-three", children: []},
@@ -413,4 +437,82 @@ const CustomEditor = {
     );
   },
 
+  isElement(editor: any, node: any) {
+    return !Editor.isEditor(node) && SlateElement.isElement(node);
+  },
+
+  isLinkActive(editor: any) {
+    const [isLink] = Editor.nodes(editor, {
+      match: (node: any) => node.type === "link" && MyEditor.isElement(editor, node),
+    });
+    return !!isLink;
+  },
+
+  wrapLink(editor: any, url: string) {
+    if (MyEditor.isLinkActive(editor)) {
+      MyEditor.unwrapLink(editor);
+    }
+    
+    const { selection } = editor;
+    const isCollapsed = selection && Range.isCollapsed(selection);
+    const link: LinkElement = {
+      type: "link",
+      url,
+      children: isCollapsed ? [{text: url}] : [],
+    };
+
+    if (isCollapsed) {
+      Transforms.insertNodes(editor, link);
+    } else {
+      Transforms.wrapNodes(editor, link, {split: true});
+      Transforms.collapse(editor, {edge: "end"});
+    }
+  },
+
+  unwrapLink(editor: any) {
+    Transforms.unwrapNodes(editor, {
+      match: (node: any) => node.type === 'link' && MyEditor.isElement(editor, node),
+    });
+  },
+
+  insertLink(editor: any, url: string) {
+    if (editor.selection) {
+      MyEditor.wrapLink(editor, url);
+    }
+  },
+
+  toggleLink(editor: any) {
+    // TODO
+  },
+
+};
+
+
+
+// withInlines
+
+const withInlines = (editor: any) => {
+  const { insertData, insertText, isInline } = editor
+
+  editor.isInline = (element: any) => ['link'].includes(element.type) || isInline(element);
+
+  editor.insertText = (text: any) => {
+    if (text && isUrl(text)) {
+      MyEditor.wrapLink(editor, text);
+    } else {
+      insertText(text);
+    }
+  }
+
+  editor.insertData = (data: any) => {
+    const text = data.getData('text/plain');
+
+    if (text && isUrl(text)) {
+      MyEditor.wrapLink(editor, text)
+    } else {
+      insertData(data)
+    }
+  }
+
+  return editor;
 };

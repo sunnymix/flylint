@@ -32,12 +32,15 @@
     "slate": "^0.85.0",
     "slate-react": "^0.83.2",
     "slate-history": "^0.85.0",
-    "umi": "^3.5.20"
+    "umi": "^3.5.20",
+    "is-hotkey": "^0.1.6",
+    "is-url": "^1.2.2"
   },
   "devDependencies": {
     "@types/d3-graphviz": "^2.6.3",
     "@types/react": "^18.0.6",
     "@types/react-dom": "^18.0.6",
+    "@types/is-url": "^1.2.2",
     "@umijs/preset-react": "1.x",
     "@umijs/test": "^3.5.20",
     "lint-staged": "^10.0.7",

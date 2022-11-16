@@ -9,10 +9,11 @@ import {
   Element as SlateElement, Range, Path, Point, Location } from "slate";
 import { Slate, Editable, withReact, ReactEditor, useSelected } from "slate-react";
 import { withHistory } from "slate-history";
-import { Button, Popconfirm } from "antd";
+import { Button, Popconfirm, Dropdown } from "antd";
 import { history } from "umi";
 import isUrl from "is-url";
 import { isKeyHotkey } from "is-hotkey";
+import { MenuOutlined } from "@ant-design/icons";
 
 export interface WikiDetailProps {
   path: string,
@@ -256,25 +257,34 @@ export default forwardRef((props: WikiDetailProps, ref) => {
   };
 
   
+
+
+
+  const menuItems = [
+    {key: "update-wiki-name", label: <Button size="small" type="link" onClick={clickUpdateTitle}>Rename</Button>},
+    {key: "update-wiki-path", label: <Button size="small" type="link" onClick={clickUpdatePath}>Change Path</Button>},
+    {key: "delete-wiki", label: <Popconfirm onConfirm={clickDelete} title="Sure to delete this wiki?" okText="Confirm" icon="">
+        <Button size="small" type="link">Delete</Button></Popconfirm>},
+  ];
+
+  const menuCom = (
+    <Dropdown menu={{items: menuItems}} trigger={['click']} className="com_op">
+      <Button size="small" type="text"><MenuOutlined /></Button>
+    </Dropdown>
+  );
   
 
 
 
 
 
-  // UI
-  // ==
 
-  return (
+  const com = (
     <div>
       <div className="com_header">
         <div className="com_title">{wiki.title}</div>
         <div className="com_ops">
-          <Button className="com_op" size="small" onClick={clickUpdateTitle}>Rename</Button>
-          <Button className="com_op" size="small" onClick={clickUpdatePath}>Path</Button>
-          <Popconfirm onConfirm={clickDelete} title="Sure to delete this wiki?" okText="Confirm" icon="">
-            <Button className="com_op" size="small">Delete</Button>
-          </Popconfirm>
+          {menuCom}
         </div>
       </div>
       <div className="com_body">
@@ -297,7 +307,23 @@ export default forwardRef((props: WikiDetailProps, ref) => {
       </div>
     </div>
   );
+
+
+  return com;
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -375,6 +401,19 @@ const LinkCom = (props: any) => {
     </a>
   )
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -5,7 +5,7 @@ import Time from "@/components/common/Time";
 import "./WikiListStyle.css";
 import { history } from "umi";
 import { Button, Dropdown, MenuProps } from "antd";
-import { PlusOutlined, EllipsisOutlined } from "@ant-design/icons";
+import { MenuOutlined } from "@ant-design/icons";
 import wiki from "@/pages/wiki";
 
 /**
@@ -59,8 +59,8 @@ export default forwardRef((props: WikiListProps, ref) => {
   ];
 
   const menuCom = (
-    <Dropdown menu={{items: menuItems}} className="com_op">
-      <Button size="small"><EllipsisOutlined /></Button>
+    <Dropdown menu={{items: menuItems}} trigger={['click']} className="com_op">
+      <Button size="small" type="text"><MenuOutlined /></Button>
     </Dropdown>
   );
 

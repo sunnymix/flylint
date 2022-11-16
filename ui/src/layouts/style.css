@@ -54,14 +54,15 @@ html {
 
 .com_cards {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .com_card {
-  width: 30%;
+  min-width: 250px;
   margin-right: 10px;
   margin-bottom: 10px;
   padding: 10px;
-  border: 1px solid #eee;
+  border: 1px solid #ddd;
   border-radius: 6px;
 }
 
@@ -106,7 +107,7 @@ hr {
   margin: 10px 0;
   border: 0 none;
   height: 1px;
-  background-color: #eee;
+  background-color: #ddd;
 }
 
 br {

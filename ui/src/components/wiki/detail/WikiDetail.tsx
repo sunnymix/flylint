@@ -4,7 +4,7 @@ import WikiApi from "../api/WikiApi";
 import { DetailWiki } from "../model/WikiModel";
 import Time from "@/components/common/Time";
 import "./WikiDetailStyle.css";
-import { createEditor, Descendant, Editor, Transforms, Text, BaseEditor, Element as SlateElement, Range } from "slate";
+import { createEditor, Descendant, Editor, Transforms, Text, BaseEditor, Element as SlateElement, Range, Path, Point, Location } from "slate";
 import { Slate, Editable, withReact, ReactEditor, useSelected } from "slate-react";
 import { withHistory } from "slate-history";
 import { Button, Popconfirm } from "antd";
@@ -26,7 +26,7 @@ export default forwardRef((props: WikiDetailProps, ref) => {
   const [updateTime, setUpdateTime] = useState<Date|null>(null);
 
   // editor type: BaseEditor & ReactEditor
-  const editor = useMemo(
+  const editor: BaseEditor & ReactEditor = useMemo(
     () => withInlines(withHistory(withReact(createEditor()))),
     []
   );
@@ -207,6 +207,16 @@ export default forwardRef((props: WikiDetailProps, ref) => {
         MyEditor.insertLink(editor, url);
         break;
       }
+
+      case "j": {
+        event.preventDefault();
+        const loc = editor.selection as Location;
+        if (!loc) {
+          return;
+        }
+        const node = Editor.node(editor, loc);
+        console.log(loc, node);
+      }
     }
   };
 
@@ -254,17 +264,17 @@ export default forwardRef((props: WikiDetailProps, ref) => {
 
   return (
     <div>
-      <div className="component_header">
-        <div className="component_title">{wiki.title}</div>
-        <div className="component_ops">
-          <Button className="component_op" size="small" onClick={clickUpdateTitle}>Rename</Button>
-          <Button className="component_op" size="small" onClick={clickUpdatePath}>Path</Button>
+      <div className="com_header">
+        <div className="com_title">{wiki.title}</div>
+        <div className="com_ops">
+          <Button className="com_op" size="small" onClick={clickUpdateTitle}>Rename</Button>
+          <Button className="com_op" size="small" onClick={clickUpdatePath}>Path</Button>
           <Popconfirm onConfirm={clickDelete} title="Sure to delete this wiki?" okText="Confirm" icon="">
-            <Button className="component_op" size="small">Delete</Button>
+            <Button className="com_op" size="small">Delete</Button>
           </Popconfirm>
         </div>
       </div>
-      <div className="component_body">
+      <div className="com_body">
         <div className="wiki_time">
           {Time.formatDate(wiki.created)}
           {updateTime && (<> · Updated at {Time.nowDatetime3()}</>)}
@@ -458,10 +468,10 @@ const MyEditor = {
   },
 
   isLinkActive(editor: any) {
-    const [isLink] = Editor.nodes(editor, {
+    const [isMatch] = Editor.nodes(editor, {
       match: (node: any) => node.type === "link" && MyEditor.isElement(editor, node),
     });
-    return !!isLink;
+    return !!isMatch;
   },
 
   wrapLink(editor: any, url: string) {

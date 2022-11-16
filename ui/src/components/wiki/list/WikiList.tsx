@@ -56,13 +56,13 @@ export default forwardRef((props: WikiListProps, ref) => {
    */
   return (
     <div>
-      <div className="component_header">
-        <div className="component_title">Wiki</div>
-        <div className="component_ops">
-          <Button className="component_op" size="small" onClick={clickNewWiki}>Create</Button>
+      <div className="com_header">
+        <div className="com_title">Wiki</div>
+        <div className="com_ops">
+          <Button className="com_op" size="small" onClick={clickNewWiki}>Create</Button>
         </div>
       </div>
-      <div className="component_body">
+      <div className="com_body">
         <div>
           <h2>Topic</h2>
           <div className="com_cards">

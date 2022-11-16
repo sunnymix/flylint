@@ -2,10 +2,10 @@
 export default () => {
   return (
     <div>
-      <div className="component_header">
-        <div className="component_title">Tool</div>
+      <div className="com_header">
+        <div className="com_title">Tool</div>
       </div>
-      <div className="component_body">
+      <div className="com_body">
         <p>Encoding/decoding, ...</p>
       </div>
     </div>

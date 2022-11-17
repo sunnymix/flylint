@@ -16,9 +16,6 @@ export interface WikiListProps {
   refreshSignal?: string,
 }
 
-/**
- * WikiList 组件
- */
 export default forwardRef((props: WikiListProps, ref) => {
 
   /**
@@ -42,14 +39,8 @@ export default forwardRef((props: WikiListProps, ref) => {
   const clickWiki = (wiki: BasicWiki) => {
     history.push(`/wiki/${wiki.path}`);
   };
-
-
-
-
-
-
   
-  const com = (
+  return (
     <div>
       <div className="com_header">
         <div className="com_title">Wiki</div>
@@ -58,23 +49,6 @@ export default forwardRef((props: WikiListProps, ref) => {
         </div>
       </div>
       <div className="com_body">
-        <div>
-          <h2>Topic</h2>
-          <div className="com_cards">
-            <div className="com_card">
-              <h3>书单</h3>
-              <div className="com_secondary">书籍专题分类</div>
-            </div>
-            <div className="com_card">
-              <h3>架构设计</h3>
-              <div className="com_secondary">架构原理、设计方法</div>
-            </div>
-            <div className="com_card">
-              <h3>领域驱动设计</h3>
-              <div className="com_secondary">DDD理论、设计方法</div>
-            </div>
-          </div>
-        </div>
         <div>
           <h2>Recent</h2>
           <div className="wiki_list">
@@ -89,8 +63,4 @@ export default forwardRef((props: WikiListProps, ref) => {
       </div>
     </div>
   );
-
-
-
-  return com;
 });

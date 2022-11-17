@@ -57,6 +57,11 @@ const items: NavItemProps[] = [
     key: "metadata",
   },
   {
+    label: <>OKR</>,
+    path: "/okr",
+    key: "okr",
+  },
+  {
     label: <>About</>,
     path: "/about",
     key: "about",
@@ -97,6 +102,9 @@ export default (props: any) => {
     }
     if (pathname.startsWith("/metadata")) {
       key = "metadata";
+    }
+    if (pathname.startsWith("/okr")) {
+      key = "okr";
     }
     if (pathname.startsWith("/about")) {
       key = "about";

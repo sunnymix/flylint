@@ -234,16 +234,24 @@ const MyEditor = {
     }
   },
 
-
-
-  fixContent(content: any) {
+  parseContent(content: string) {
     if (!content) {
-      return initialEmptyContent;
+      return MyEditor.initialContent();
     }
     if (content.trim().length === 0) {
-      return initialEmptyContent;
+      return MyEditor.initialContent();
     }
-    return content;
+    var json = MyEditor.initialContent();
+    try {
+      json = JSON.parse(content);
+    } catch (error) {
+      console.error(error);
+    }
+    return json;
+  },
+
+  initialContent() {
+    return [{"type":"paragraph","children":[{"text":""}]}];
   },
 
   onContentChange(wikiPath: string, editor: any, value: Descendant[], cb: () => void) {
@@ -261,6 +269,10 @@ const MyEditor = {
 
       cb();
     });
+  },
+
+  setContent(editor: any, content: string) {
+    editor.children = MyEditor.parseContent(content);
   },
 
 };

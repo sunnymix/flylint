@@ -1,8 +1,8 @@
 
 import { Button, Dropdown, Popconfirm } from "antd";
-import { EllipsisOutlined} from "@ant-design/icons";
 import WikiApi from "../api/WikiApi";
 import { history } from "umi";
+import { EllipsisOutlined } from "@ant-design/icons";
 
 export interface WikiMenuProps {
   path: string,

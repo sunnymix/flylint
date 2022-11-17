@@ -16,5 +16,7 @@ export default (props: WikiCreateButtonProps) => {
     });
   }, []);
 
-  return <Button className={props.className} onClick={onClick} size="small" type="text"><PlusOutlined /></Button>;
+  return <Button className={props.className} onClick={onClick} size="small" type="text">
+    <PlusOutlined />
+  </Button>;
 };

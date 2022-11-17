@@ -4,15 +4,9 @@ import WikiApi from "../api/WikiApi";
 import { DetailWiki } from "../model/WikiModel";
 import Time from "@/components/common/Time";
 import "./WikiDetailStyle.css";
-import { 
-  createEditor, Descendant, Editor, Transforms, Text, BaseEditor, 
-  Element as SlateElement, Range, Path, Point, Location } from "slate";
-import { Slate, Editable, withReact, ReactEditor, useSelected } from "slate-react";
+import { createEditor, Descendant } from "slate";
+import { Slate, Editable, withReact, ReactEditor } from "slate-react";
 import { withHistory } from "slate-history";
-import { Button, Popconfirm, Dropdown } from "antd";
-import { history } from "umi";
-import isUrl from "is-url";
-import { isKeyHotkey } from "is-hotkey";
 import WikiMenu from "../menu/WikiMenu";
 import WikiCreateButton from "../button/WikiCreateButton";
 import MyElement from "../editor/MyElement";
@@ -21,7 +15,6 @@ const { withInlines } = MyEditor;
 
 export interface WikiDetailProps {
   path: string,
-  refreshSignal?: string,
 };
 
 export default forwardRef((props: WikiDetailProps, ref) => {
@@ -46,19 +39,14 @@ export default forwardRef((props: WikiDetailProps, ref) => {
       }
 
       setWiki(wiki);
+      MyEditor.setContent(editor, wiki.content);
     });
 
-  }, [props.path, props.refreshSignal]);
+  }, [props.path]);
 
   if (!wiki) {
     return <></>;
   }
-
-  const initialContent = JSON.parse(MyEditor.fixContent(wiki.content));
-
-  const onContentChange = (value: Descendant[]) => {
-    MyEditor.onContentChange(props.path, editor, value, () => setUpdateTime(new Date()));
-  };
 
   return (
     <div>
@@ -77,7 +65,12 @@ export default forwardRef((props: WikiDetailProps, ref) => {
         <hr/>
         <div className="wiki_content">
           <div className="wiki_content_editor">
-            <Slate editor={editor} value={initialContent} onChange={onContentChange}>
+            <Slate
+              editor={editor}
+              value={MyEditor.parseContent(wiki.content)}
+              onChange={(value: Descendant[]) =>
+                MyEditor.onContentChange(props.path, editor, value, () => setUpdateTime(new Date()))}
+              >
               <Editable
                 placeholder="Type Here ..."
                 renderElement={MyElement.renderElement}

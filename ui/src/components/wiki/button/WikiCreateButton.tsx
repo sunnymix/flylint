@@ -5,12 +5,16 @@ import WikiApi from "../api/WikiApi";
 import { history } from "umi";
 import { useCallback } from "react";
 
-export default () => {
+export interface WikiCreateButtonProps {
+  className?: string,
+};
+
+export default (props: WikiCreateButtonProps) => {
   const onClick = useCallback(() => {
     WikiApi.create((path: string) => {
       history.push(`/wiki/${path}`);
     });
   }, []);
 
-  return <Button onClick={onClick} size="small" type="text"><PlusOutlined /></Button>;
+  return <Button className={props.className} onClick={onClick} size="small" type="text"><PlusOutlined /></Button>;
 };

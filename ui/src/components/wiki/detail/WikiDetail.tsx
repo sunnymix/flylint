@@ -13,7 +13,8 @@ import { Button, Popconfirm, Dropdown } from "antd";
 import { history } from "umi";
 import isUrl from "is-url";
 import { isKeyHotkey } from "is-hotkey";
-import { EllipsisOutlined } from "@ant-design/icons";
+import WikiMenu from "../menu/WikiMenu";
+import WikiCreateButton from "../button/WikiCreateButton";
 
 export interface WikiDetailProps {
   path: string,
@@ -28,11 +29,20 @@ export default forwardRef((props: WikiDetailProps, ref) => {
 
   const [updateTime, setUpdateTime] = useState<Date|null>(null);
 
+  const [content, setContent] = useState<any>(initialEmptyContent);
+
   // editor type: BaseEditor & ReactEditor
-  const editor: BaseEditor & ReactEditor = useMemo(
-    () => withInlines(withHistory(withReact(createEditor()))),
-    []
-  );
+  const editor = withReact(withInlines(withHistory(createEditor())));
+
+  const fixContent = (content: any) => {
+    if (!content) {
+      return initialEmptyContent;
+    }
+    if (content.trim().length === 0) {
+      return initialEmptyContent;
+    }
+    return content;
+  };
 
   useEffect(() => {
     if (!props.path) {
@@ -46,7 +56,10 @@ export default forwardRef((props: WikiDetailProps, ref) => {
         return;
       }
 
+      
       setWiki(wiki);
+      setContent(JSON.parse(fixContent(wiki.content)));
+      console.log(content);
     });
 
   }, [props.path, props.refreshSignal]);
@@ -60,63 +73,7 @@ export default forwardRef((props: WikiDetailProps, ref) => {
 
 
 
-  // ops
-  // ===
-
-  const clickUpdateTitle = () => {
-    const newTitle = prompt("Update title of this wiki:", wiki.title);
-    if (!newTitle || newTitle.trim().length < 0) {
-      return;
-    }
-    WikiApi.updateTitle(props.path, newTitle, (success: boolean, updatedTitle: string) => {
-      if (!success || !updatedTitle) {
-        return;
-      }
-      location.reload();
-    });
-  };
-
-  const clickUpdatePath = () => {
-    const newPath = prompt("Update path of this wiki:", props.path);
-    if (!newPath || newPath.trim().length < 0) {
-      return;
-    }
-    WikiApi.updatePath(props.path, newPath, (success: boolean, updatedPath: string) => {
-      if (!success || !updatedPath) {
-        return;
-      }
-      history.push(`/wiki/${updatedPath}`);
-    });
-  };
-
-  const clickDelete = () => {
-    WikiApi.remove(props.path, (success: boolean) => {
-      history.push("/wiki");
-    });
-  };
-
-
-
-
-
   
-  
-  
-  
-  // content
-  // =======
-
-  const fixContent = (content: any) => {
-    if (!content) {
-      return initialEmptyContent;
-    }
-    if (content.trim().length === 0) {
-      return initialEmptyContent;
-    }
-    return content;
-  };
-
-  const initialContent = JSON.parse(fixContent(wiki.content));
 
 
 
@@ -260,31 +217,16 @@ export default forwardRef((props: WikiDetailProps, ref) => {
 
 
 
-  const menuItems = [
-    {key: "update-wiki-name", label: <Button size="small" type="link" onClick={clickUpdateTitle}>Rename</Button>},
-    {key: "update-wiki-path", label: <Button size="small" type="link" onClick={clickUpdatePath}>Change Path</Button>},
-    {key: "delete-wiki", label: <Popconfirm onConfirm={clickDelete} title="Sure to delete this wiki?" okText="Confirm" icon="">
-        <Button size="small" type="link">Delete</Button></Popconfirm>},
-  ];
-
-  const menuCom = (
-    <Dropdown menu={{items: menuItems}} trigger={['click']} className="com_op">
-      <Button size="small" type="text"><EllipsisOutlined /></Button>
-    </Dropdown>
-  );
-  
 
 
 
-
-
-
-  const com = (
+  return (
     <div>
       <div className="com_header">
         <div className="com_title">{wiki.title}</div>
         <div className="com_ops">
-          {menuCom}
+          <WikiMenu className="com_op" path={props.path} title={wiki.title} />
+          <WikiCreateButton className="com_op" />
         </div>
       </div>
       <div className="com_body">
@@ -295,7 +237,7 @@ export default forwardRef((props: WikiDetailProps, ref) => {
         <hr/>
         <div className="wiki_content">
           <div className="wiki_content_editor">
-            <Slate editor={editor} value={initialContent} onChange={contentOnChange}>
+            <Slate editor={editor} value={content} onChange={contentOnChange}>
               <Editable
                 placeholder="Type Here ..."
                 renderElement={editableRenderElement}
@@ -307,9 +249,6 @@ export default forwardRef((props: WikiDetailProps, ref) => {
       </div>
     </div>
   );
-
-
-  return com;
 });
 
 

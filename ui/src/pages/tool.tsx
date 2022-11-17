@@ -6,7 +6,7 @@ export default () => {
         <div className="com_title">Tool</div>
       </div>
       <div className="com_body">
-        <p>Encoding/decoding, ...</p>
+        <p>Json, Jwt, Url</p>
       </div>
     </div>
   );

@@ -18,6 +18,7 @@
   color: #444;
   border-radius: 6px;
   margin-right: 10px;
+  text-transform: capitalize;
 }
 
 .nav_item:hover {

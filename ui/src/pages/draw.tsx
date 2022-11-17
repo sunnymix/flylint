@@ -6,7 +6,7 @@ export default () => {
         <div className="com_title">Draw</div>
       </div>
       <div className="com_body">
-        <p>To embed diagram drawing tool. Options: Drawio, React Diagrams, ...</p>
+        <p>Embed drawio, react diagrams</p>
       </div>
     </div>
   );

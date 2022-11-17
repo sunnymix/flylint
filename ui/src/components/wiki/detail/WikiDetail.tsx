@@ -13,7 +13,7 @@ import { Button, Popconfirm, Dropdown } from "antd";
 import { history } from "umi";
 import isUrl from "is-url";
 import { isKeyHotkey } from "is-hotkey";
-import { MenuOutlined } from "@ant-design/icons";
+import { EllipsisOutlined } from "@ant-design/icons";
 
 export interface WikiDetailProps {
   path: string,
@@ -269,7 +269,7 @@ export default forwardRef((props: WikiDetailProps, ref) => {
 
   const menuCom = (
     <Dropdown menu={{items: menuItems}} trigger={['click']} className="com_op">
-      <Button size="small" type="text"><MenuOutlined /></Button>
+      <Button size="small" type="text"><EllipsisOutlined /></Button>
     </Dropdown>
   );
   

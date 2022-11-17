@@ -5,8 +5,9 @@ import Time from "@/components/common/Time";
 import "./WikiListStyle.css";
 import { history } from "umi";
 import { Button, Dropdown, MenuProps } from "antd";
-import { MenuOutlined } from "@ant-design/icons";
+import { EllipsisOutlined } from "@ant-design/icons";
 import wiki from "@/pages/wiki";
+import WikiCreateButton from "../button/WikiCreateButton";
 
 /**
  * WkikList 组件属性
@@ -42,28 +43,6 @@ export default forwardRef((props: WikiListProps, ref) => {
     history.push(`/wiki/${wiki.path}`);
   };
 
-  /**
-   * 动作：点击新建 wiki
-   */
-  const clickNewWiki = () => {
-    WikiApi.create((path: string) => {
-      history.push(`/wiki/${path}`);
-    });
-  };
-
-
-
-
-  const menuItems = [
-    {key: "new-wiki", label: <><Button type="link" size="small" onClick={clickNewWiki}>New Wiki</Button></>},
-  ];
-
-  const menuCom = (
-    <Dropdown menu={{items: menuItems}} trigger={['click']} className="com_op">
-      <Button size="small" type="text"><MenuOutlined /></Button>
-    </Dropdown>
-  );
-
 
 
 
@@ -75,7 +54,7 @@ export default forwardRef((props: WikiListProps, ref) => {
       <div className="com_header">
         <div className="com_title">Wiki</div>
         <div className="com_ops">
-          {menuCom}
+          <div className="com_op"><WikiCreateButton /></div>
         </div>
       </div>
       <div className="com_body">

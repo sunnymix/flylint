@@ -3,10 +3,10 @@ export default () => {
   return (
     <div>
       <div className="com_header">
-        <div className="com_title">Media</div>
+        <div className="com_title">Tag</div>
       </div>
       <div className="com_body">
-        <p>Image</p>
+        <p>Link entities with tags</p>
       </div>
     </div>
   );

@@ -1,0 +1,9 @@
+
+.catalog_tree {
+  border-right: 1px solid #ddd;
+  position: fixed;
+}
+
+.ant-tree .ant-tree-treenode-draggable .ant-tree-draggable-icon {
+  display: none !important;
+}

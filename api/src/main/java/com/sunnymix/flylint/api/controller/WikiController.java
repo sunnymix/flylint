@@ -36,15 +36,15 @@ public class WikiController {
         return Out.ok(path);
     }
 
-    @PostMapping("/{path}/update/path/{newPath}")
-    public Out<String> updatePath(@PathVariable String path, @PathVariable String newPath) {
-        var updatedPath = wikiDao.updatePath(path, newPath);
-        return Out.of(updatedPath);
+    @PostMapping("/{name}/update/name/{newName}")
+    public Out<String> updateName(@PathVariable String name, @PathVariable String newName) {
+        var updatedName = wikiDao.updateName(name, newName);
+        return Out.of(updatedName);
     }
 
-    @PostMapping("/{path}/update/title")
-    public Out<String> updateTitle(@PathVariable String path, @RequestBody UpdateWiki updateWiki) {
-        var updatedTitle = wikiDao.updateTitle(path, updateWiki.getTitle().orElse(""));
+    @PostMapping("/{name}/update/title")
+    public Out<String> updateTitle(@PathVariable String name, @RequestBody UpdateWiki updateWiki) {
+        var updatedTitle = wikiDao.updateTitle(name, updateWiki.getTitle().orElse(""));
         return Out.of(updatedTitle);
     }
 

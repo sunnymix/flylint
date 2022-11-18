@@ -2,13 +2,13 @@ import WikiList from "./list/WikiList";
 import WikiDetail from "./detail/WikiDetail";
 
 export interface WikiProps {
-  path?: string
+  name?: string
 }
 
 export default (props: WikiProps) => {
-  if (!props.path || props.path.trim().length < 1) {
+  if (!props.name || props.name.trim().length < 1) {
     return <WikiList />
   }
   
-  return <WikiDetail path={props.path} />
+  return <WikiDetail name={props.name} />
 };

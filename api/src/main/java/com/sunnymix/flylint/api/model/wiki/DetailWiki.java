@@ -17,7 +17,7 @@ import java.time.OffsetDateTime;
 public class DetailWiki {
 
     private Long id;
-    private String path;
+    private String name;
     private String title;
     private String content;
     private OffsetDateTime created;

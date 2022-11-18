@@ -1,7 +1,7 @@
 
 export interface BasicWiki {
   id: string,
-  path: string,
+  name: string,
   title: string,
   created: string,
   updated: string,
@@ -9,7 +9,7 @@ export interface BasicWiki {
 
 export interface DetailWiki {
   id: string,
-  path: string,
+  name: string,
   title: string,
   content: string,
   created: string,

@@ -17,7 +17,7 @@ public class Wiki implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private final Long id;
-    private final String path;
+    private final String name;
     private final String title;
     private final String content;
     private final OffsetDateTime created;
@@ -25,7 +25,7 @@ public class Wiki implements Serializable {
 
     public Wiki(Wiki value) {
         this.id = value.id;
-        this.path = value.path;
+        this.name = value.name;
         this.title = value.title;
         this.content = value.content;
         this.created = value.created;
@@ -34,14 +34,14 @@ public class Wiki implements Serializable {
 
     public Wiki(
         Long id,
-        String path,
+        String name,
         String title,
         String content,
         OffsetDateTime created,
         OffsetDateTime updated
     ) {
         this.id = id;
-        this.path = path;
+        this.name = name;
         this.title = title;
         this.content = content;
         this.created = created;
@@ -56,10 +56,10 @@ public class Wiki implements Serializable {
     }
 
     /**
-     * Getter for <code>flylint.wiki.path</code>. 路径
+     * Getter for <code>flylint.wiki.name</code>. 路径
      */
-    public String getPath() {
-        return this.path;
+    public String getName() {
+        return this.name;
     }
 
     /**
@@ -95,7 +95,7 @@ public class Wiki implements Serializable {
         StringBuilder sb = new StringBuilder("Wiki (");
 
         sb.append(id);
-        sb.append(", ").append(path);
+        sb.append(", ").append(name);
         sb.append(", ").append(title);
         sb.append(", ").append(content);
         sb.append(", ").append(created);

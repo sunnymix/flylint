@@ -14,7 +14,7 @@ import MyEditor from "../editor/MyEditor";
 const { withInlines } = MyEditor;
 
 export interface WikiDetailProps {
-  path: string,
+  name: string,
 };
 
 export default forwardRef((props: WikiDetailProps, ref) => {
@@ -27,12 +27,12 @@ export default forwardRef((props: WikiDetailProps, ref) => {
   const editor = useMemo(() => withReact(withInlines(withHistory(createEditor()))), []);
 
   useEffect(() => {
-    if (!props.path) {
+    if (!props.name) {
       setWiki(null);
       return;
     }
 
-    WikiApi.detail(props.path, (wiki: DetailWiki) => {
+    WikiApi.detail(props.name, (wiki: DetailWiki) => {
       if (!wiki) {
         setWiki(null);
         return;
@@ -42,7 +42,7 @@ export default forwardRef((props: WikiDetailProps, ref) => {
       MyEditor.setContent(editor, wiki.content);
     });
 
-  }, [props.path]);
+  }, [props.name]);
 
   if (!wiki) {
     return <></>;
@@ -53,7 +53,7 @@ export default forwardRef((props: WikiDetailProps, ref) => {
       <div className="com_header">
         <div className="com_title">{wiki.title}</div>
         <div className="com_ops">
-          <WikiMenu className="com_op" path={props.path} title={wiki.title} />
+          <WikiMenu className="com_op" name={props.name} title={wiki.title} />
           <WikiCreateButton className="com_op" />
         </div>
       </div>
@@ -69,7 +69,7 @@ export default forwardRef((props: WikiDetailProps, ref) => {
               editor={editor}
               value={MyEditor.parseContent(wiki.content)}
               onChange={(value: Descendant[]) =>
-                MyEditor.onContentChange(props.path, editor, value, () => setUpdateTime(new Date()))}
+                MyEditor.onContentChange(props.name, editor, value, () => setUpdateTime(new Date()))}
               >
               <Editable
                 placeholder="Type Here ..."

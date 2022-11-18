@@ -39,17 +39,17 @@ public class WikiRecord extends UpdatableRecordImpl<WikiRecord> implements Recor
     }
 
     /**
-     * Setter for <code>flylint.wiki.path</code>. 路径
+     * Setter for <code>flylint.wiki.name</code>. 路径
      */
-    public WikiRecord setPath(String value) {
+    public WikiRecord setName(String value) {
         set(1, value);
         return this;
     }
 
     /**
-     * Getter for <code>flylint.wiki.path</code>. 路径
+     * Getter for <code>flylint.wiki.name</code>. 路径
      */
-    public String getPath() {
+    public String getName() {
         return (String) get(1);
     }
 
@@ -143,7 +143,7 @@ public class WikiRecord extends UpdatableRecordImpl<WikiRecord> implements Recor
 
     @Override
     public Field<String> field2() {
-        return Wiki.WIKI.PATH;
+        return Wiki.WIKI.NAME;
     }
 
     @Override
@@ -173,7 +173,7 @@ public class WikiRecord extends UpdatableRecordImpl<WikiRecord> implements Recor
 
     @Override
     public String component2() {
-        return getPath();
+        return getName();
     }
 
     @Override
@@ -203,7 +203,7 @@ public class WikiRecord extends UpdatableRecordImpl<WikiRecord> implements Recor
 
     @Override
     public String value2() {
-        return getPath();
+        return getName();
     }
 
     @Override
@@ -234,7 +234,7 @@ public class WikiRecord extends UpdatableRecordImpl<WikiRecord> implements Recor
 
     @Override
     public WikiRecord value2(String value) {
-        setPath(value);
+        setName(value);
         return this;
     }
 
@@ -287,11 +287,11 @@ public class WikiRecord extends UpdatableRecordImpl<WikiRecord> implements Recor
     /**
      * Create a detached, initialised WikiRecord
      */
-    public WikiRecord(Long id, String path, String title, String content, OffsetDateTime created, OffsetDateTime updated) {
+    public WikiRecord(Long id, String name, String title, String content, OffsetDateTime created, OffsetDateTime updated) {
         super(Wiki.WIKI);
 
         setId(id);
-        setPath(path);
+        setName(name);
         setTitle(title);
         setContent(content);
         setCreated(created);
@@ -306,7 +306,7 @@ public class WikiRecord extends UpdatableRecordImpl<WikiRecord> implements Recor
 
         if (value != null) {
             setId(value.getId());
-            setPath(value.getPath());
+            setName(value.getName());
             setTitle(value.getTitle());
             setContent(value.getContent());
             setCreated(value.getCreated());

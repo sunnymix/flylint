@@ -2,7 +2,7 @@ package com.sunnymix.flylint.api.gateway.dao;
 
 import com.sunnymix.flylint.api.model.wiki.BasicWiki;
 import com.sunnymix.flylint.api.model.wiki.DetailWiki;
-import com.sunnymix.flylint.api.model.wiki.WikiPath;
+import com.sunnymix.flylint.api.model.wiki.WikiName;
 import com.sunnymix.flylint.api.model.wiki.WikiTitle;
 import com.sunnymix.flylint.dao.jooq.tables.records.WikiRecord;
 import lombok.Getter;
@@ -32,10 +32,10 @@ public class WikiDao {
     private DSLContext dsl;
 
     public String create() {
-        var path = new WikiPath().path();
+        var path = new WikiName().name();
         var record = new WikiRecord();
         record.setId(null);
-        record.setPath(path);
+        record.setName(path);
         record.setTitle(new WikiTitle().title());
         record.setContent("");
         record.setCreated(OffsetDateTime.now());
@@ -44,13 +44,13 @@ public class WikiDao {
         return path;
     }
 
-    public Optional<String> updateTitle(String path, String title) {
+    public Optional<String> updateTitle(String name, String title) {
         String fixTitle = new WikiTitle(title).title();
         var updateCount = dsl
             .update(WIKI)
             .set(WIKI.TITLE, fixTitle)
             .set(WIKI.UPDATED, OffsetDateTime.now())
-            .where(WIKI.PATH.eq(path))
+            .where(WIKI.NAME.eq(name))
             .execute();
 
         if (updateCount < 0) {
@@ -60,43 +60,43 @@ public class WikiDao {
         return Optional.of(fixTitle);
     }
 
-    public Optional<String> updatePath(String path, String newPath) {
-        String fixPath = new WikiPath(newPath).path();
+    public Optional<String> updateName(String name, String newName) {
+        String fixName = new WikiName(newName).name();
 
-        if (fixPath.equals(path)) {
+        if (fixName.equals(name)) {
             return Optional.empty();
         }
 
-        if (exist(fixPath)) {
+        if (exist(fixName)) {
             return Optional.empty();
         }
 
         var updateCount = dsl
             .update(WIKI)
-            .set(WIKI.PATH, fixPath)
+            .set(WIKI.NAME, fixName)
             .set(WIKI.UPDATED, OffsetDateTime.now())
-            .where(WIKI.PATH.eq(path))
+            .where(WIKI.NAME.eq(name))
             .execute();
 
         if (updateCount < 0) {
             return Optional.empty();
         }
 
-        return Optional.of(fixPath);
+        return Optional.of(fixName);
     }
 
-    public Boolean updateContent(String path, String content) {
+    public Boolean updateContent(String name, String content) {
         var updateCount = dsl
             .update(WIKI)
             .set(WIKI.CONTENT, content)
             .set(WIKI.UPDATED, OffsetDateTime.now())
-            .where(WIKI.PATH.eq(path))
+            .where(WIKI.NAME.eq(name))
             .execute();
         return updateCount > 0;
     }
 
-    public Boolean remove(String path) {
-        int deleteCount = dsl.deleteFrom(WIKI).where(WIKI.PATH.eq(path)).execute();
+    public Boolean remove(String name) {
+        int deleteCount = dsl.deleteFrom(WIKI).where(WIKI.NAME.eq(name)).execute();
         return deleteCount > 0;
     }
 
@@ -107,7 +107,7 @@ public class WikiDao {
         var condition = conditions.stream().reduce(Condition::and).orElse(trueCondition());
 
         return dsl
-            .select(WIKI.ID, WIKI.PATH, WIKI.TITLE, WIKI.CREATED, WIKI.UPDATED)
+            .select(WIKI.ID, WIKI.NAME, WIKI.TITLE, WIKI.CREATED, WIKI.UPDATED)
             .from(WIKI)
             .where(condition)
             .orderBy(WIKI.UPDATED.desc())
@@ -115,17 +115,17 @@ public class WikiDao {
             .fetchStreamInto(BasicWiki.class).toList();
     }
 
-    public Optional<DetailWiki> detail(String path) {
+    public Optional<DetailWiki> detail(String name) {
         return dsl
-            .select(WIKI.ID, WIKI.PATH, WIKI.TITLE, WIKI.CONTENT, WIKI.CREATED, WIKI.UPDATED)
+            .select(WIKI.ID, WIKI.NAME, WIKI.TITLE, WIKI.CONTENT, WIKI.CREATED, WIKI.UPDATED)
             .from(WIKI)
-            .where(WIKI.PATH.eq(path))
+            .where(WIKI.NAME.eq(name))
             .limit(1)
             .fetchOptionalInto(DetailWiki.class);
     }
 
-    public Boolean exist(String path) {
-        return detail(path).isPresent();
+    public Boolean exist(String name) {
+        return detail(name).isPresent();
     }
 
 }

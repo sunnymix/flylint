@@ -62,9 +62,9 @@ public class Wiki extends TableImpl<WikiRecord> {
     public final TableField<WikiRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "ID");
 
     /**
-     * The column <code>flylint.wiki.path</code>. 路径
+     * The column <code>flylint.wiki.name</code>. 路径
      */
-    public final TableField<WikiRecord, String> PATH = createField(DSL.name("path"), SQLDataType.VARCHAR(100).nullable(false).defaultValue(DSL.inline("", SQLDataType.VARCHAR)), this, "路径");
+    public final TableField<WikiRecord, String> NAME = createField(DSL.name("name"), SQLDataType.VARCHAR(100).nullable(false).defaultValue(DSL.inline("", SQLDataType.VARCHAR)), this, "路径");
 
     /**
      * The column <code>flylint.wiki.title</code>. 标题

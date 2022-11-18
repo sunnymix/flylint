@@ -3,16 +3,25 @@ import axios from "axios";
 import Constant from "@/components/common/Constant";
 import { BasicWiki, DetailWiki } from "../model/WikiModel";
 
-const create = (cb: (path: string) => void) => {
+const create = (cb: (name: string) => void) => {
   axios.post(`${Constant.API_BASE}/wiki/create`, {})
     .then(res => {
-      const path = res.data?.data || null;
-      cb(path);
+      const name = res.data?.data || null;
+      cb(name);
     });
 };
 
-const updateTitle = (path: string, title: string, cb: (success: boolean, updatedTitle: string) => void) => {
-  axios.post(`${Constant.API_BASE}/wiki/${path}/update/title`, {title})
+const updateName = (name: string, newName: string, cb: (success: boolean, updatedName: string) => void) => {
+  axios.post(`${Constant.API_BASE}/wiki/${name}/update/name/${newName}`, {})
+    .then(res => {
+      const success = res.data?.success || false;
+      const updatedName = res.data?.data || null;
+      cb(success, updatedName);
+    });
+};
+
+const updateTitle = (name: string, title: string, cb: (success: boolean, updatedTitle: string) => void) => {
+  axios.post(`${Constant.API_BASE}/wiki/${name}/update/title`, {title})
     .then(res => {
       const success = res.data?.success || false;
       const updatedTitle = res.data?.data || null;
@@ -20,25 +29,16 @@ const updateTitle = (path: string, title: string, cb: (success: boolean, updated
     });
 };
 
-const updatePath = (path: string, newPath: string, cb: (success: boolean, updatedPath: string) => void) => {
-  axios.post(`${Constant.API_BASE}/wiki/${path}/update/path/${newPath}`, {})
-    .then(res => {
-      const success = res.data?.success || false;
-      const updatedPath = res.data?.data || null;
-      cb(success, updatedPath);
-    });
-};
-
-const updateContent = (path: string, content: string, cb: (success: boolean) => void) => {
-  axios.post(`${Constant.API_BASE}/wiki/${path}/update/content`, {content})
+const updateContent = (name: string, content: string, cb: (success: boolean) => void) => {
+  axios.post(`${Constant.API_BASE}/wiki/${name}/update/content`, {content})
     .then(res => {
       const success = res.data?.success || false;
       cb(success);
     });
 };
 
-const remove = (path: string, cb: (success: boolean) => void) => {
-  axios.post(`${Constant.API_BASE}/wiki/${path}/remove`, {})
+const remove = (name: string, cb: (success: boolean) => void) => {
+  axios.post(`${Constant.API_BASE}/wiki/${name}/remove`, {})
     .then(res => {
       const success = res.data?.success || false;
       cb(success);
@@ -53,8 +53,8 @@ const query = (keyword: string|null, cb: (wikis: BasicWiki[]) => void) => {
     });
 };
 
-const detail = (path: string, cb: (wiki: DetailWiki) => void) => {
-  axios.get(`${Constant.API_BASE}/wiki/${path}`)
+const detail = (name: string, cb: (wiki: DetailWiki) => void) => {
+  axios.get(`${Constant.API_BASE}/wiki/${name}`)
     .then(res => {
       const wiki = res.data?.data || null;
       cb(wiki);
@@ -63,8 +63,8 @@ const detail = (path: string, cb: (wiki: DetailWiki) => void) => {
 
 export default {
   create,
+  updateName,
   updateTitle,
-  updatePath,
   updateContent,
   remove,
   query,

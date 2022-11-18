@@ -37,7 +37,7 @@ export default forwardRef((props: WikiListProps, ref) => {
    * @param wiki wiki 数据
    */
   const clickWiki = (wiki: BasicWiki) => {
-    history.push(`/wiki/${wiki.path}`);
+    history.push(`/wiki/${wiki.name}`);
   };
   
   return (

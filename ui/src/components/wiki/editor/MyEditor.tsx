@@ -254,7 +254,7 @@ const MyEditor = {
     return [{"type":"paragraph","children":[{"text":""}]}];
   },
 
-  onContentChange(wikiPath: string, editor: any, value: Descendant[], cb: () => void) {
+  onContentChange(name: string, editor: any, value: Descendant[], cb: () => void) {
     const isAstChange = editor.operations.some((op: any) => 'set_selection' !== op.type);
 
     if (!isAstChange) {
@@ -262,7 +262,7 @@ const MyEditor = {
     }
 
     const content = JSON.stringify(value);
-    WikiApi.updateContent(wikiPath, content, (success: boolean) => {
+    WikiApi.updateContent(name, content, (success: boolean) => {
       if (!success) {
         return;
       }

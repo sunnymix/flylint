@@ -5,5 +5,5 @@ import { useRouteMatch } from "umi";
 export default () => {
   const route = useRouteMatch();
   const params: any = route.params;
-  return <Wiki path={params.path} />
+  return <Wiki name={params.name} />
 };

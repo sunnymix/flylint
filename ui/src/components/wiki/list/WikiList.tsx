@@ -53,7 +53,7 @@ export default forwardRef((props: WikiListProps, ref) => {
           <h2>Recent</h2>
           <div className="wiki_list">
             {wikis.map((wiki: BasicWiki, index: number) => (
-              <div className="wiki_list_item" key={wiki.id} onClick={() => clickWiki(wiki)}>
+              <div className="wiki_list_item" key={wiki.name} onClick={() => clickWiki(wiki)}>
                 <div className="wiki_list_item_title">{wiki.title}</div>
                 <div className="wiki_time">{Time.formatDate(wiki.created)}</div>
               </div>

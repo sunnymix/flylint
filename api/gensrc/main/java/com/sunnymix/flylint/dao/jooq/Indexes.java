@@ -22,5 +22,6 @@ public class Indexes {
     // INDEX definitions
     // -------------------------------------------------------------------------
 
+    public static final Index WIKI_IDX_PATH = Internal.createIndex(DSL.name("idx_path"), Wiki.WIKI, new OrderField[] { Wiki.WIKI.PATH }, false);
     public static final Index WIKI_IDX_TITLE = Internal.createIndex(DSL.name("idx_title"), Wiki.WIKI, new OrderField[] { Wiki.WIKI.TITLE }, false);
 }

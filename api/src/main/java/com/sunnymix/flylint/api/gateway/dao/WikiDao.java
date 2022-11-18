@@ -36,6 +36,7 @@ public class WikiDao {
         var record = new WikiRecord();
         record.setId(null);
         record.setName(path);
+        record.setPath("");
         record.setTitle(new WikiTitle().title());
         record.setContent("");
         record.setCreated(OffsetDateTime.now());

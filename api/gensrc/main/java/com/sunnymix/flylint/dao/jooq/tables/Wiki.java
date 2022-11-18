@@ -17,13 +17,13 @@ import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function6;
+import org.jooq.Function8;
 import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row6;
+import org.jooq.Row8;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -62,9 +62,19 @@ public class Wiki extends TableImpl<WikiRecord> {
     public final TableField<WikiRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "ID");
 
     /**
-     * The column <code>flylint.wiki.name</code>. 路径
+     * The column <code>flylint.wiki.name</code>. 名称
      */
-    public final TableField<WikiRecord, String> NAME = createField(DSL.name("name"), SQLDataType.VARCHAR(100).nullable(false).defaultValue(DSL.inline("", SQLDataType.VARCHAR)), this, "路径");
+    public final TableField<WikiRecord, String> NAME = createField(DSL.name("name"), SQLDataType.VARCHAR(100).nullable(false).defaultValue(DSL.inline("", SQLDataType.VARCHAR)), this, "名称");
+
+    /**
+     * The column <code>flylint.wiki.path</code>. 路径
+     */
+    public final TableField<WikiRecord, String> PATH = createField(DSL.name("path"), SQLDataType.VARCHAR(1000).nullable(false).defaultValue(DSL.inline("", SQLDataType.VARCHAR)), this, "路径");
+
+    /**
+     * The column <code>flylint.wiki.path_index</code>. 路径索引
+     */
+    public final TableField<WikiRecord, Integer> PATH_INDEX = createField(DSL.name("path_index"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "路径索引");
 
     /**
      * The column <code>flylint.wiki.title</code>. 标题
@@ -126,7 +136,7 @@ public class Wiki extends TableImpl<WikiRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.WIKI_IDX_TITLE);
+        return Arrays.asList(Indexes.WIKI_IDX_PATH, Indexes.WIKI_IDX_TITLE);
     }
 
     @Override
@@ -141,7 +151,7 @@ public class Wiki extends TableImpl<WikiRecord> {
 
     @Override
     public List<UniqueKey<WikiRecord>> getUniqueKeys() {
-        return Arrays.asList(Keys.KEY_WIKI_UK_PATH);
+        return Arrays.asList(Keys.KEY_WIKI_UK_NAME);
     }
 
     @Override
@@ -184,18 +194,18 @@ public class Wiki extends TableImpl<WikiRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row6 type methods
+    // Row8 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row6<Long, String, String, String, OffsetDateTime, OffsetDateTime> fieldsRow() {
-        return (Row6) super.fieldsRow();
+    public Row8<Long, String, String, Integer, String, String, OffsetDateTime, OffsetDateTime> fieldsRow() {
+        return (Row8) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function6<? super Long, ? super String, ? super String, ? super String, ? super OffsetDateTime, ? super OffsetDateTime, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function8<? super Long, ? super String, ? super String, ? super Integer, ? super String, ? super String, ? super OffsetDateTime, ? super OffsetDateTime, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -203,7 +213,7 @@ public class Wiki extends TableImpl<WikiRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function6<? super Long, ? super String, ? super String, ? super String, ? super OffsetDateTime, ? super OffsetDateTime, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function8<? super Long, ? super String, ? super String, ? super Integer, ? super String, ? super String, ? super OffsetDateTime, ? super OffsetDateTime, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

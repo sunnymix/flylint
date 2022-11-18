@@ -25,5 +25,5 @@ public class Keys {
     // -------------------------------------------------------------------------
 
     public static final UniqueKey<WikiRecord> KEY_WIKI_PRIMARY = Internal.createUniqueKey(Wiki.WIKI, DSL.name("KEY_wiki_PRIMARY"), new TableField[] { Wiki.WIKI.ID }, true);
-    public static final UniqueKey<WikiRecord> KEY_WIKI_UK_PATH = Internal.createUniqueKey(Wiki.WIKI, DSL.name("KEY_wiki_uk_path"), new TableField[] { Wiki.WIKI.NAME }, true);
+    public static final UniqueKey<WikiRecord> KEY_WIKI_UK_NAME = Internal.createUniqueKey(Wiki.WIKI, DSL.name("KEY_wiki_uk_name"), new TableField[] { Wiki.WIKI.NAME }, true);
 }

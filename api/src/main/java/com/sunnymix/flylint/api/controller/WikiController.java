@@ -48,15 +48,15 @@ public class WikiController {
         return Out.of(updatedTitle);
     }
 
-    @PostMapping("/{path}/update/content")
-    public Out<Void> updateContent(@PathVariable String path, @RequestBody UpdateWiki updateWiki) {
-        var success = wikiDao.updateContent(path, updateWiki.getContent().orElse(""));
+    @PostMapping("/{name}/update/content")
+    public Out<Void> updateContent(@PathVariable String name, @RequestBody UpdateWiki updateWiki) {
+        var success = wikiDao.updateContent(name, updateWiki.getContent().orElse(""));
         return Out.of(success);
     }
 
-    @PostMapping("/{path}/remove")
-    public Out<Void> remove(@PathVariable String path) {
-        var success = wikiDao.remove(path);
+    @PostMapping("/{name}/remove")
+    public Out<Void> remove(@PathVariable String name) {
+        var success = wikiDao.remove(name);
         return Out.of(success);
     }
 
@@ -66,9 +66,9 @@ public class WikiController {
         return Out.ok(wikis);
     }
 
-    @GetMapping("/{path}")
-    public Out<DetailWiki> detail(@PathVariable String path) {
-        var wiki = wikiDao.detail(path);
+    @GetMapping("/{name}")
+    public Out<DetailWiki> detail(@PathVariable String name) {
+        var wiki = wikiDao.detail(name);
         return Out.ok(wiki);
     }
 

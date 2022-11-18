@@ -18,6 +18,8 @@ public class Wiki implements Serializable {
 
     private final Long id;
     private final String name;
+    private final String path;
+    private final Integer pathIndex;
     private final String title;
     private final String content;
     private final OffsetDateTime created;
@@ -26,6 +28,8 @@ public class Wiki implements Serializable {
     public Wiki(Wiki value) {
         this.id = value.id;
         this.name = value.name;
+        this.path = value.path;
+        this.pathIndex = value.pathIndex;
         this.title = value.title;
         this.content = value.content;
         this.created = value.created;
@@ -35,6 +39,8 @@ public class Wiki implements Serializable {
     public Wiki(
         Long id,
         String name,
+        String path,
+        Integer pathIndex,
         String title,
         String content,
         OffsetDateTime created,
@@ -42,6 +48,8 @@ public class Wiki implements Serializable {
     ) {
         this.id = id;
         this.name = name;
+        this.path = path;
+        this.pathIndex = pathIndex;
         this.title = title;
         this.content = content;
         this.created = created;
@@ -56,10 +64,24 @@ public class Wiki implements Serializable {
     }
 
     /**
-     * Getter for <code>flylint.wiki.name</code>. 路径
+     * Getter for <code>flylint.wiki.name</code>. 名称
      */
     public String getName() {
         return this.name;
+    }
+
+    /**
+     * Getter for <code>flylint.wiki.path</code>. 路径
+     */
+    public String getPath() {
+        return this.path;
+    }
+
+    /**
+     * Getter for <code>flylint.wiki.path_index</code>. 路径索引
+     */
+    public Integer getPathIndex() {
+        return this.pathIndex;
     }
 
     /**
@@ -96,6 +118,8 @@ public class Wiki implements Serializable {
 
         sb.append(id);
         sb.append(", ").append(name);
+        sb.append(", ").append(path);
+        sb.append(", ").append(pathIndex);
         sb.append(", ").append(title);
         sb.append(", ").append(content);
         sb.append(", ").append(created);

@@ -15,3 +15,5 @@ export interface DetailWiki {
   created: string,
   updated: string,
 };
+
+export type WikiMode = "wiki" | "catalog";

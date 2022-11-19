@@ -3,8 +3,10 @@ import { Button, Dropdown, Popconfirm } from "antd";
 import WikiApi from "../api/WikiApi";
 import { history } from "umi";
 import { EllipsisOutlined } from "@ant-design/icons";
+import { WikiMode } from "../model/WikiModel";
 
 export interface WikiMenuProps {
+  mode: WikiMode,
   name: string,
   title: string,
   className?: string,
@@ -21,7 +23,7 @@ export default (props: WikiMenuProps) => {
       if (!success || !updatedName) {
         return;
       }
-      history.push(`/wiki/${updatedName}`);
+      history.push(`/${props.mode}/${updatedName}`);
     });
   };
 
@@ -40,7 +42,7 @@ export default (props: WikiMenuProps) => {
 
   const clickDelete = () => {
     WikiApi.remove(props.name, (success: boolean) => {
-      history.push("/wiki");
+      history.push(`/${props.mode}`);
     });
   };
 

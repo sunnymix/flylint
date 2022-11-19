@@ -45,7 +45,7 @@ export default forwardRef((props: WikiListProps, ref) => {
       <div className="com_header">
         <div className="com_title">Wiki</div>
         <div className="com_ops">
-          <div className="com_op"><WikiCreateButton /></div>
+          <div className="com_op"><WikiCreateButton mode="wiki" /></div>
         </div>
       </div>
       <div className="com_body">

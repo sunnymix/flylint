@@ -1,9 +1,6 @@
 package com.sunnymix.flylint.api.gateway.dao;
 
-import com.sunnymix.flylint.api.model.wiki.BasicWiki;
-import com.sunnymix.flylint.api.model.wiki.DetailWiki;
-import com.sunnymix.flylint.api.model.wiki.WikiName;
-import com.sunnymix.flylint.api.model.wiki.WikiTitle;
+import com.sunnymix.flylint.api.model.wiki.*;
 import com.sunnymix.flylint.dao.jooq.tables.records.WikiRecord;
 import lombok.Getter;
 import org.jooq.Condition;
@@ -11,6 +8,7 @@ import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -18,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.sunnymix.flylint.dao.jooq.Tables.WIKI;
+import static org.jooq.impl.DSL.replace;
 import static org.jooq.impl.DSL.trueCondition;
 
 /**
@@ -61,29 +60,46 @@ public class WikiDao {
         return Optional.of(fixTitle);
     }
 
+    @Transactional
     public Optional<String> updateName(String name, String newName) {
-        String fixName = new WikiName(newName).name();
+        var wikiOpt = one(name);
+        if (wikiOpt.isEmpty()) {
+            return Optional.empty();
+        }
+        var wiki = wikiOpt.get();
 
-        if (fixName.equals(name)) {
+        newName = new WikiName(newName).name();
+        if (newName.equals(name)) {
+            return Optional.empty();
+        }
+        if (exist(newName)) {
             return Optional.empty();
         }
 
-        if (exist(fixName)) {
-            return Optional.empty();
-        }
+        updateMyName(name, newName);
 
+        var descendantPath = DescendantPath.of(wiki.getPath(), wiki.getName()).value();
+        var newDescendantPath = DescendantPath.of(wiki.getPath(), newName).value();
+        updateDescendantPath(descendantPath, newDescendantPath);
+
+        return Optional.of(newName);
+    }
+
+    private void updateMyName(String name, String newName) {
         var updateCount = dsl
             .update(WIKI)
-            .set(WIKI.NAME, fixName)
+            .set(WIKI.NAME, newName)
             .set(WIKI.UPDATED, OffsetDateTime.now())
             .where(WIKI.NAME.eq(name))
             .execute();
+    }
 
-        if (updateCount < 0) {
-            return Optional.empty();
-        }
-
-        return Optional.of(fixName);
+    private void updateDescendantPath(String pathStart, String newPathStart) {
+        var updateCount = dsl
+            .update(WIKI)
+            .set(WIKI.PATH, replace(WIKI.PATH, pathStart, newPathStart))
+            .where(WIKI.PATH.startsWith(pathStart))
+            .execute();
     }
 
     public Boolean updateContent(String name, String content) {
@@ -127,6 +143,18 @@ public class WikiDao {
 
     public Boolean exist(String name) {
         return detail(name).isPresent();
+    }
+
+    private Optional<WikiRecord> one(String name) {
+        if (name == null || name.isBlank()) {
+            return Optional.empty();
+        }
+
+        return dsl
+            .selectFrom(WIKI)
+            .where(WIKI.NAME.eq(name))
+            .limit(1)
+            .fetchOptionalInto(WikiRecord.class);
     }
 
 }

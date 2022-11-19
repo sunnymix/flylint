@@ -12,9 +12,11 @@ import WikiCreateButton from "../button/WikiCreateButton";
 import MyElement from "../editor/MyElement";
 import MyEditor from "../editor/MyEditor";
 const { withInlines } = MyEditor;
+import { WikiMode } from "../model/WikiModel";
 
 export interface WikiDetailProps {
   name: string,
+  mode: WikiMode,
 };
 
 export default forwardRef((props: WikiDetailProps, ref) => {
@@ -48,8 +50,8 @@ export default forwardRef((props: WikiDetailProps, ref) => {
       <div className="com_header">
         <div className="com_title">{wiki.title}</div>
         <div className="com_ops">
-          <WikiMenu className="com_op" name={props.name} title={wiki.title} />
-          <WikiCreateButton className="com_op" />
+          <WikiMenu mode={props.mode} className="com_op" name={props.name} title={wiki.title} />
+          <WikiCreateButton mode={props.mode} className="com_op" />
         </div>
       </div>
       <div className="com_body">
@@ -62,12 +64,12 @@ export default forwardRef((props: WikiDetailProps, ref) => {
           <div className="wiki_content_editor">
             <Slate
               editor={editor}
-              value={MyEditor.parseContent(wiki.content)}
+              value={MyEditor.initialContent()}
               onChange={(value: Descendant[]) =>
                 MyEditor.onContentChange(props.name, editor, value, () => setUpdateTime(new Date()))}
               >
               <Editable
-                placeholder="Type Here ..."
+                placeholder="Empty"
                 renderElement={MyElement.renderElement}
                 renderLeaf={MyElement.renderLeaf}
                 onKeyDown={(event) => MyEditor.onKeyDown(event, editor)} />

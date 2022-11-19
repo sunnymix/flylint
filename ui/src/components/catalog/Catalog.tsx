@@ -21,7 +21,7 @@ export const Catalog = (props: CatalogProps) => {
       <CatalogTree className="catalog_tree" width={400} onSelect={onSelect} />
       <div className="catalog_body" style={{marginLeft: 400}}>
         <div className="wiki">
-          {props.defaultName && <WikiDetail name={props.defaultName} />}
+          {props.defaultName && <WikiDetail name={props.defaultName} mode="catalog" />}
         </div>
       </div>
     </div>

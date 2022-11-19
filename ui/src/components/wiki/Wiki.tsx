@@ -1,3 +1,4 @@
+
 import WikiList from "./list/WikiList";
 import WikiDetail from "./detail/WikiDetail";
 
@@ -10,5 +11,5 @@ export default (props: WikiProps) => {
     return <WikiList />
   }
   
-  return <WikiDetail name={props.name} />
+  return <WikiDetail name={props.name} mode="wiki" />
 };

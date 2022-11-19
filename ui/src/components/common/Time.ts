@@ -19,9 +19,12 @@ const nowDatetime = () => formatFromDate(new Date(), FORMAT_DATETIME);
 
 const nowDatetime3 = () => formatFromDate(new Date(), FORMAT_DATETIME3);
 
+const refreshSignal = () => nowDatetime3();
+
 export default {
   formatDatetime,
   formatDate,
   nowDatetime,
   nowDatetime3,
+  refreshSignal,
 };

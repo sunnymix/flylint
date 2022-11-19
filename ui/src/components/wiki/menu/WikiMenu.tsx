@@ -4,6 +4,8 @@ import WikiApi from "../api/WikiApi";
 import { history } from "umi";
 import { EllipsisOutlined } from "@ant-design/icons";
 import { WikiMode } from "../model/WikiModel";
+import EventBus from "@/components/common/EventBus";
+import { EventType } from "@/components/common/EventBus";
 
 export interface WikiMenuProps {
   mode: WikiMode,
@@ -23,6 +25,11 @@ export default (props: WikiMenuProps) => {
       if (!success || !updatedName) {
         return;
       }
+      EventBus.dispatch("wiki.name.updated", {
+        mode: props.mode,
+        name: props.name,
+        newName: updatedName,
+      });
       history.push(`/${props.mode}/${updatedName}`);
     });
   };

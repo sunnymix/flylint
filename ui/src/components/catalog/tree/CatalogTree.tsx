@@ -8,6 +8,7 @@ import { CatalogTree } from "../model/CatalogModel";
 import CatalogApi from "../api/CatalogApi";
 
 export interface CatalogTreeProps {
+  refreshSignal?: string,
   className?: string,
   width?: number,
   onSelect?: (names: string[]) => void,
@@ -39,7 +40,7 @@ export default (props: CatalogTreeProps) => {
       setExpandedKeys(JSON.parse(localStorage.getItem(EXPANDED_KEYS) || "[]") || []);
       setSelectedKeys(JSON.parse(localStorage.getItem(SELECTED_KEYS) || "[]") || []);
     });
-  }, []);
+  }, [props.refreshSignal]);
 
 
 

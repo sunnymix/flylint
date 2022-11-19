@@ -3,7 +3,7 @@
   display: flex;
   flex-wrap: nowrap;
   background-color: #fff;
-  box-shadow: 0 1px 1px 0 #eee;
+  box-shadow: 0 1px 1px 0 #ddd;
   padding: 10px;
   overflow: hidden;
   overflow-x: auto;
@@ -22,10 +22,10 @@
 }
 
 .nav_item:hover {
-  background: #eee;
+  background: #ddd;
 }
 
 .nav_item.active {
   color: #1890ff;
-  background-color: #1890ff20;
+  background-color: #1890ff30;
 }

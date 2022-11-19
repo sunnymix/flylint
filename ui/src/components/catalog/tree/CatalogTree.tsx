@@ -8,12 +8,16 @@ import { CatalogTree } from "../model/CatalogModel";
 import CatalogApi from "../api/CatalogApi";
 
 export interface CatalogTreeProps {
-  key?: string,
   className?: string,
   width?: number,
+  onSelect?: (names: string[]) => void,
 };
 
 export declare type TreeNodeKey = string | number;
+
+export const EXPANDED_KEYS = "catalog.tree.expandedKeys";
+
+export const SELECTED_KEYS = "catalog.tree.selectedKeys";
 
 export default (props: CatalogTreeProps) => {
 
@@ -32,15 +36,15 @@ export default (props: CatalogTreeProps) => {
       }
 
       setTrees(newTrees);
-      setExpandedKeys(JSON.parse(localStorage.getItem("flylint.catalog.tree.expandedKeys") || "[]") || []);
-      setSelectedKeys(JSON.parse(localStorage.getItem("flylint.catalog.tree.selectedKeys") || "[]") || []);
+      setExpandedKeys(JSON.parse(localStorage.getItem(EXPANDED_KEYS) || "[]") || []);
+      setSelectedKeys(JSON.parse(localStorage.getItem(SELECTED_KEYS) || "[]") || []);
     });
   }, []);
 
 
 
   const onExpand = (expandedKeys: TreeNodeKey[], info: any) => {
-    localStorage.setItem("flylint.catalog.tree.expandedKeys", JSON.stringify(expandedKeys));
+    localStorage.setItem(EXPANDED_KEYS, JSON.stringify(expandedKeys));
     setExpandedKeys(expandedKeys);
   };
 
@@ -48,12 +52,14 @@ export default (props: CatalogTreeProps) => {
     const node = info.node as DataNode;
     if (!node) {
       setSelectedKeys([]);
+      props.onSelect?.call(null, []);
       return;
     }
 
     const newSelectedKeys = [node.key.toString()];
-    localStorage.setItem("flylint.catalog.tree.selectedKeys", JSON.stringify(newSelectedKeys));
+    localStorage.setItem(SELECTED_KEYS, JSON.stringify(newSelectedKeys));
     setSelectedKeys(newSelectedKeys);
+    props.onSelect?.call(null, newSelectedKeys);
   };
 
   return (

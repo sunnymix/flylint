@@ -1,5 +1,5 @@
 
-import { Children, forwardRef, useCallback, useEffect, useState, useMemo } from "react";
+import { Children, forwardRef, useCallback, useEffect, useState, useMemo, useRef } from "react";
 import WikiApi from "../api/WikiApi";
 import { DetailWiki } from "../model/WikiModel";
 import Time from "@/components/common/Time";
@@ -21,10 +21,9 @@ export default forwardRef((props: WikiDetailProps, ref) => {
 
   const [wiki, setWiki] = useState<DetailWiki|null>(null);
 
-  const [updateTime, setUpdateTime] = useState<Date|null>(null);  
+  const [updateTime, setUpdateTime] = useState<Date|null>(null);
 
-  // editor type: BaseEditor & ReactEditor
-  const editor = useMemo(() => withReact(withInlines(withHistory(createEditor()))), []);
+  const [editor] = useState(withReact(withInlines(withHistory(createEditor()))));
 
   useEffect(() => {
     if (!props.name) {
@@ -44,11 +43,7 @@ export default forwardRef((props: WikiDetailProps, ref) => {
 
   }, [props.name]);
 
-  if (!wiki) {
-    return <></>;
-  }
-
-  return (
+  return (wiki &&
     <div>
       <div className="com_header">
         <div className="com_title">{wiki.title}</div>

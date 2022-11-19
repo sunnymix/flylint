@@ -2,9 +2,23 @@
 .catalog_tree {
   border-right: 1px solid #ddd;
   position: fixed;
-  padding-right: 4px;
+  padding-right: 10px;
+  top: 60px;
+  bottom: 10px;
 }
 
 .ant-tree .ant-tree-treenode-draggable .ant-tree-draggable-icon {
   display: none !important;
+}
+
+.ant-tree .ant-tree-treenode {
+  padding: 0 0 4px 0;
+}
+
+.ant-tree .ant-tree-node-content-wrapper {
+  border-radius: 2px;
+}
+
+.ant-tree .ant-tree-node-content-wrapper.ant-tree-node-selected {
+  background-color: #1890ff30;
 }

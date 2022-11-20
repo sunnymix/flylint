@@ -64,7 +64,7 @@ export default forwardRef((props: WikiDetailProps, ref) => {
           <div className="wiki_content_editor">
             <Slate
               editor={editor}
-              value={MyEditor.initialContent()}
+              value={MyEditor.parseContent(wiki.content)}
               onChange={(value: Descendant[]) =>
                 MyEditor.onContentChange(props.name, editor, value, () => setUpdateTime(new Date()))}
               >

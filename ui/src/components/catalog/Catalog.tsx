@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import WikiDetail from "../wiki/detail/WikiDetail";
 import { history } from "umi";
 import { SELECTED_KEYS } from "./tree/CatalogTree";
-import EventBus from "@/components/common/EventBus";
+import EventBus, { WikiCreateEventData, WikiNameUpdatedEventData } from "@/components/common/EventBus";
 import { EventType } from "@/components/common/EventBus";
 import Time from "@/components/common/Time";
 
@@ -22,14 +22,32 @@ export const Catalog = (props: CatalogProps) => {
   };
 
   const onWikiNameUpdated = useCallback((data: any) => {
+    const eventData = data as WikiNameUpdatedEventData;
+    if (!eventData) {
+      return;
+    }
+
+    localStorage.setItem(SELECTED_KEYS, JSON.stringify([eventData.name]));
+    setRefreshSignal(Time.refreshSignal());
+  }, []);
+
+  const onWikiCreated = useCallback((data: any) => {
+    const eventData = data as WikiCreateEventData;
+    if (!eventData) {
+      return;
+    }
+
+    localStorage.setItem(SELECTED_KEYS, JSON.stringify([eventData.name]));
     setRefreshSignal(Time.refreshSignal());
   }, []);
 
   useEffect(() => {
     EventBus.on("wiki.name.updated", onWikiNameUpdated);
+    EventBus.on("wiki.create", onWikiCreated);
     
     return () => {
       EventBus.remove("wiki.name.updated", onWikiNameUpdated);
+      EventBus.remove("wiki.create", onWikiCreated);
     }
   }, []);
 

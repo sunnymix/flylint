@@ -18,6 +18,8 @@ public class DetailWiki {
 
     private Long id;
     private String name;
+    private String path;
+    private Integer pathIndex;
     private String title;
     private String content;
     private OffsetDateTime created;

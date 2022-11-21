@@ -13,60 +13,72 @@ import MyElement from "../editor/MyElement";
 import MyEditor from "../editor/MyEditor";
 const { withInlines } = MyEditor;
 import { WikiMode } from "../model/WikiModel";
+import { history } from "umi";
 
 export interface WikiDetailProps {
   name: string,
   mode: WikiMode,
 };
 
-export default forwardRef((props: WikiDetailProps, ref) => {
+export default (props: WikiDetailProps) => {
 
-  const [wiki, setWiki] = useState<DetailWiki|null>(null);
+  // Wiki property:
+  const [path, setPath] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
+  const [updateTime, setUpdateTime] = useState<string>("");
 
-  const [updateTime, setUpdateTime] = useState<Date|null>(null);
+  // Editor:
+  const [editor, setEditor] = useState(withReact(withInlines(withHistory(createEditor()))));
 
-  const [editor] = useState(withReact(withInlines(withHistory(createEditor()))));
-
+  // Load:
   useEffect(() => {
     if (!props.name) {
-      setWiki(null);
+      history.push(`/${props.mode}`);
       return;
     }
 
     WikiApi.detail(props.name, (wiki: DetailWiki) => {
       if (!wiki) {
-        setWiki(null);
+        history.push(`/${props.mode}`);
         return;
       }
 
-      setWiki(wiki);
-      MyEditor.setContent(editor, wiki.content);
+      setPath(wiki.path || "-");
+      setTitle(wiki.title || "-");
+      setUpdateTime(wiki.updated ? Time.formatDatetime(wiki.updated) : "-");
+      MyEditor.setContent(editor, wiki.content || MyEditor.initialContentRaw());
     });
 
   }, [props.name]);
 
-  return (wiki &&
+  // Unload:
+  useEffect(() => {
+    return () => {
+      // Destroy:
+    };
+  }, []);
+
+  return (
     <div>
+      <div className="com_bread">
+        <div className="">{path}{props.name}</div>
+      </div>
       <div className="com_header">
-        <div className="com_title">{wiki.title}</div>
+        <div className="com_title">{title}</div>
         <div className="com_ops">
-          <WikiMenu mode={props.mode} className="com_op" name={props.name} title={wiki.title} />
-          <WikiCreateButton mode={props.mode} className="com_op" />
+          <div className="com_op">{updateTime}</div>
+          <WikiMenu mode={props.mode} className="com_op" name={props.name} title={title} />
+          <WikiCreateButton mode={props.mode} className="com_op" catalogName={props.name} />
         </div>
       </div>
       <div className="com_body">
-        <div className="wiki_time">
-          {Time.formatDate(wiki.created)}
-          {updateTime && (<> · Updated at {Time.nowDatetime3()}</>)}
-        </div>
-        <hr/>
         <div className="wiki_content">
           <div className="wiki_content_editor">
             <Slate
               editor={editor}
-              value={MyEditor.parseContent(wiki.content)}
+              value={MyEditor.initialContent()}
               onChange={(value: Descendant[]) =>
-                MyEditor.onContentChange(props.name, editor, value, () => setUpdateTime(new Date()))}
+                MyEditor.onContentChange(props.name, editor, value, () => setUpdateTime(Time.nowDatetime3()))}
               >
               <Editable
                 placeholder="Empty"
@@ -79,4 +91,4 @@ export default forwardRef((props: WikiDetailProps, ref) => {
       </div>
     </div>
   );
-});
+};

@@ -18,6 +18,8 @@ public class BasicWiki {
 
     private Long id;
     private String name;
+    private String path;
+    private Integer pathIndex;
     private String title;
     private OffsetDateTime created;
     private OffsetDateTime updated;

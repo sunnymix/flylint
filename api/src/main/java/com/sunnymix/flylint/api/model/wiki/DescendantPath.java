@@ -1,7 +1,5 @@
 package com.sunnymix.flylint.api.model.wiki;
 
-import com.sunnymix.flylint.dao.jooq.tables.records.WikiRecord;
-
 /**
  * @author sunnymix
  */
@@ -14,7 +12,7 @@ public class DescendantPath {
     }
 
     public DescendantPath(String path, String name) {
-        value = path + name + "/";
+        value = path.trim() + name.trim() + "/";
     }
 
     public String value() {

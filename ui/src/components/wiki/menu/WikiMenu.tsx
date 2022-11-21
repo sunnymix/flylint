@@ -4,7 +4,7 @@ import WikiApi from "../api/WikiApi";
 import { history } from "umi";
 import { EllipsisOutlined } from "@ant-design/icons";
 import { WikiMode } from "../model/WikiModel";
-import EventBus from "@/components/common/EventBus";
+import EventBus, { WikiNameUpdatedEventData } from "@/components/common/EventBus";
 import { EventType } from "@/components/common/EventBus";
 
 export interface WikiMenuProps {
@@ -28,8 +28,8 @@ export default (props: WikiMenuProps) => {
       EventBus.dispatch("wiki.name.updated", {
         mode: props.mode,
         name: props.name,
-        newName: updatedName,
-      });
+        oldName: updatedName,
+      } as WikiNameUpdatedEventData);
       history.push(`/${props.mode}/${updatedName}`);
     });
   };

@@ -11,6 +11,14 @@ const create = (cb: (name: string) => void) => {
     });
 };
 
+const createByCatalogName = (catalogName: string, cb: (name: string) => void) => {
+  axios.post(`${Constant.API_BASE}/wiki/create`, { catalogName })
+    .then(res => {
+      const name = res.data?.data || null;
+      cb(name);
+    });
+};
+
 const updateName = (name: string, newName: string, cb: (success: boolean, updatedName: string) => void) => {
   axios.post(`${Constant.API_BASE}/wiki/${name}/update/name/${newName}`, {})
     .then(res => {
@@ -63,6 +71,7 @@ const detail = (name: string, cb: (wiki: DetailWiki) => void) => {
 
 export default {
   create,
+  createByCatalogName,
   updateName,
   updateTitle,
   updateContent,

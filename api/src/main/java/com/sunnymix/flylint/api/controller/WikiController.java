@@ -3,6 +3,7 @@ package com.sunnymix.flylint.api.controller;
 import com.sunnymix.flylint.api.common.io.Out;
 import com.sunnymix.flylint.api.gateway.dao.WikiDao;
 import com.sunnymix.flylint.api.model.wiki.BasicWiki;
+import com.sunnymix.flylint.api.model.wiki.CreateWiki;
 import com.sunnymix.flylint.api.model.wiki.DetailWiki;
 import com.sunnymix.flylint.api.model.wiki.UpdateWiki;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +32,8 @@ public class WikiController {
     }
 
     @PostMapping("/create")
-    public Out<String> create() {
-        var path = wikiDao.create();
+    public Out<String> create(@RequestBody CreateWiki createWiki) {
+        var path = wikiDao.create(createWiki.getCatalogName());
         return Out.ok(path);
     }
 

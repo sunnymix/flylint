@@ -5,6 +5,7 @@ import com.sunnymix.flylint.dao.jooq.tables.records.WikiRecord;
 import lombok.Getter;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
+import org.jooq.impl.QOM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -16,8 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.sunnymix.flylint.dao.jooq.Tables.WIKI;
-import static org.jooq.impl.DSL.replace;
-import static org.jooq.impl.DSL.trueCondition;
+import static org.jooq.impl.DSL.*;
 
 /**
  * @author sunnymix
@@ -25,23 +25,59 @@ import static org.jooq.impl.DSL.trueCondition;
 @Repository
 public class WikiDao {
 
+    public static final String EMPTY_PATH = "";
+
+    public static final Integer EMPTY_PATH_INDEX = 0;
+
+    public static final String ROOT_PATH = "/";
+
+    public static final Integer ROOT_PATH_INDEX = 0;
+
     @Getter
     @Autowired
     @Qualifier("dslContext")
     private DSLContext dsl;
 
-    public String create() {
-        var path = new WikiName().name();
+    @Transactional
+    public String create(Optional<String> catalogNameOpt) {
+        if (catalogNameOpt.isEmpty()) {
+            return create();
+        }
+
+        var catalogName = catalogNameOpt.get().trim();
+
+        if (catalogName.equals(ROOT_PATH)) {
+            return create(ROOT_PATH, ROOT_PATH_INDEX);
+        }
+
+        var catalogOpt = one(catalogName);
+        if (catalogOpt.isEmpty()) {
+            return create();
+        }
+
+        var catalog = catalogOpt.get();
+        var path = new DescendantPath(catalog.getPath(), catalog.getName()).value();
+        var pathIndex = maxPathIndexOfMyDescendant(path) + 1;
+        return create(path, pathIndex);
+    }
+
+    private String create() {
+        return create(EMPTY_PATH, EMPTY_PATH_INDEX);
+    }
+
+    private String create(String path, Integer pathIndex) {
+        var randomName = new WikiName().name();
         var record = new WikiRecord();
         record.setId(null);
-        record.setName(path);
-        record.setPath("");
+        record.setName(randomName);
+        record.setPath(path);
+        record.setPathIndex(pathIndex);
         record.setTitle(new WikiTitle().title());
         record.setContent("");
         record.setCreated(OffsetDateTime.now());
         record.setUpdated(OffsetDateTime.now());
         dsl.executeInsert(record);
-        return path;
+        return randomName;
     }
 
     public Optional<String> updateTitle(String name, String title) {
@@ -115,6 +151,7 @@ public class WikiDao {
     public Boolean remove(String name) {
         int deleteCount = dsl.deleteFrom(WIKI).where(WIKI.NAME.eq(name)).execute();
         return deleteCount > 0;
+        // TODO remove descendant
     }
 
     public List<BasicWiki> query(Optional<String> keyword) {
@@ -124,7 +161,7 @@ public class WikiDao {
         var condition = conditions.stream().reduce(Condition::and).orElse(trueCondition());
 
         return dsl
-            .select(WIKI.ID, WIKI.NAME, WIKI.TITLE, WIKI.CREATED, WIKI.UPDATED)
+            .select(WIKI.ID, WIKI.NAME, WIKI.PATH, WIKI.PATH_INDEX, WIKI.TITLE, WIKI.CREATED, WIKI.UPDATED)
             .from(WIKI)
             .where(condition)
             .orderBy(WIKI.UPDATED.desc())
@@ -134,7 +171,7 @@ public class WikiDao {
 
     public Optional<DetailWiki> detail(String name) {
         return dsl
-            .select(WIKI.ID, WIKI.NAME, WIKI.TITLE, WIKI.CONTENT, WIKI.CREATED, WIKI.UPDATED)
+            .select(WIKI.ID, WIKI.NAME, WIKI.PATH, WIKI.PATH_INDEX, WIKI.TITLE, WIKI.CONTENT, WIKI.CREATED, WIKI.UPDATED)
             .from(WIKI)
             .where(WIKI.NAME.eq(name))
             .limit(1)
@@ -155,6 +192,24 @@ public class WikiDao {
             .where(WIKI.NAME.eq(name))
             .limit(1)
             .fetchOptionalInto(WikiRecord.class);
+    }
+
+    private Integer maxPathIndexOfMyDescendant(String descendantPath) {
+        if (descendantPath == null || descendantPath.isBlank()) {
+            return 0;
+        }
+
+        if (descendantPath.equals(ROOT_PATH)) {
+            return ROOT_PATH_INDEX;
+        }
+
+        var maxPathIndexOpt = dsl
+            .select(max(WIKI.PATH_INDEX))
+            .from(WIKI)
+            .where(WIKI.PATH.eq(descendantPath))
+            .fetchOptionalInto(Integer.class);
+
+        return maxPathIndexOpt.orElse(-1);
     }
 
 }

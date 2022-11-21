@@ -24,7 +24,7 @@ export default () => {
         if (localName) {
           history.push(`/catalog/${localName}`);
         }
-      }, 50);
+      }, 0);
     }
   }, []);
 

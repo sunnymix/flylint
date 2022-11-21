@@ -254,6 +254,10 @@ const MyEditor = {
     return [{"type":"paragraph","children":[{"text":""}]}];
   },
 
+  initialContentRaw() {
+    return JSON.stringify(MyEditor.initialContent());
+  },
+
   onContentChange(name: string, editor: any, value: Descendant[], cb: () => void) {
     const isAstChange = editor.operations.some((op: any) => 'set_selection' !== op.type);
 

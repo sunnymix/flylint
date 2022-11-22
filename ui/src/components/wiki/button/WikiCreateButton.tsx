@@ -14,6 +14,7 @@ export interface WikiCreateButtonProps {
 };
 
 export default (props: WikiCreateButtonProps) => {
+
   const onClick = useCallback(() => {
     if (props.mode === "wiki") {
       WikiApi.create((name: string) => {
@@ -25,16 +26,20 @@ export default (props: WikiCreateButtonProps) => {
       console.log("create catalog: ", props.catalogName);
 
       WikiApi.createByCatalogName(props.catalogName, (name) => {
-        EventBus.dispatch("wiki.create", {
+        const eventData = {
           mode: props.mode,
           name,
           catalogName: props.catalogName,
-        } as WikiCreatedEventData);
+        } as WikiCreatedEventData;
+
+        console.log(eventData);
+
+        EventBus.dispatch("wiki.create", eventData);
 
         history.push(`/${props.mode}/${name}`);
       });
     }
-  }, []);
+  }, [props.catalogName]);
 
   return <Button className={props.className} onClick={onClick} size="small" type="text">
     <PlusOutlined />

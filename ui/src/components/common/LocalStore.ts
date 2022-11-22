@@ -21,7 +21,7 @@ const LocalStore = {
   },
 
   getArray(key: string) {
-    return JSON.parse(LocalStore.get(key) || "[]");
+    return JSON.parse(LocalStore.get(key) || "[]") || [];
   },
 
   remove(key: string) {
@@ -48,7 +48,7 @@ const LocalStore = {
 
   // Catalog Selected Keys:
 
-  CATALOG_SELECTED_KEYS: "catalog.tree.selectedKeys",
+  CATALOG_SELECTED_KEYS: "catalog.selectedKeys",
 
   setCatalogSelectedKeys(keys: string[]) {
     LocalStore.setArray(LocalStore.CATALOG_SELECTED_KEYS, keys);

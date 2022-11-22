@@ -4,10 +4,10 @@ import "./CatalogStyle.css";
 import { useCallback, useEffect, useState } from "react";
 import WikiDetail from "../wiki/detail/WikiDetail";
 import { history } from "umi";
-import { SELECTED_KEYS } from "./tree/CatalogTree";
 import EventBus, { WikiCreatedEventData, WikiDeletedEventData, WikiNameUpdatedEventData } from "@/components/common/EventBus";
 import { EventType } from "@/components/common/EventBus";
 import Time from "@/components/common/Time";
+import LocalStore from "../common/LocalStore";
 
 export interface CatalogProps {
   defaultName?: string
@@ -27,7 +27,8 @@ export const Catalog = (props: CatalogProps) => {
       return;
     }
 
-    localStorage.setItem(SELECTED_KEYS, JSON.stringify([eventData.name]));
+    console.log("name update event: ", data);
+    LocalStore.setCatalogSelectedKeys([eventData.name]);
     setRefreshSignal(Time.refreshSignal());
   }, []);
 
@@ -37,7 +38,8 @@ export const Catalog = (props: CatalogProps) => {
       return;
     }
 
-    localStorage.setItem(SELECTED_KEYS, JSON.stringify([eventData.name]));
+    console.log("created event: ", data);
+    LocalStore.setCatalogSelectedKeys([eventData.name]);
     setRefreshSignal(Time.refreshSignal());
   }, []);
 
@@ -47,16 +49,7 @@ export const Catalog = (props: CatalogProps) => {
       return;
     }
 
-    const names = JSON.parse(localStorage.getItem(SELECTED_KEYS) || "[]");
-    if (!names || !names.length) {
-      return;
-    }
-    
-    if (!names.includes(eventData.name)) {
-      return;
-    }
-
-    localStorage.removeItem(SELECTED_KEYS);
+    LocalStore.removeCatalogSelectedKeys([eventData.name]);
   }, []);
 
   useEffect(() => {

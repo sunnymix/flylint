@@ -39,11 +39,11 @@ export type EventData =
 
 const EventBus = {
   on(eventType: EventType, cb: (data: any|EventData) => void) {
-    document.addEventListener(eventType, (data: any|EventData) => cb(data));
+    document.addEventListener(eventType, (data: any) => cb(data.detail));
   },
 
   dispatch(eventType: EventType, data: any|EventData) {
-    const event = new CustomEvent<any>(eventType, data)
+    const event = new CustomEvent<any>(eventType, { detail: data })
     document.dispatchEvent(event);
   },
 

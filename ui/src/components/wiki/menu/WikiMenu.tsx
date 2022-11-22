@@ -27,8 +27,8 @@ export default (props: WikiMenuProps) => {
       }
       EventBus.dispatch("wiki.name.updated", {
         mode: props.mode,
-        name: props.name,
-        oldName: updatedName,
+        name: updatedName,
+        oldName: props.name,
       } as WikiNameUpdatedEventData);
       history.push(`/${props.mode}/${updatedName}`);
     });

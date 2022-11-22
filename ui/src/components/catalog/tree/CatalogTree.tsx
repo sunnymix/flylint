@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import { CaretDownFilled } from "@ant-design/icons";
 import { CatalogTree } from "../model/CatalogModel";
 import CatalogApi from "../api/CatalogApi";
+import LocalStore from "@/components/common/LocalStore";
 
 export interface CatalogTreeProps {
   refreshSignal?: string,
@@ -15,10 +16,6 @@ export interface CatalogTreeProps {
 };
 
 export declare type TreeNodeKey = string | number;
-
-export const EXPANDED_KEYS = "catalog.tree.expandedKeys";
-
-export const SELECTED_KEYS = "catalog.tree.selectedKeys";
 
 export default (props: CatalogTreeProps) => {
 
@@ -37,15 +34,15 @@ export default (props: CatalogTreeProps) => {
       }
 
       setTrees(newTrees);
-      setExpandedKeys(JSON.parse(localStorage.getItem(EXPANDED_KEYS) || "[]") || []);
-      setSelectedKeys(JSON.parse(localStorage.getItem(SELECTED_KEYS) || "[]") || []);
+      setExpandedKeys(LocalStore.getCatalogExpandKeys());
+      setSelectedKeys(LocalStore.getCatalogSelectKeys());
     });
   }, [props.refreshSignal]);
 
 
 
   const onExpand = (expandedKeys: TreeNodeKey[], info: any) => {
-    localStorage.setItem(EXPANDED_KEYS, JSON.stringify(expandedKeys));
+    LocalStore.setCatalogExpandKeys(expandedKeys as string[]);
     setExpandedKeys(expandedKeys);
   };
 
@@ -58,7 +55,7 @@ export default (props: CatalogTreeProps) => {
     }
 
     const newSelectedKeys = [node.key.toString()];
-    localStorage.setItem(SELECTED_KEYS, JSON.stringify(newSelectedKeys));
+    LocalStore.setCatalogSelectedKeys(newSelectedKeys);
     setSelectedKeys(newSelectedKeys);
     props.onSelect?.call(null, newSelectedKeys);
   };

@@ -1,4 +1,3 @@
-
 import { Children, forwardRef, useCallback, useEffect, useState, useMemo, useRef } from "react";
 import WikiApi from "../api/WikiApi";
 import { DetailWiki } from "../model/WikiModel";
@@ -15,6 +14,7 @@ const { withInlines } = MyEditor;
 import { WikiMode } from "../model/WikiModel";
 import { history } from "umi";
 import LocalStore from "@/components/common/LocalStore";
+import WikiBreadcrumb from "../breadcrumb/WikiBreadCrumb";
 
 export interface WikiDetailProps {
   name: string,
@@ -68,8 +68,7 @@ export default (props: WikiDetailProps) => {
   return (
     <div>
       <div className="com_bread">
-        {/* TODO: path split */}
-        <div className="">{path}{props.name}</div>
+        <WikiBreadcrumb path={path} name={props.name} />
       </div>
       <div className="com_header">
         <div className="com_title">{title}</div>

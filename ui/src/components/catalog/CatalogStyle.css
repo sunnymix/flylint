@@ -7,16 +7,23 @@
   bottom: 10px;
 }
 
+.ant-tree {
+  line-height: 30px;
+}
+
 .ant-tree .ant-tree-treenode-draggable .ant-tree-draggable-icon {
   display: none !important;
 }
 
 .ant-tree .ant-tree-treenode {
-  padding: 0 0 4px 0;
+  padding: 0 0 1px 0;
 }
 
 .ant-tree .ant-tree-node-content-wrapper {
-  border-radius: 2px;
+  border-radius: 6px;
+  line-height: 30px;
+  min-height: 30px;
+  padding: 0 10px;
 }
 
 .ant-tree .ant-tree-node-content-wrapper.ant-tree-node-selected {

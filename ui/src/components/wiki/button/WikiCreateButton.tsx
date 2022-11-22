@@ -1,4 +1,3 @@
-
 import { Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import WikiApi from "../api/WikiApi";
@@ -6,6 +5,7 @@ import { history } from "umi";
 import { useCallback } from "react";
 import { WikiMode } from "../model/WikiModel";
 import EventBus, { WikiCreatedEventData } from "@/components/common/EventBus";
+import LocalStore from "@/components/common/LocalStore";
 
 export interface WikiCreateButtonProps {
   mode: WikiMode,
@@ -23,8 +23,6 @@ export default (props: WikiCreateButtonProps) => {
     }
 
     if (props.mode === "catalog" && !!props.catalogName) {
-      console.log("create catalog: ", props.catalogName);
-
       WikiApi.createByCatalogName(props.catalogName, (name) => {
         const eventData = {
           mode: props.mode,
@@ -32,9 +30,10 @@ export default (props: WikiCreateButtonProps) => {
           catalogName: props.catalogName,
         } as WikiCreatedEventData;
 
-        console.log(eventData);
-
         EventBus.dispatch("wiki.create", eventData);
+        LocalStore.appendCatalogExpandKeys(props.catalogName ? [props.catalogName] : []);
+
+        if (props.mode == "catalog") return;
 
         history.push(`/${props.mode}/${name}`);
       });

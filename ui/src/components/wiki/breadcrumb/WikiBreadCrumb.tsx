@@ -29,8 +29,8 @@ const WikiBreadcrumb = (props: WikiBreadcrumbProps) => {
 
   return (
     <Breadcrumb>
-      {items.map((item, index) => 
-        <Breadcrumb.Item>{item}</Breadcrumb.Item>)}
+      {items.map(item =>
+        <Breadcrumb.Item key={item}>{item}</Breadcrumb.Item>)}
     </Breadcrumb>
   );
 };

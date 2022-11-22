@@ -31,8 +31,6 @@ public class WikiDao {
 
     public static final String ROOT_PATH = "/";
 
-    public static final Integer ROOT_PATH_INDEX = 0;
-
     @Getter
     @Autowired
     @Qualifier("dslContext")
@@ -47,7 +45,7 @@ public class WikiDao {
         var catalogName = catalogNameOpt.get().trim();
 
         if (catalogName.equals(ROOT_PATH)) {
-            return create(ROOT_PATH, ROOT_PATH_INDEX);
+            return create(ROOT_PATH, maxPathIndexOfMyDescendant(ROOT_PATH));
         }
 
         var catalogOpt = one(catalogName);
@@ -209,10 +207,6 @@ public class WikiDao {
     private Integer maxPathIndexOfMyDescendant(String descendantPath) {
         if (descendantPath == null || descendantPath.isBlank()) {
             return 0;
-        }
-
-        if (descendantPath.equals(ROOT_PATH)) {
-            return ROOT_PATH_INDEX;
         }
 
         var maxPathIndexOpt = dsl

@@ -39,7 +39,6 @@ export const Catalog = (props: CatalogProps) => {
   const onWikiCreated = useCallback((data: any) => {
     const eventData = data as WikiCreatedEventData;
     if (!eventData) return;
-    LocalStore.setCatalogSelectedKeys([eventData.name]);
     setRefreshSignal(Time.refreshSignal());
   }, []);
 

@@ -16,8 +16,13 @@ const LocalStore = {
     return window.localStorage.getItem(key);
   },
 
-  setArray(key: string, data: any[]) {
+  setArray(key: string, data: any[]|null) {
     LocalStore.set(key, JSON.stringify(data));
+  },
+
+  appendArray(key: string, data: any[]) {
+    const localArr = LocalStore.getArray(key);
+    LocalStore.setArray(key, Arr.concat(localArr, data))
   },
 
   getArray(key: string) {
@@ -35,6 +40,10 @@ const LocalStore = {
 
   setCatalogExpandKeys(keys: string[]) {
     LocalStore.setArray(LocalStore.CATALOG_EXPANDED_KEYS, keys);
+  },
+
+  appendCatalogExpandKeys(keys: string[]) {
+    LocalStore.appendArray(this.CATALOG_EXPANDED_KEYS, keys);
   },
 
   getCatalogExpandKeys() {

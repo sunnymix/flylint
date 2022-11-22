@@ -1,4 +1,3 @@
-
 import { Tree } from "antd";
 import type { DataNode, TreeProps, EventDataNode } from "antd/es/tree";
 import TreeDataType from "antd/es/tree"
@@ -7,6 +6,7 @@ import { CaretDownFilled } from "@ant-design/icons";
 import { CatalogTree } from "../model/CatalogModel";
 import CatalogApi from "../api/CatalogApi";
 import LocalStore from "@/components/common/LocalStore";
+import WikiCreateButton from "@/components/wiki/button/WikiCreateButton";
 
 export interface CatalogTreeProps {
   refreshSignal?: string,
@@ -62,8 +62,13 @@ export default (props: CatalogTreeProps) => {
 
   return (
     <div className={props.className} style={{width: props.width || 400}}>
-      <div className="com_title">Catalog</div>
-      <div>
+      <div className="com_header">
+        <div className="com_title">Catalog</div>
+        <div className="com_ops">
+          <WikiCreateButton mode="catalog" className="com_op" catalogName="/" />
+        </div>
+      </div>
+      <div className="catalog_tree_body">
         <Tree
           switcherIcon={<CaretDownFilled />}
           expandedKeys={expandedKeys}

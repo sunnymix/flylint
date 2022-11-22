@@ -50,7 +50,7 @@ export default forwardRef((props: WikiListProps, ref) => {
       </div>
       <div className="com_body">
         <div>
-          <h2>Recent</h2>
+          <h4>Recent</h4>
           <div className="wiki_list">
             {wikis.map((wiki: BasicWiki, index: number) => (
               <div className="wiki_list_item" key={wiki.name} onClick={() => clickWiki(wiki)}>

@@ -2,7 +2,6 @@
 .catalog_tree {
   border-right: 1px solid #ddd;
   position: fixed;
-  left: 0;
   top: 60px;
   bottom: 10px;
 }
@@ -34,5 +33,4 @@
 
 .ant-tree .ant-tree-node-content-wrapper.ant-tree-node-selected {
   background-color: #1890ff30;
-  font-weight: 500;
 }

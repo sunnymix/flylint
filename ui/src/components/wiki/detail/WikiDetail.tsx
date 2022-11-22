@@ -19,6 +19,7 @@ import { WikiTitleUpdatedEventData } from "@/components/common/EventBus";
 
 // TODO:
 // - reload select wiki when ancestor name changed
+// - cache and reset selection between renders
 
 export interface WikiDetailProps {
   name: string,
@@ -33,7 +34,7 @@ export default (props: WikiDetailProps) => {
   const [updateTime, setUpdateTime] = useState<string>("");
 
   // Editor:
-  const [editor, setEditor] = useState(withReact(withInlines(withHistory(createEditor()))));
+  const [editor] = useState(withReact(withInlines(withHistory(createEditor()))));
 
   // Load:
   useEffect(() => {
@@ -69,17 +70,23 @@ export default (props: WikiDetailProps) => {
     setTitle(data.title);
   }, []);
 
+  const onEditorChange = useCallback((value: Descendant[]) => {
+    MyEditor.onContentChange(props.name, editor, value, () => setUpdateTime(Time.nowDatetime3()));
+  }, [props.name]);
+
   return (
     <div>
       <div className="com_bread">
-        <WikiBreadcrumb path={path} name={props.name} />
+        <div className="com_ops">
+          <WikiBreadcrumb className="com_op" path={path} name={props.name} />
+          <WikiCreateButton className="com_op" mode={props.mode} catalogName={props.name} />
+        </div>
       </div>
       <div className="com_header">
         <div className="com_title">{title}</div>
         <div className="com_ops">
-          <div className="com_op">{updateTime}</div>
+          <div className="com_op wiki_time">{updateTime}</div>
           <WikiMenu mode={props.mode} className="com_op" name={props.name} title={title} onTitleUpdated={onTitleUpdated} />
-          <WikiCreateButton mode={props.mode} className="com_op" catalogName={props.name} />
         </div>
       </div>
       <div className="com_body">
@@ -88,14 +95,14 @@ export default (props: WikiDetailProps) => {
             <Slate
               editor={editor}
               value={MyEditor.initialContent()}
-              onChange={(value: Descendant[]) =>
-                MyEditor.onContentChange(props.name, editor, value, () => setUpdateTime(Time.nowDatetime3()))}
+              onChange={onEditorChange}
               >
               <Editable
                 placeholder="Empty"
                 renderElement={MyElement.renderElement}
                 renderLeaf={MyElement.renderLeaf}
-                onKeyDown={(event) => MyEditor.onKeyDown(event, editor)} />
+                onKeyDown={(event) => MyEditor.onKeyDown(event, editor)}
+                />
             </Slate>
           </div>
         </div>

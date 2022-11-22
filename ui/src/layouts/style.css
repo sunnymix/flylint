@@ -28,13 +28,15 @@ html {
 
 .com_bread {
   margin: 0 10px 10px 10px;
-  padding: 0 0 10px 0;
   border-bottom: 1px solid #ddd;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
 }
 
 .com_header {
   margin: 0 10px 10px 10px;
-  padding: 0 0 10px 0;
+  min-height: 40px;
   border-bottom: 1px solid #ddd;
   display: flex;
   align-items: center;
@@ -99,6 +101,14 @@ h2 * {
 
 h3,
 h3 * {
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 0;
+  margin-bottom: 10px;
+}
+
+h4,
+h4 * {
   font-size: 1.1rem;
   font-weight: 700;
   padding: 0;

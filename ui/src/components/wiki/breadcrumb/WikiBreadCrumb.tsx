@@ -7,6 +7,7 @@ import { useCallback, useEffect, useState } from "react";
 export interface WikiBreadcrumbProps {
   path: string,
   name: string,
+  className?: string,
 };
 
 const WikiBreadcrumb = (props: WikiBreadcrumbProps) => {
@@ -28,10 +29,12 @@ const WikiBreadcrumb = (props: WikiBreadcrumbProps) => {
   }, [props.path, props.name])
 
   return (
-    <Breadcrumb>
-      {items.map(item =>
-        <Breadcrumb.Item key={item}>{item}</Breadcrumb.Item>)}
-    </Breadcrumb>
+    <div className={props.className}>
+      <Breadcrumb>
+        {items.map(item =>
+          <Breadcrumb.Item key={item}>{item}</Breadcrumb.Item>)}
+      </Breadcrumb>
+    </div>
   );
 };
 

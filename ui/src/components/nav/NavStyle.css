@@ -15,7 +15,6 @@
   padding: 0 10px;
   height: 30px;
   line-height: 30px;
-  font-weight: 500;
   color: #444;
   border-radius: 6px;
   margin-right: 10px;
@@ -26,6 +25,5 @@
 }
 
 .nav_item.active {
-  color: #1890ff;
   background-color: #1890ff30;
 }

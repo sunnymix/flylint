@@ -59,10 +59,10 @@ export default (props: WikiMenuProps) => {
   };
 
   const menuItems = [
-    {key: "update-wiki-name", label: <Button size="small" type="text" onClick={clickUpdateName}>Update Name</Button>},
-    {key: "update-wiki-title", label: <Button size="small" type="text" onClick={clickUpdateTitle}>Update Title</Button>},
+    {key: "update-wiki-name", label: <a type="text" onClick={clickUpdateName}>Update Name</a>},
+    {key: "update-wiki-title", label: <a type="text" onClick={clickUpdateTitle}>Update Title</a>},
     {key: "delete-wiki", label: <Popconfirm onConfirm={clickDelete} title="Sure to delete this wiki?" okText="Confirm" icon="">
-        <Button size="small" type="text">Delete</Button></Popconfirm>},
+        <a type="text">Delete</a></Popconfirm>},
   ];
 
   return (

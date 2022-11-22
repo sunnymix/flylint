@@ -56,7 +56,7 @@ public class WikiDao {
         }
 
         var catalog = catalogOpt.get();
-        var path = new DescendantPath(catalog.getPath(), catalog.getName()).value();
+        var path = DescendantPath.of(catalog.getPath(), catalog.getName()).value();
         var pathIndex = maxPathIndexOfMyDescendant(path) + 1;
         return create(path, pathIndex);
     }
@@ -148,10 +148,22 @@ public class WikiDao {
         return updateCount > 0;
     }
 
+    @Transactional
     public Boolean remove(String name) {
-        int deleteCount = dsl.deleteFrom(WIKI).where(WIKI.NAME.eq(name)).execute();
-        return deleteCount > 0;
-        // TODO remove descendant
+        var wikiOpt = one(name);
+        if (wikiOpt.isEmpty()) {
+            return true;
+        }
+
+        // Remove Self:
+        var wiki = wikiOpt.get();
+        dsl.deleteFrom(WIKI).where(WIKI.NAME.eq(name)).execute();
+
+        // Remove Descendant:
+        var descendantPath = DescendantPath.of(wiki.getPath(), wiki.getName()).value();
+        dsl.deleteFrom(WIKI).where(WIKI.PATH.startsWith(descendantPath)).execute();
+
+        return true;
     }
 
     public List<BasicWiki> query(Optional<String> keyword) {

@@ -49,13 +49,18 @@ export default (props: WikiMenuProps) => {
 
   const clickDelete = () => {
     WikiApi.remove(props.name, (success: boolean) => {
+      EventBus.dispatch("wiki.deleted", {
+        mode: props.mode,
+        name: props.name,
+      })
+      
       history.push(`/${props.mode}`);
     });
   };
 
   const menuItems = [
-    {key: "update-wiki-title", label: <Button size="small" type="text" onClick={clickUpdateTitle}>Update Title</Button>},
     {key: "update-wiki-name", label: <Button size="small" type="text" onClick={clickUpdateName}>Update Name</Button>},
+    {key: "update-wiki-title", label: <Button size="small" type="text" onClick={clickUpdateTitle}>Update Title</Button>},
     {key: "delete-wiki", label: <Popconfirm onConfirm={clickDelete} title="Sure to delete this wiki?" okText="Confirm" icon="">
         <Button size="small" type="text">Delete</Button></Popconfirm>},
   ];

@@ -42,6 +42,8 @@ public class CatalogTree {
             .sorted(Comparator.comparing(CatalogTree::getPathIndex))
             .toList();
 
+        // TODO: move broken catalog to root catalog
+
         return treeList;
     }
 

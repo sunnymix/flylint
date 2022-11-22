@@ -5,7 +5,7 @@ import WikiApi from "../api/WikiApi";
 import { history } from "umi";
 import { useCallback } from "react";
 import { WikiMode } from "../model/WikiModel";
-import EventBus, { WikiCreateEventData } from "@/components/common/EventBus";
+import EventBus, { WikiCreatedEventData } from "@/components/common/EventBus";
 
 export interface WikiCreateButtonProps {
   mode: WikiMode,
@@ -18,7 +18,7 @@ export default (props: WikiCreateButtonProps) => {
     if (props.mode === "wiki") {
       WikiApi.create((name: string) => {
         history.push(`/${props.mode}/${name}`);
-      });  
+      });
     }
 
     if (props.mode === "catalog" && !!props.catalogName) {
@@ -29,7 +29,7 @@ export default (props: WikiCreateButtonProps) => {
           mode: props.mode,
           name,
           catalogName: props.catalogName,
-        } as WikiCreateEventData);
+        } as WikiCreatedEventData);
 
         history.push(`/${props.mode}/${name}`);
       });

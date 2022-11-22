@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import WikiDetail from "../wiki/detail/WikiDetail";
 import { history } from "umi";
 import { SELECTED_KEYS } from "./tree/CatalogTree";
-import EventBus, { WikiCreateEventData, WikiNameUpdatedEventData } from "@/components/common/EventBus";
+import EventBus, { WikiCreatedEventData, WikiDeletedEventData, WikiNameUpdatedEventData } from "@/components/common/EventBus";
 import { EventType } from "@/components/common/EventBus";
 import Time from "@/components/common/Time";
 
@@ -32,7 +32,7 @@ export const Catalog = (props: CatalogProps) => {
   }, []);
 
   const onWikiCreated = useCallback((data: any) => {
-    const eventData = data as WikiCreateEventData;
+    const eventData = data as WikiCreatedEventData;
     if (!eventData) {
       return;
     }
@@ -41,14 +41,34 @@ export const Catalog = (props: CatalogProps) => {
     setRefreshSignal(Time.refreshSignal());
   }, []);
 
+  const onWikiDeleted = useCallback((data: any) => {
+    const eventData = data as WikiDeletedEventData;
+    if (!eventData) {
+      return;
+    }
+
+    const names = JSON.parse(localStorage.getItem(SELECTED_KEYS) || "[]");
+    if (!names || !names.length) {
+      return;
+    }
+    
+    if (!names.includes(eventData.name)) {
+      return;
+    }
+
+    localStorage.removeItem(SELECTED_KEYS);
+  }, []);
+
   useEffect(() => {
     EventBus.on("wiki.name.updated", onWikiNameUpdated);
     EventBus.on("wiki.create", onWikiCreated);
+    EventBus.on("wiki.deleted", onWikiDeleted);
     
     return () => {
       EventBus.remove("wiki.name.updated", onWikiNameUpdated);
       EventBus.remove("wiki.create", onWikiCreated);
-    }
+      EventBus.remove("wiki.deleted", onWikiDeleted);
+    };
   }, []);
 
   

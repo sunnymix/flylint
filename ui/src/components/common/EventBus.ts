@@ -4,6 +4,7 @@ export type EventType =
   | "wiki.name.updated"
   | "wiki.title.updated"
   | "wiki.create"
+  | "wiki.deleted"
 ;
 
 export interface WikiNameUpdatedEventData {
@@ -18,16 +19,23 @@ export interface WikiTitleUpdatedEventData {
   title: string,
 };
 
-export interface WikiCreateEventData {
+export interface WikiCreatedEventData {
   mode: WikiMode,
   name: string,
   catalogName: string,
 };
 
+export interface WikiDeletedEventData {
+  mode: WikiMode,
+  name: string,
+};
+
 export type EventData = 
   | WikiNameUpdatedEventData
   | WikiTitleUpdatedEventData
-  | WikiCreateEventData;
+  | WikiCreatedEventData
+  | WikiDeletedEventData
+;
 
 const EventBus = {
   on(eventType: EventType, cb: (data: any|EventData) => void) {

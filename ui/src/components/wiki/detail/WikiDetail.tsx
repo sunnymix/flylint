@@ -14,6 +14,7 @@ import MyEditor from "../editor/MyEditor";
 const { withInlines } = MyEditor;
 import { WikiMode } from "../model/WikiModel";
 import { history } from "umi";
+import LocalStore from "@/components/common/LocalStore";
 
 export interface WikiDetailProps {
   name: string,
@@ -21,6 +22,10 @@ export interface WikiDetailProps {
 };
 
 export default (props: WikiDetailProps) => {
+
+  // TODO:
+  // - path split
+  // - reload select wiki when ancestor name changed
 
   // Wiki property:
   const [path, setPath] = useState<string>("");
@@ -39,13 +44,15 @@ export default (props: WikiDetailProps) => {
 
     WikiApi.detail(props.name, (wiki: DetailWiki) => {
       if (!wiki) {
+        LocalStore.removeCatalogSelectedKeys([props.name]);
+
         history.push(`/${props.mode}`);
         return;
       }
 
-      setPath(wiki.path || "-");
-      setTitle(wiki.title || "-");
-      setUpdateTime(wiki.updated ? Time.formatDatetime(wiki.updated) : "-");
+      setPath(wiki.path || "");
+      setTitle(wiki.title || "");
+      setUpdateTime(wiki.updated ? Time.formatDatetime(wiki.updated) : "");
       MyEditor.setContent(editor, wiki.content || MyEditor.initialContentRaw());
     });
 
@@ -61,6 +68,7 @@ export default (props: WikiDetailProps) => {
   return (
     <div>
       <div className="com_bread">
+        {/* TODO: path split */}
         <div className="">{path}{props.name}</div>
       </div>
       <div className="com_header">

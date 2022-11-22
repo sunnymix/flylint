@@ -15,6 +15,10 @@ import { WikiMode } from "../model/WikiModel";
 import { history } from "umi";
 import LocalStore from "@/components/common/LocalStore";
 import WikiBreadcrumb from "../breadcrumb/WikiBreadCrumb";
+import { WikiTitleUpdatedEventData } from "@/components/common/EventBus";
+
+// TODO:
+// - reload select wiki when ancestor name changed
 
 export interface WikiDetailProps {
   name: string,
@@ -22,10 +26,6 @@ export interface WikiDetailProps {
 };
 
 export default (props: WikiDetailProps) => {
-
-  // TODO:
-  // - path split
-  // - reload select wiki when ancestor name changed
 
   // Wiki property:
   const [path, setPath] = useState<string>("");
@@ -65,6 +65,10 @@ export default (props: WikiDetailProps) => {
     };
   }, []);
 
+  const onTitleUpdated = useCallback((data: WikiTitleUpdatedEventData) => {
+    setTitle(data.title);
+  }, []);
+
   return (
     <div>
       <div className="com_bread">
@@ -74,7 +78,7 @@ export default (props: WikiDetailProps) => {
         <div className="com_title">{title}</div>
         <div className="com_ops">
           <div className="com_op">{updateTime}</div>
-          <WikiMenu mode={props.mode} className="com_op" name={props.name} title={title} />
+          <WikiMenu mode={props.mode} className="com_op" name={props.name} title={title} onTitleUpdated={onTitleUpdated} />
           <WikiCreateButton mode={props.mode} className="com_op" catalogName={props.name} />
         </div>
       </div>

@@ -23,7 +23,7 @@
   border-radius: 6px;
   line-height: 30px;
   min-height: 30px;
-  padding: 0 10px;
+  padding: 0 4px;
 }
 
 .ant-tree .ant-tree-node-content-wrapper.ant-tree-node-selected {

@@ -4,7 +4,7 @@ import WikiApi from "../api/WikiApi";
 import { history } from "umi";
 import { EllipsisOutlined } from "@ant-design/icons";
 import { WikiMode } from "../model/WikiModel";
-import EventBus, { WikiNameUpdatedEventData } from "@/components/common/EventBus";
+import EventBus, { WikiNameUpdatedEventData, WikiTitleUpdatedEventData } from "@/components/common/EventBus";
 import { EventType } from "@/components/common/EventBus";
 
 export interface WikiMenuProps {
@@ -12,6 +12,8 @@ export interface WikiMenuProps {
   name: string,
   title: string,
   className?: string,
+  onNameUpdated?: (data: WikiNameUpdatedEventData) => void,
+  onTitleUpdated?: (data: WikiTitleUpdatedEventData) => void,
 };
 
 export default (props: WikiMenuProps) => {
@@ -25,11 +27,16 @@ export default (props: WikiMenuProps) => {
       if (!success || !updatedName) {
         return;
       }
-      EventBus.dispatch("wiki.name.updated", {
+
+      const eventData = {
         mode: props.mode,
         name: updatedName,
         oldName: props.name,
-      } as WikiNameUpdatedEventData);
+      } as WikiNameUpdatedEventData;
+
+      EventBus.dispatch("wiki.name.updated", eventData);
+      props.onNameUpdated?.call(null, eventData);
+      
       history.push(`/${props.mode}/${updatedName}`);
     });
   };
@@ -39,11 +46,20 @@ export default (props: WikiMenuProps) => {
     if (!newTitle || newTitle.trim().length < 0) {
       return;
     }
+
     WikiApi.updateTitle(props.name, newTitle, (success: boolean, updatedTitle: string) => {
       if (!success || !updatedTitle) {
         return;
       }
-      location.reload();
+      
+      const eventData = {
+        mode: props.mode,
+        name: props.name,
+        title: updatedTitle,
+      } as WikiTitleUpdatedEventData;
+
+      EventBus.dispatch("wiki.title.updated", eventData);
+      props.onTitleUpdated?.call(null, eventData);
     });
   };
 

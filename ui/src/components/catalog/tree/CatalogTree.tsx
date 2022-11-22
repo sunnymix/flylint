@@ -65,7 +65,6 @@ export default (props: CatalogTreeProps) => {
       <div className="com_title">Catalog</div>
       <div>
         <Tree
-          showLine
           switcherIcon={<CaretDownFilled />}
           expandedKeys={expandedKeys}
           selectedKeys={selectedKeys}

@@ -15,8 +15,8 @@ import { WikiMode } from "../model/WikiModel";
 import { history } from "umi";
 import LocalStore from "@/components/common/LocalStore";
 import WikiBreadcrumb from "../breadcrumb/WikiBreadCrumb";
-import { WikiTitleUpdatedEventData } from "@/components/common/EventBus";
-import { onUpdateTitle } from "../menu/WikiMenu";
+import { WikiNameUpdatedEventData, WikiTitleUpdatedEventData } from "@/components/common/EventBus";
+import { onUpdateName, onUpdateTitle } from "../menu/WikiMenu";
 
 // TODO:
 // - cache and reset selection between renders
@@ -76,6 +76,12 @@ export default (props: WikiDetailProps) => {
     MyEditor.onContentChange(props.name, editor, value, () => setUpdateTime(Time.nowDatetime3()));
   }, [props.name]);
 
+  const onNameClick = useCallback(() => {
+    onUpdateName(props.mode, props.name, (data: WikiNameUpdatedEventData) => {
+      history.push(`/${props.mode}/${data.name}`);
+    });
+  }, [props.name]);
+
   const onTitleClick = useCallback(() => {
     onUpdateTitle(props.mode, props.name, title, (data: WikiTitleUpdatedEventData) => {
       setTitle(data.title);
@@ -86,7 +92,10 @@ export default (props: WikiDetailProps) => {
     <div>
       <div className="com_bread">
         <div className="com_ops">
-          <WikiBreadcrumb className="com_op" path={path} name={props.name} />
+          {/* TODO: add click event to breadcrumb */}
+          <div className="com_op" onClick={onNameClick}>
+            <WikiBreadcrumb path={path} name={props.name} />
+          </div>
           <WikiCreateButton className="com_op" mode={props.mode} catalogName={props.name} />
         </div>
       </div>

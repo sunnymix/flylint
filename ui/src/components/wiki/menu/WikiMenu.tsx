@@ -2,21 +2,35 @@
 import { Button, Dropdown, Popconfirm } from "antd";
 import WikiApi from "../api/WikiApi";
 import { history } from "umi";
-import { MenuOutlined } from "@ant-design/icons";
+import { EllipsisOutlined } from "@ant-design/icons";
 import { WikiMode } from "../model/WikiModel";
 import EventBus, { WikiNameUpdatedEventData, WikiTitleUpdatedEventData } from "@/components/common/EventBus";
 import { EventType } from "@/components/common/EventBus";
 
+export const onUpdateName = (mode: WikiMode, name: string, cb?: (data: WikiNameUpdatedEventData) => void) => {
+  const newName = prompt("Update Name:", name);
+    if (!newName || newName.trim().length < 0) return;
+
+    WikiApi.updateName(name, newName, (success: boolean, updatedName: string) => {
+      if (!success || !updatedName) return;
+
+      const eventData = {
+        mode,
+        name: updatedName,
+        oldName: name,
+      } as WikiNameUpdatedEventData;
+
+      EventBus.dispatch("wiki.name.updated", eventData);
+      cb?.call(null, eventData);
+    });
+};
+
 export const onUpdateTitle = (mode: WikiMode, name: string, title: string, cb?: (data: WikiTitleUpdatedEventData) => void) => {
   const newTitle = prompt("Update Title:", title);
-  if (!newTitle || newTitle.trim().length < 0) {
-    return;
-  }
+  if (!newTitle || newTitle.trim().length < 0) return;
 
   WikiApi.updateTitle(name, newTitle, (success: boolean, updatedTitle: string) => {
-    if (!success || !updatedTitle) {
-      return;
-    }
+    if (!success || !updatedTitle) return;
     
     const eventData = {
       mode,
@@ -41,25 +55,9 @@ export interface WikiMenuProps {
 export default (props: WikiMenuProps) => {
 
   const clickUpdateName = () => {
-    const newName = prompt("Update name of this wiki:", props.name);
-    if (!newName || newName.trim().length < 0) {
-      return;
-    }
-    WikiApi.updateName(props.name, newName, (success: boolean, updatedName: string) => {
-      if (!success || !updatedName) {
-        return;
-      }
-
-      const eventData = {
-        mode: props.mode,
-        name: updatedName,
-        oldName: props.name,
-      } as WikiNameUpdatedEventData;
-
-      EventBus.dispatch("wiki.name.updated", eventData);
-      props.onNameUpdated?.call(null, eventData);
-      
-      history.push(`/${props.mode}/${updatedName}`);
+    onUpdateName(props.mode, props.name, (data: WikiNameUpdatedEventData) => {
+      props.onNameUpdated?.call(null, data);
+      history.push(`/${props.mode}/${data.name}`);
     });
   };
 
@@ -89,7 +87,7 @@ export default (props: WikiMenuProps) => {
 
   return (
     <Dropdown menu={{items: menuItems}} trigger={['click']} className={props.className}>
-      <Button size="small" type="text"><MenuOutlined /></Button>
+      <Button size="small" type="text"><EllipsisOutlined /></Button>
     </Dropdown>
   );
 };

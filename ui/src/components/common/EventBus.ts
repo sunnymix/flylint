@@ -1,3 +1,4 @@
+import { MovePlace } from "../catalog/model/CatalogModel";
 import { WikiMode } from "../wiki/model/WikiModel";
 
 export type EventType = 
@@ -5,6 +6,7 @@ export type EventType =
   | "wiki.title.updated"
   | "wiki.create"
   | "wiki.deleted"
+  | "wiki.moved"
 ;
 
 export interface WikiNameUpdatedEventData {
@@ -30,11 +32,19 @@ export interface WikiDeletedEventData {
   name: string,
 };
 
+export interface WikiMovedEventData {
+  mode: WikiMode,
+  name: string,
+  toName: string,
+  place: MovePlace,
+};
+
 export type EventData = 
   | WikiNameUpdatedEventData
   | WikiTitleUpdatedEventData
   | WikiCreatedEventData
   | WikiDeletedEventData
+  | WikiMovedEventData
 ;
 
 const EventBus = {

@@ -27,7 +27,7 @@ public class WikiName {
         if (name == null || name.isBlank()) {
             return Id.newId();
         }
-        return fixLength(name);
+        return fixLength(name).toLowerCase();
     }
 
     private String fixLength(String name) {

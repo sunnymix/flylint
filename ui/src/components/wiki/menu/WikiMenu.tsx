@@ -2,7 +2,7 @@
 import { Button, Dropdown, Popconfirm } from "antd";
 import WikiApi from "../api/WikiApi";
 import { history } from "umi";
-import { EllipsisOutlined } from "@ant-design/icons";
+import { MenuOutlined } from "@ant-design/icons";
 import { WikiMode } from "../model/WikiModel";
 import EventBus, { WikiNameUpdatedEventData, WikiTitleUpdatedEventData } from "@/components/common/EventBus";
 import { EventType } from "@/components/common/EventBus";
@@ -83,7 +83,7 @@ export default (props: WikiMenuProps) => {
 
   return (
     <Dropdown menu={{items: menuItems}} trigger={['click']} className={props.className}>
-      <Button size="small" type="text"><EllipsisOutlined /></Button>
+      <Button size="small" type="text"><MenuOutlined /></Button>
     </Dropdown>
   );
 };

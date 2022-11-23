@@ -7,6 +7,7 @@ import { CatalogTree } from "../model/CatalogModel";
 import CatalogApi from "../api/CatalogApi";
 import LocalStore from "@/components/common/LocalStore";
 import WikiCreateButton from "@/components/wiki/button/WikiCreateButton";
+import TreeDragDrop from "@/components/common/TreeDragDrop";
 
 export interface CatalogTreeProps {
   refreshSignal?: string,
@@ -76,6 +77,7 @@ export default (props: CatalogTreeProps) => {
           onExpand={onExpand}
           onSelect={onSelect}
           treeData={trees}
+          onDrop={TreeDragDrop.onDrop}
           blockNode
           draggable
         />

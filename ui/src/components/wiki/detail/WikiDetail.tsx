@@ -18,8 +18,9 @@ import WikiBreadcrumb from "../breadcrumb/WikiBreadCrumb";
 import { WikiTitleUpdatedEventData } from "@/components/common/EventBus";
 
 // TODO:
-// - reload select wiki when ancestor name changed
 // - cache and reset selection between renders
+// - reload select wiki when ancestor name changed
+// - table of content
 
 export interface WikiDetailProps {
   name: string,
@@ -85,8 +86,8 @@ export default (props: WikiDetailProps) => {
       <div className="com_header">
         <div className="com_title">{title}</div>
         <div className="com_ops">
-          <div className="com_op wiki_time">{updateTime}</div>
           <WikiMenu mode={props.mode} className="com_op" name={props.name} title={title} onTitleUpdated={onTitleUpdated} />
+          <div className="com_op wiki_time">{updateTime}</div>
         </div>
       </div>
       <div className="com_body">

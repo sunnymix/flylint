@@ -12,7 +12,7 @@ public class DescendantPath {
     }
 
     public DescendantPath(String path, String name) {
-        value = path.trim() + name.trim() + "/";
+        value = (path.trim() + name.trim() + "/").toLowerCase();
     }
 
     public String value() {

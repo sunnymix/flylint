@@ -6,3 +6,5 @@ export interface CatalogTree {
   title: string,
   children: CatalogTree[],
 };
+
+export type MovePlace = "unknown" | "child" | "next" | "previous";

@@ -16,6 +16,7 @@ import { history } from "umi";
 import LocalStore from "@/components/common/LocalStore";
 import WikiBreadcrumb from "../breadcrumb/WikiBreadCrumb";
 import { WikiTitleUpdatedEventData } from "@/components/common/EventBus";
+import { onUpdateTitle } from "../menu/WikiMenu";
 
 // TODO:
 // - cache and reset selection between renders
@@ -75,6 +76,12 @@ export default (props: WikiDetailProps) => {
     MyEditor.onContentChange(props.name, editor, value, () => setUpdateTime(Time.nowDatetime3()));
   }, [props.name]);
 
+  const onTitleClick = useCallback(() => {
+    onUpdateTitle(props.mode, props.name, title, (data: WikiTitleUpdatedEventData) => {
+      setTitle(data.title);
+    });
+  }, [props.name, title]);
+
   return (
     <div>
       <div className="com_bread">
@@ -84,7 +91,7 @@ export default (props: WikiDetailProps) => {
         </div>
       </div>
       <div className="com_header">
-        <div className="com_title">{title}</div>
+        <div className="com_title" onClick={onTitleClick}>{title}</div>
         <div className="com_ops">
           <WikiMenu mode={props.mode} className="com_op" name={props.name} title={title} onTitleUpdated={onTitleUpdated} />
           <div className="com_op wiki_time">{updateTime}</div>

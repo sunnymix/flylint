@@ -7,6 +7,28 @@ import { WikiMode } from "../model/WikiModel";
 import EventBus, { WikiNameUpdatedEventData, WikiTitleUpdatedEventData } from "@/components/common/EventBus";
 import { EventType } from "@/components/common/EventBus";
 
+export const onUpdateTitle = (mode: WikiMode, name: string, title: string, cb?: (data: WikiTitleUpdatedEventData) => void) => {
+  const newTitle = prompt("Update Title:", title);
+  if (!newTitle || newTitle.trim().length < 0) {
+    return;
+  }
+
+  WikiApi.updateTitle(name, newTitle, (success: boolean, updatedTitle: string) => {
+    if (!success || !updatedTitle) {
+      return;
+    }
+    
+    const eventData = {
+      mode,
+      name,
+      title: updatedTitle,
+    } as WikiTitleUpdatedEventData;
+
+    EventBus.dispatch("wiki.title.updated", eventData);
+    cb?.call(null, eventData);
+  });
+}
+
 export interface WikiMenuProps {
   mode: WikiMode,
   name: string,
@@ -42,24 +64,8 @@ export default (props: WikiMenuProps) => {
   };
 
   const clickUpdateTitle = () => {
-    const newTitle = prompt("Update title of this wiki:", props.title);
-    if (!newTitle || newTitle.trim().length < 0) {
-      return;
-    }
-
-    WikiApi.updateTitle(props.name, newTitle, (success: boolean, updatedTitle: string) => {
-      if (!success || !updatedTitle) {
-        return;
-      }
-      
-      const eventData = {
-        mode: props.mode,
-        name: props.name,
-        title: updatedTitle,
-      } as WikiTitleUpdatedEventData;
-
-      EventBus.dispatch("wiki.title.updated", eventData);
-      props.onTitleUpdated?.call(null, eventData);
+    onUpdateTitle(props.mode, props.name, props.title, (data: WikiTitleUpdatedEventData) => {
+      props.onTitleUpdated?.call(null, data);
     });
   };
 

@@ -3,14 +3,14 @@ import {
   createEditor, Descendant, Editor, Transforms, Text, BaseEditor, 
   Element as SlateElement, Range, Path, Point, Location } from "slate";
 import { Slate, Editable, withReact, ReactEditor, useSelected } from "slate-react";
-import { LinkData } from "./MyElement";
+import { LinkData } from "./WikiElement";
 import isUrl from "is-url";
 import { isKeyHotkey } from "is-hotkey";
 import WikiApi from "../api/WikiApi";
 
 const initialEmptyContent = JSON.stringify([{"type":"paragraph","children":[{"text":""}]}]);
 
-const MyEditor = {
+const WikiEditor = {
 
   isBoldMarkActive(editor: BaseEditor & ReactEditor) {
     const [isMatch] = Editor.nodes(editor, {
@@ -21,7 +21,7 @@ const MyEditor = {
   },
 
   toggleBoldMark(editor: BaseEditor & ReactEditor) {
-    const isActive = MyEditor.isBoldMarkActive(editor);
+    const isActive = WikiEditor.isBoldMarkActive(editor);
     Transforms.setNodes(
       editor,
       {bold: isActive ? null : true, children: []},
@@ -37,7 +37,7 @@ const MyEditor = {
   },
 
   toggleCodeBlock(editor: BaseEditor & ReactEditor) {
-    const isActive = MyEditor.isCodeBlockActive(editor);
+    const isActive = WikiEditor.isCodeBlockActive(editor);
     Transforms.setNodes(
       editor,
       {type: isActive ? null : "code-block", children: []},
@@ -53,7 +53,7 @@ const MyEditor = {
   },
 
   toggleHeadingOneBlock(editor: any) {
-    const isActive = MyEditor.isHeadingOneBlockActive(editor);
+    const isActive = WikiEditor.isHeadingOneBlockActive(editor);
     Transforms.setNodes(
       editor,
       {type: isActive ? null : "heading-one", children: []},
@@ -69,7 +69,7 @@ const MyEditor = {
   },
 
   toggleHeadingTwoBlock(editor: any) {
-    const isActive = MyEditor.isHeadingTwoBlockActive(editor);
+    const isActive = WikiEditor.isHeadingTwoBlockActive(editor);
     Transforms.setNodes(
       editor,
       {type: isActive ? null : "heading-two", children: []},
@@ -85,7 +85,7 @@ const MyEditor = {
   },
 
   toggleHeadingThreeBlock(editor: any) {
-    const isActive = MyEditor.isHeadingThreeBlockActive(editor);
+    const isActive = WikiEditor.isHeadingThreeBlockActive(editor);
     Transforms.setNodes(
       editor,
       {type: isActive ? null : "heading-three", children: []},
@@ -105,8 +105,8 @@ const MyEditor = {
   },
 
   wrapLink(editor: any, url: string) {
-    if (MyEditor.isLinkActive(editor)) {
-      MyEditor.unwrapLink(editor);
+    if (WikiEditor.isLinkActive(editor)) {
+      WikiEditor.unwrapLink(editor);
     }
     
     const { selection } = editor;
@@ -127,13 +127,13 @@ const MyEditor = {
 
   unwrapLink(editor: any) {
     Transforms.unwrapNodes(editor, {
-      match: (node: any) => node.type === 'link' && MyEditor.isElement(editor, node),
+      match: (node: any) => node.type === 'link' && WikiEditor.isElement(editor, node),
     });
   },
 
   insertLink(editor: any, url: string) {
     if (editor.selection) {
-      MyEditor.wrapLink(editor, url);
+      WikiEditor.wrapLink(editor, url);
     }
   },
 
@@ -144,7 +144,7 @@ const MyEditor = {
   
     editor.insertText = (text: any) => {
       if (text && isUrl(text)) {
-        MyEditor.wrapLink(editor, text);
+        WikiEditor.wrapLink(editor, text);
       } else {
         insertText(text);
       }
@@ -154,7 +154,7 @@ const MyEditor = {
       const text = data.getData('text/plain');
   
       if (text && isUrl(text)) {
-        MyEditor.wrapLink(editor, text)
+        WikiEditor.wrapLink(editor, text)
       } else {
         insertData(data)
       }
@@ -184,31 +184,31 @@ const MyEditor = {
     switch (event.key) {
       case "1": {
         event.preventDefault();
-        MyEditor.toggleHeadingOneBlock(editor);
+        WikiEditor.toggleHeadingOneBlock(editor);
         break;
       }
 
       case "2": {
         event.preventDefault();
-        MyEditor.toggleHeadingTwoBlock(editor);
+        WikiEditor.toggleHeadingTwoBlock(editor);
         break;
       }
 
       case "3": {
         event.preventDefault();
-        MyEditor.toggleHeadingThreeBlock(editor);
+        WikiEditor.toggleHeadingThreeBlock(editor);
         break;
       }
 
       case "`": {
         event.preventDefault();
-        MyEditor.toggleCodeBlock(editor);
+        WikiEditor.toggleCodeBlock(editor);
         break;
       }
 
       case "b": {
         event.preventDefault();
-        MyEditor.toggleBoldMark(editor);
+        WikiEditor.toggleBoldMark(editor);
         break;
       }
 
@@ -218,7 +218,7 @@ const MyEditor = {
         if (!url) {
           return;
         }
-        MyEditor.insertLink(editor, url);
+        WikiEditor.insertLink(editor, url);
         break;
       }
 
@@ -234,14 +234,25 @@ const MyEditor = {
     }
   },
 
+  onPaste(event: any, editor: any) {
+    const files = event.clipboardData.files;
+    if (files && files.length > 0) {
+      const file = files[0];
+      if (file && file.type.indexOf('image/') >= 0) {
+        event.preventDefault();
+        console.log("paste image");
+      }
+    }
+  },
+
   parseContent(content: string) {
     if (!content) {
-      return MyEditor.initialContent();
+      return WikiEditor.initialContent();
     }
     if (content.trim().length === 0) {
-      return MyEditor.initialContent();
+      return WikiEditor.initialContent();
     }
-    var json = MyEditor.initialContent();
+    var json = WikiEditor.initialContent();
     try {
       json = JSON.parse(content);
     } catch (error) {
@@ -255,7 +266,7 @@ const MyEditor = {
   },
 
   initialContentRaw() {
-    return JSON.stringify(MyEditor.initialContent());
+    return JSON.stringify(WikiEditor.initialContent());
   },
 
   onContentChange(name: string, editor: any, value: Descendant[], cb: () => void) {
@@ -276,7 +287,7 @@ const MyEditor = {
   },
 
   setContent(editor: any, content: string) {
-    editor.children = MyEditor.parseContent(content);
+    editor.children = WikiEditor.parseContent(content);
     Transforms.collapse(editor, {
       edge: "start"
     });
@@ -284,4 +295,4 @@ const MyEditor = {
 
 };
 
-export default MyEditor;
+export default WikiEditor;

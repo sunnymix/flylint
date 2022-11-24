@@ -8,9 +8,9 @@ import { Slate, Editable, withReact, ReactEditor } from "slate-react";
 import { withHistory } from "slate-history";
 import WikiMenu from "../menu/WikiMenu";
 import WikiCreateButton from "../button/WikiCreateButton";
-import MyElement from "../editor/MyElement";
-import MyEditor from "../editor/MyEditor";
-const { withInlines } = MyEditor;
+import MyElement from "../editor/WikiElement";
+import WikiEditor from "../editor/WikiEditor";
+const { withInlines } = WikiEditor;
 import { WikiMode } from "../model/WikiModel";
 import { history } from "umi";
 import LocalStore from "@/components/common/LocalStore";
@@ -19,7 +19,6 @@ import { WikiNameUpdatedEventData, WikiTitleUpdatedEventData } from "@/component
 import { onUpdateName, onUpdateTitle } from "../menu/WikiMenu";
 
 // TODO:
-// - cache and reset selection between renders
 // - reload select wiki when ancestor name changed
 // - table of content
 
@@ -62,7 +61,7 @@ export default (props: WikiDetailProps) => {
       setPath(wiki.path || "");
       setTitle(wiki.title || "");
       setUpdateTime(wiki.updated ? Time.formatDatetime(wiki.updated) : "");
-      MyEditor.setContent(editor, wiki.content || MyEditor.initialContentRaw());
+      WikiEditor.setContent(editor, wiki.content || WikiEditor.initialContentRaw());
     });
 
     return () => {
@@ -76,7 +75,7 @@ export default (props: WikiDetailProps) => {
   }, []);
 
   const onEditorChange = useCallback((value: Descendant[]) => {
-    MyEditor.onContentChange(props.name, editor, value, () => setUpdateTime(Time.nowDatetime3()));
+    WikiEditor.onContentChange(props.name, editor, value, () => setUpdateTime(Time.nowDatetime3()));
   }, [props.name]);
 
   const onNameClick = useCallback(() => {
@@ -114,14 +113,15 @@ export default (props: WikiDetailProps) => {
           <div className="wiki_content_editor">
             <Slate
               editor={editor}
-              value={MyEditor.initialContent()}
+              value={WikiEditor.initialContent()}
               onChange={onEditorChange}
               >
               <Editable
                 placeholder="Empty"
                 renderElement={MyElement.renderElement}
                 renderLeaf={MyElement.renderLeaf}
-                onKeyDown={(event) => MyEditor.onKeyDown(event, editor)}
+                onKeyDown={(event) => WikiEditor.onKeyDown(event, editor)}
+                onPaste={(event) => WikiEditor.onPaste(event, editor)}
                 />
             </Slate>
           </div>

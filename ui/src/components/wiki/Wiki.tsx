@@ -1,6 +1,6 @@
-
-import WikiList from "./list/WikiList";
-import WikiDetail from "./detail/WikiDetail";
+import WikiList from "./WikiList";
+import WikiDetail from "./WikiDetail";
+import "./WikiStyle.css";
 
 export interface WikiProps {
   name?: string

@@ -1,7 +1,7 @@
 import CatalogTree from "./tree/CatalogTree";
 import "./CatalogStyle.css";
 import { useCallback, useEffect, useState } from "react";
-import WikiDetail from "../wiki/detail/WikiDetail";
+import WikiDetail from "../wiki/WikiDetail";
 import { history } from "umi";
 import EventBus, { WikiCreatedEventData, WikiDeletedEventData, WikiMovedEventData, WikiNameUpdatedEventData, WikiTitleUpdatedEventData } from "@/components/common/EventBus";
 import { EventType } from "@/components/common/EventBus";

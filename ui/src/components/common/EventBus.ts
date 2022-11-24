@@ -1,5 +1,5 @@
 import { MovePlace } from "../catalog/model/CatalogModel";
-import { WikiMode } from "../wiki/model/WikiModel";
+import { WikiMode } from "../wiki/WikiModel";
 
 export type EventType = 
   | "wiki.name.updated"

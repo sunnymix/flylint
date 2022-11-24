@@ -1,9 +1,9 @@
 
 import { Button, Dropdown, Popconfirm } from "antd";
-import WikiApi from "../api/WikiApi";
+import WikiApi from "./WikiApi";
 import { history } from "umi";
 import { EllipsisOutlined } from "@ant-design/icons";
-import { WikiMode } from "../model/WikiModel";
+import { WikiMode } from "./WikiModel";
 import EventBus, { WikiNameUpdatedEventData, WikiTitleUpdatedEventData } from "@/components/common/EventBus";
 import { EventType } from "@/components/common/EventBus";
 

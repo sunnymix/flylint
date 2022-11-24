@@ -1,7 +1,7 @@
 
 import axios from "axios";
 import Constant from "@/components/common/Constant";
-import { BasicWiki, DetailWiki } from "../model/WikiModel";
+import { BasicWiki, DetailWiki } from "./WikiModel";
 
 const create = (cb: (name: string) => void) => {
   axios.post(`${Constant.API_BASE}/wiki/create`, {})

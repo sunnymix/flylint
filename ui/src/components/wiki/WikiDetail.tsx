@@ -1,22 +1,21 @@
 import { Children, forwardRef, useCallback, useEffect, useState, useMemo, useRef } from "react";
-import WikiApi from "../api/WikiApi";
-import { DetailWiki } from "../model/WikiModel";
+import WikiApi from "./WikiApi";
+import { DetailWiki } from "./WikiModel";
 import Time from "@/components/common/Time";
-import "./WikiDetailStyle.css";
 import { createEditor, Descendant, Transforms } from "slate";
 import { Slate, Editable, withReact, ReactEditor } from "slate-react";
 import { withHistory } from "slate-history";
-import WikiMenu from "../menu/WikiMenu";
-import WikiCreateButton from "../button/WikiCreateButton";
-import MyElement from "../editor/WikiElement";
-import WikiEditor from "../editor/WikiEditor";
+import WikiMenu from "./WikiMenu";
+import WikiCreateButton from "./WikiCreateButton";
+import MyElement from "./WikiElement";
+import WikiEditor from "./WikiEditor";
 const { withInlines } = WikiEditor;
-import { WikiMode } from "../model/WikiModel";
+import { WikiMode } from "./WikiModel";
 import { history } from "umi";
 import LocalStore from "@/components/common/LocalStore";
-import WikiBreadcrumb from "../breadcrumb/WikiBreadCrumb";
+import WikiBreadcrumb from "./WikiBreadCrumb";
 import { WikiNameUpdatedEventData, WikiTitleUpdatedEventData } from "@/components/common/EventBus";
-import { onUpdateName, onUpdateTitle } from "../menu/WikiMenu";
+import { onUpdateName, onUpdateTitle } from "./WikiMenu";
 
 // TODO:
 // - reload select wiki when ancestor name changed

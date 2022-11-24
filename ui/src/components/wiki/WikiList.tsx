@@ -1,13 +1,12 @@
 import { forwardRef, useEffect, useState } from "react";
-import WikiApi from "../api/WikiApi";
-import { BasicWiki } from "../model/WikiModel";
+import WikiApi from "./WikiApi";
+import { BasicWiki } from "./WikiModel";
 import Time from "@/components/common/Time";
-import "./WikiListStyle.css";
 import { history } from "umi";
 import { Button, Dropdown, MenuProps } from "antd";
 import { EllipsisOutlined } from "@ant-design/icons";
 import wiki from "@/pages/wiki";
-import WikiCreateButton from "../button/WikiCreateButton";
+import WikiCreateButton from "./WikiCreateButton";
 
 /**
  * WkikList 组件属性

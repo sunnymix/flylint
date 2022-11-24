@@ -1,9 +1,9 @@
 import { Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import WikiApi from "../api/WikiApi";
+import WikiApi from "./WikiApi";
 import { history } from "umi";
 import { useCallback } from "react";
-import { WikiMode } from "../model/WikiModel";
+import { WikiMode } from "./WikiModel";
 import EventBus, { WikiCreatedEventData } from "@/components/common/EventBus";
 import LocalStore from "@/components/common/LocalStore";
 

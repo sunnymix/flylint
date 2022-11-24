@@ -6,7 +6,7 @@ import { Slate, Editable, withReact, ReactEditor, useSelected } from "slate-reac
 import { LinkData } from "./WikiElement";
 import isUrl from "is-url";
 import { isKeyHotkey } from "is-hotkey";
-import WikiApi from "../api/WikiApi";
+import WikiApi from "./WikiApi";
 
 const initialEmptyContent = JSON.stringify([{"type":"paragraph","children":[{"text":""}]}]);
 

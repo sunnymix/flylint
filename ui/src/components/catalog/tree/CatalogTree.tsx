@@ -6,7 +6,7 @@ import { CaretDownFilled, DownOutlined } from "@ant-design/icons";
 import { CatalogTree } from "../model/CatalogModel";
 import CatalogApi from "../api/CatalogApi";
 import LocalStore from "@/components/common/LocalStore";
-import WikiCreateButton from "@/components/wiki/button/WikiCreateButton";
+import WikiCreateButton from "@/components/wiki/WikiCreateButton";
 import TreeDragDrop from "@/components/common/TreeDragDrop";
 
 // TODO:

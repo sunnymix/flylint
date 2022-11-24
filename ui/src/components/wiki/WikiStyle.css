@@ -1,4 +1,12 @@
 
+
+.wiki_time {
+  color: #00000073;
+}
+
+
+/* Wiki List: */
+
 .wiki_list_item {
   display: flex;
   justify-content: space-between;
@@ -15,5 +23,6 @@
   background-color: #eee;
   cursor: pointer;
 }
+
 
 

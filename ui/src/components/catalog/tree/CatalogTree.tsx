@@ -1,13 +1,17 @@
 import { Tree } from "antd";
 import type { DataNode, TreeProps, EventDataNode } from "antd/es/tree";
 import TreeDataType from "antd/es/tree"
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { CaretDownFilled, DownOutlined } from "@ant-design/icons";
 import { CatalogTree } from "../model/CatalogModel";
 import CatalogApi from "../api/CatalogApi";
 import LocalStore from "@/components/common/LocalStore";
 import WikiCreateButton from "@/components/wiki/button/WikiCreateButton";
 import TreeDragDrop from "@/components/common/TreeDragDrop";
+import { useElementSize } from "usehooks-ts";
+
+// TODO:
+// - overflow
 
 export interface CatalogTreeProps {
   refreshSignal?: string,
@@ -26,6 +30,36 @@ export default (props: CatalogTreeProps) => {
 
   const [selectedKeys, setSelectedKeys] = useState<TreeNodeKey[]>([]);
 
+  const rootRef = useRef<HTMLDivElement|null>(null)
+
+  const [bodyHeight, setBodyHeight] = useState<number|undefined>();
+
+  const getRootRefSize = useCallback(() => {
+    if (!rootRef || !rootRef.current) return;
+    return {
+      width: rootRef.current.offsetWidth - 10,
+      height: rootRef.current.offsetHeight - 50,
+    };
+  }, []);
+
+  const refreshBodySize = useCallback(() => {
+    setTimeout(() => {
+      const size = getRootRefSize();
+      setBodyHeight(size?.height);
+    }, 10);
+  }, []);
+
+  const onWindowResize = useCallback((event: UIEvent) => {
+    refreshBodySize();
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("resize", onWindowResize);
+    return () => {
+      window.removeEventListener("resize", onWindowResize);
+    };
+  }, []);
+
   useEffect(() => {
     CatalogApi.query((trees: CatalogTree[]) => {
       const newTrees = trees as DataNode[];
@@ -37,6 +71,8 @@ export default (props: CatalogTreeProps) => {
       setTrees(newTrees);
       setExpandedKeys(LocalStore.getCatalogExpandKeys());
       setSelectedKeys(LocalStore.getCatalogSelectKeys());
+
+      refreshBodySize();
     });
   }, [props.refreshSignal]);
 
@@ -62,7 +98,7 @@ export default (props: CatalogTreeProps) => {
   };
 
   return (
-    <div className={props.className} style={{width: props.width || 400}}>
+    <div className={props.className} ref={rootRef} style={{width: props.width || 400}}>
       <div className="com_header">
         <div className="com_title">Catalog</div>
         <div className="com_ops">
@@ -71,6 +107,7 @@ export default (props: CatalogTreeProps) => {
       </div>
       <div className="catalog_tree_body">
         <Tree
+          height={bodyHeight}
           switcherIcon={<CaretDownFilled />}
           expandedKeys={expandedKeys}
           selectedKeys={selectedKeys}

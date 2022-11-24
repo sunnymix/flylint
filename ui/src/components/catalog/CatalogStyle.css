@@ -12,12 +12,18 @@
 
 /* ant */
 
+.ant-tree .ant-tree-treenode-draggable .ant-tree-draggable-icon {
+  display: none !important;
+}
+
 .ant-tree {
   line-height: 30px;
 }
 
-.ant-tree .ant-tree-treenode-draggable .ant-tree-draggable-icon {
-  display: none !important;
+.ant-tree-switcher .ant-tree-switcher-icon, 
+.ant-tree-switcher .ant-select-tree-switcher-icon {
+  vertical-align: top;
+  margin-top: 10px;
 }
 
 .ant-tree .ant-tree-treenode {

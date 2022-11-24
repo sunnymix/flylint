@@ -29,9 +29,10 @@ html {
 .com_bread {
   margin: 0 10px 10px 10px;
   border-bottom: 1px solid #ddd;
-  min-height: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
+  overflow: hidden;
 }
 
 .com_header {

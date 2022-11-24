@@ -16,6 +16,7 @@ import LocalStore from "@/components/common/LocalStore";
 import WikiBreadcrumb from "./WikiBreadCrumb";
 import { WikiNameUpdatedEventData, WikiTitleUpdatedEventData } from "@/components/common/EventBus";
 import { onUpdateName, onUpdateTitle } from "./WikiMenu";
+import { Button } from "antd";
 
 // TODO:
 // - reload select wiki when ancestor name changed
@@ -93,18 +94,18 @@ export default (props: WikiDetailProps) => {
     <div>
       <div className="com_bread">
         <div className="com_ops">
-          {/* TODO: add click event to breadcrumb */}
-          <div className="com_op" onClick={onNameClick}>
+          <Button className="com_op" onClick={onTitleClick} type="text" size="small" style={{fontWeight: 500, padding: 0}}>{title}</Button>
+          <Button className="com_op" onClick={onNameClick} type="text" size="small" style={{fontWeight: 500, padding: 0}}>
             <WikiBreadcrumb path={path} name={props.name} />
-          </div>
+          </Button>
+          <WikiMenu mode={props.mode} className="com_op" name={props.name} title={title} onTitleUpdated={onTitleUpdated} />
           <WikiCreateButton className="com_op" mode={props.mode} catalogName={props.name} />
         </div>
       </div>
       <div className="com_header">
-        <div className="com_title" onClick={onTitleClick}>{title}</div>
+        <div className="com_title">{title}</div>
         <div className="com_ops">
-          <WikiMenu mode={props.mode} className="com_op" name={props.name} title={title} onTitleUpdated={onTitleUpdated} />
-          <div className="com_op wiki_time">{updateTime}</div>
+          <div className="com_op wiki_time">{`Updated : ${updateTime}`}</div>
         </div>
       </div>
       <div className="com_body">

@@ -30,10 +30,14 @@ const WikiBreadcrumb = (props: WikiBreadcrumbProps) => {
 
   return (
     <div className={props.className}>
-      <Breadcrumb>
-        {items.map(item =>
-          <Breadcrumb.Item key={item}>{item}</Breadcrumb.Item>)}
-      </Breadcrumb>
+      <div className="wiki_breadcrumb_body">
+        <div>{"("}</div>
+        <Breadcrumb className="wiki_breadcrumb_content">
+          {items.map(item =>
+            <Breadcrumb.Item key={item}>{item}</Breadcrumb.Item>)}
+        </Breadcrumb>
+        <div>{")"}</div>
+      </div>
     </div>
   );
 };

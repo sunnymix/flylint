@@ -1,4 +1,4 @@
-import CatalogTree from "./tree/CatalogTree";
+import CatalogTree from "./CatalogTree";
 import "./CatalogStyle.css";
 import { useCallback, useEffect, useState } from "react";
 import WikiDetail from "../wiki/WikiDetail";
@@ -7,10 +7,6 @@ import EventBus, { WikiCreatedEventData, WikiDeletedEventData, WikiMovedEventDat
 import { EventType } from "@/components/common/EventBus";
 import Time from "@/components/common/Time";
 import LocalStore from "../common/LocalStore";
-
-// TODO:
-// - wiki create button
-// - wiki hidden
 
 export interface CatalogProps {
   defaultName?: string

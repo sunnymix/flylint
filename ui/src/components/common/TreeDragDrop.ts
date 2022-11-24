@@ -1,7 +1,7 @@
 import TreeDataType from "antd/es/tree";
 import NodeDragEventParams from "antd/es/tree";
-import CatalogApi from "../catalog/api/CatalogApi";
-import { MovePlace } from "../catalog/model/CatalogModel";
+import CatalogApi from "../catalog/CatalogApi";
+import { MovePlace } from "../catalog/CatalogModel";
 import EventBus, { WikiMovedEventData } from "./EventBus";
 
 const TreeDragDrop = {

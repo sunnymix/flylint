@@ -1,4 +1,4 @@
-import { MovePlace } from "../catalog/model/CatalogModel";
+import { MovePlace } from "../catalog/CatalogModel";
 import { WikiMode } from "../wiki/WikiModel";
 
 export type EventType = 

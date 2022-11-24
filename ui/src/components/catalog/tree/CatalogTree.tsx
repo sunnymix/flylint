@@ -8,7 +8,6 @@ import CatalogApi from "../api/CatalogApi";
 import LocalStore from "@/components/common/LocalStore";
 import WikiCreateButton from "@/components/wiki/button/WikiCreateButton";
 import TreeDragDrop from "@/components/common/TreeDragDrop";
-import { useElementSize } from "usehooks-ts";
 
 // TODO:
 // - overflow

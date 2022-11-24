@@ -3,7 +3,7 @@ import WikiApi from "../api/WikiApi";
 import { DetailWiki } from "../model/WikiModel";
 import Time from "@/components/common/Time";
 import "./WikiDetailStyle.css";
-import { createEditor, Descendant } from "slate";
+import { createEditor, Descendant, Transforms } from "slate";
 import { Slate, Editable, withReact, ReactEditor } from "slate-react";
 import { withHistory } from "slate-history";
 import WikiMenu from "../menu/WikiMenu";
@@ -38,6 +38,12 @@ export default (props: WikiDetailProps) => {
   // Editor:
   const [editor] = useState(withReact(withInlines(withHistory(createEditor()))));
 
+  // Destroy:
+  const onDestroy = useCallback(() => {
+    // Unset editor selection
+    Transforms.deselect(editor);
+  }, []);
+
   // Load:
   useEffect(() => {
     if (!props.name) {
@@ -59,14 +65,11 @@ export default (props: WikiDetailProps) => {
       MyEditor.setContent(editor, wiki.content || MyEditor.initialContentRaw());
     });
 
-  }, [props.name]);
-
-  // Unload:
-  useEffect(() => {
     return () => {
-      // Destroy:
+      onDestroy();
     };
-  }, []);
+
+  }, [props.name]);
 
   const onTitleUpdated = useCallback((data: WikiTitleUpdatedEventData) => {
     setTitle(data.title);

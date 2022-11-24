@@ -277,6 +277,9 @@ const MyEditor = {
 
   setContent(editor: any, content: string) {
     editor.children = MyEditor.parseContent(content);
+    Transforms.collapse(editor, {
+      edge: "start"
+    });
   },
 
 };

@@ -8,6 +8,9 @@ import CatalogApi from "./CatalogApi";
 import LocalStore from "@/components/common/LocalStore";
 import WikiCreateButton from "@/components/wiki/WikiCreateButton";
 import TreeDragDrop from "@/components/common/TreeDragDrop";
+import WikiMenu from "../wiki/WikiMenu";
+
+// TODO: move to last node
 
 export interface CatalogTreeProps {
   refreshSignal?: string,
@@ -72,8 +75,6 @@ export default (props: CatalogTreeProps) => {
     });
   }, [props.refreshSignal]);
 
-
-
   const onExpand = (expandedKeys: TreeNodeKey[], info: any) => {
     LocalStore.setCatalogExpandKeys(expandedKeys as string[]);
     setExpandedKeys(expandedKeys);
@@ -101,7 +102,7 @@ export default (props: CatalogTreeProps) => {
           <WikiCreateButton mode="catalog" className="com_op" catalogName="/" />
         </div>
       </div>
-      <div className="catalog_tree_body">
+      <div className="catalog_body">
         <Tree
           height={bodyHeight}
           switcherIcon={<CaretDownFilled />}
@@ -113,6 +114,15 @@ export default (props: CatalogTreeProps) => {
           onDrop={TreeDragDrop.onDrop}
           blockNode
           draggable
+          titleRender={(node: any) => (
+            <div className="catalog_node_title">
+              <div className="catalog_node_title_text">{node.title}</div>
+              <div className="catalog_node_title_ops">
+                <WikiCreateButton mode="catalog" catalogName={node.name} />
+                <WikiMenu mode="catalog" className="com_op" name={node.name} title={node.title} />
+              </div>
+            </div>
+          )}
         />
       </div>
     </div>

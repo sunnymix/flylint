@@ -1,16 +1,32 @@
 
-.catalog_tree {
+.catalog_side {
   border-right: 1px solid #ddd;
   position: fixed;
   top: 60px;
   bottom: 10px;
 }
 
-.catalog_tree_body {
+.catalog_body {
   padding-right: 10px;
 }
 
-/* ant */
+/* catalog node: */
+
+.catalog_node_title {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.catalog_node_title_ops {
+  display: none;
+}
+
+.catalog_node_title:hover .catalog_node_title_ops {
+  display: block;
+}
+
+/* ant-tree */
 
 .ant-tree .ant-tree-treenode-draggable .ant-tree-draggable-icon {
   display: none !important;

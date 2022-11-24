@@ -7,6 +7,8 @@ import { WikiMode } from "./WikiModel";
 import EventBus, { WikiNameUpdatedEventData, WikiTitleUpdatedEventData } from "@/components/common/EventBus";
 import { EventType } from "@/components/common/EventBus";
 
+// TODO: rewrite wiki menu
+
 export const onUpdateName = (mode: WikiMode, name: string, cb?: (data: WikiNameUpdatedEventData) => void) => {
   const newName = prompt("Update Name:", name);
     if (!newName || newName.trim().length < 0) return;
@@ -54,20 +56,23 @@ export interface WikiMenuProps {
 
 export default (props: WikiMenuProps) => {
 
-  const clickUpdateName = () => {
+  const clickUpdateName = (event: any) => {
+    event.stopPropagation();
     onUpdateName(props.mode, props.name, (data: WikiNameUpdatedEventData) => {
       props.onNameUpdated?.call(null, data);
       history.push(`/${props.mode}/${data.name}`);
     });
   };
 
-  const clickUpdateTitle = () => {
+  const clickUpdateTitle = (event: any) => {
+    event.stopPropagation();
     onUpdateTitle(props.mode, props.name, props.title, (data: WikiTitleUpdatedEventData) => {
       props.onTitleUpdated?.call(null, data);
     });
   };
 
-  const clickDelete = () => {
+  const clickDelete = (event: any) => {
+    event.stopPropagation();
     WikiApi.remove(props.name, (success: boolean) => {
       EventBus.dispatch("wiki.deleted", {
         mode: props.mode,
@@ -82,12 +87,12 @@ export default (props: WikiMenuProps) => {
     {key: "update-wiki-name", label: <a type="text" onClick={clickUpdateName}>Update Name</a>},
     {key: "update-wiki-title", label: <a type="text" onClick={clickUpdateTitle}>Update Title</a>},
     {key: "delete-wiki", label: <Popconfirm onConfirm={clickDelete} title="Sure to delete this wiki?" okText="Confirm" icon="">
-        <a type="text">Delete</a></Popconfirm>},
+        <a type="text" onClick={(event: any) => event.stopPropagation()}>Delete</a></Popconfirm>},
   ];
 
   return (
-    <Dropdown menu={{items: menuItems}} trigger={['click']} className={props.className}>
-      <Button size="small" type="text"><EllipsisOutlined /></Button>
+    <Dropdown menu={{items: menuItems}} className={props.className}>
+      <Button size="small" type="text" onClick={(event: any) => event.stopPropagation()}><EllipsisOutlined /></Button>
     </Dropdown>
   );
 };

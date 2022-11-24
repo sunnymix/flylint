@@ -68,12 +68,10 @@ export const Catalog = (props: CatalogProps) => {
     };
   }, []);
 
-  
-
   return (
     <div>
-      <CatalogTree className="catalog_tree" width={400} onSelect={onSelect} refreshSignal={refreshSignal} />
-      <div className="catalog_body" style={{marginLeft: 400}}>
+      <CatalogTree className="catalog_side" width={400} onSelect={onSelect} refreshSignal={refreshSignal} />
+      <div className="catalog_wiki" style={{marginLeft: 400}}>
         <div className="wiki">
           {props.defaultName && <WikiDetail name={props.defaultName} mode="catalog" />}
         </div>

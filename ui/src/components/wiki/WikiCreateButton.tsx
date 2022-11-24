@@ -15,7 +15,9 @@ export interface WikiCreateButtonProps {
 
 export default (props: WikiCreateButtonProps) => {
 
-  const onClick = useCallback(() => {
+  const onClick = useCallback((event: any) => {
+    event.stopPropagation();
+
     if (props.mode === "wiki") {
       WikiApi.create((name: string) => {
         history.push(`/${props.mode}/${name}`);
@@ -33,8 +35,7 @@ export default (props: WikiCreateButtonProps) => {
         EventBus.dispatch("wiki.create", eventData);
         LocalStore.appendCatalogExpandKeys(props.catalogName ? [props.catalogName] : []);
 
-        if (props.mode == "catalog") return;
-
+        LocalStore.setCatalogSelectedKeys([name]);
         history.push(`/${props.mode}/${name}`);
       });
     }

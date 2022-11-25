@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@ant-design/pro-layout": "^6.5.0",
-    "@emotion/react": "^11.10.5",
+    "@emotion/css": "^11.10.5",
     "axios": "^0.24.0",
     "html2canvas": "^1.4.1",
     "is-hotkey": "^0.1.6",

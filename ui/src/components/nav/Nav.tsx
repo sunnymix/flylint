@@ -2,7 +2,7 @@
 import "./NavStyle.css";
 import { ReactNode, useEffect, useState } from "react";
 import { history, useLocation, Link } from "umi";
-import { HomeFilled, SearchOutlined } from "@ant-design/icons";
+import { ContainerOutlined } from "@ant-design/icons";
 
 interface NavItemProps {
   label: ReactNode,
@@ -12,7 +12,7 @@ interface NavItemProps {
 
 const items: NavItemProps[] = [
   {
-    label: <><HomeFilled /></>,
+    label: <><ContainerOutlined /></>,
     path: "/",
     key: "",
   },
@@ -127,9 +127,6 @@ export default (props: any) => {
           {item.label}
         </div>
       ))}
-      <div className="nav_item">
-        <SearchOutlined />
-      </div>
     </div>
   )
 };

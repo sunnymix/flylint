@@ -17,7 +17,7 @@ import WikiBreadcrumb from "./WikiBreadCrumb";
 import { WikiNameUpdatedEventData, WikiTitleUpdatedEventData } from "@/components/common/EventBus";
 import { onUpdateName, onUpdateTitle } from "./WikiOps";
 import { Button } from "antd";
-import { css } from "@emotion/react";
+import WikiToolbar from "./WikiToolbar";
 
 // TODO:
 // - reload select wiki when ancestor name changed
@@ -106,7 +106,7 @@ export default (props: WikiDetailProps) => {
       <div className="com_header">
         <div className="com_title">{title}</div>
         <div className="com_ops">
-          <div className="com_op wiki_time">{`Updated - ${updateTime}`}</div>
+          <div className="com_op wiki_time">{`updated: ${updateTime}`}</div>
         </div>
       </div>
       <div className="com_body">
@@ -117,6 +117,7 @@ export default (props: WikiDetailProps) => {
               value={WikiEditor.initialContent()}
               onChange={onEditorChange}
               >
+              <WikiToolbar />
               <Editable
                 placeholder="Empty"
                 renderElement={MyElement.renderElement}

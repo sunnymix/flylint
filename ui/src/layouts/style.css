@@ -81,6 +81,12 @@ html {
   color: #666;
 }
 
+.btn_text {
+  padding: 0;
+  border: 0 none;
+  background-color: transparent;
+}
+
 /* basic */
 /* ===== */
 

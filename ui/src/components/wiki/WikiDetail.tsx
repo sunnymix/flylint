@@ -94,10 +94,10 @@ export default (props: WikiDetailProps) => {
     <div>
       <div className="com_bread">
         <div className="com_ops">
-          <Button className="com_op" onClick={onTitleClick} type="text" size="small" style={{fontWeight: 500, padding: 0}}>{title}</Button>
-          <Button className="com_op" onClick={onNameClick} type="text" size="small" style={{fontWeight: 500, padding: 0}}>
+          <button className="com_op btn_text" onClick={onTitleClick}>{title}</button>
+          <button className="com_op btn_text" onClick={onNameClick}>
             <WikiBreadcrumb path={path} name={props.name} />
-          </Button>
+          </button>
           <WikiMenu mode={props.mode} className="com_op" name={props.name} title={title} onTitleUpdated={onTitleUpdated} />
           <WikiCreateButton className="com_op" mode={props.mode} catalogName={props.name} />
         </div>
@@ -105,7 +105,7 @@ export default (props: WikiDetailProps) => {
       <div className="com_header">
         <div className="com_title">{title}</div>
         <div className="com_ops">
-          <div className="com_op wiki_time">{`Updated : ${updateTime}`}</div>
+          <div className="com_op wiki_time">{`Updated - ${updateTime}`}</div>
         </div>
       </div>
       <div className="com_body">

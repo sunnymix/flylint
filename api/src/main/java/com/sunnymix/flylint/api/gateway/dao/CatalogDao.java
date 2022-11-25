@@ -10,10 +10,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static com.sunnymix.flylint.dao.jooq.Tables.WIKI;
+import static org.jooq.impl.DSL.charLength;
 import static org.jooq.impl.DSL.replace;
 
 /**
@@ -92,6 +95,19 @@ public class CatalogDao {
             .set(WIKI.UPDATED, OffsetDateTime.now())
             .where(WIKI.PATH.eq(path).and(WIKI.PATH_INDEX.ge(siblingPathIndexStart)))
             .execute();
+    }
+
+    public List<String> nodes() {
+        var nameList = dsl
+            .select(WIKI.PATH)
+            .from(WIKI)
+            .where(WIKI.PATH.startsWith("/").and(charLength(WIKI.PATH).gt(2)))
+            .fetchStreamInto(String.class)
+            .distinct()
+            .flatMap(p -> Stream.of(p.split("/")))
+            .distinct()
+            .toList();
+        return nameList;
     }
 
 }

@@ -35,4 +35,10 @@ public class CatalogController {
         return Out.ok();
     }
 
+    @GetMapping("/nodes")
+    public Out<List<String>> nodes() {
+        var nameList = catalogDao.nodes();
+        return Out.ok(nameList);
+    }
+
 }

@@ -2,13 +2,14 @@ import { Tree } from "antd";
 import type { DataNode, TreeProps, EventDataNode } from "antd/es/tree";
 import TreeDataType from "antd/es/tree"
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import { CaretDownFilled, DownOutlined } from "@ant-design/icons";
+import { CaretDownFilled, ExpandOutlined, CompressOutlined } from "@ant-design/icons";
 import { CatalogTree } from "./CatalogModel";
 import CatalogApi from "./CatalogApi";
 import LocalStore from "@/components/common/LocalStore";
 import WikiCreateButton from "@/components/wiki/WikiCreateButton";
 import TreeDragDrop from "@/components/common/TreeDragDrop";
 import WikiOps from "../wiki/WikiOps";
+import { Button } from "antd";
 
 // TODO: move to last node
 
@@ -71,6 +72,7 @@ export default (props: CatalogTreeProps) => {
       setExpandedKeys(LocalStore.getCatalogExpandKeys());
       setSelectedKeys(LocalStore.getCatalogSelectKeys());
 
+
       refreshBodySize();
     });
   }, [props.refreshSignal]);
@@ -94,12 +96,28 @@ export default (props: CatalogTreeProps) => {
     props.onSelect?.call(null, newSelectedKeys);
   };
 
+  const onExpandAll = useCallback((event: any) => {
+    CatalogApi.nodes((nodeNames: string[]) => {
+      if (!nodeNames || !nodeNames.length) return;
+
+      setExpandedKeys(nodeNames);
+      LocalStore.setCatalogExpandKeys(nodeNames);
+    });
+  }, []);
+
+  const onShrinkAll = useCallback((event: any) => {
+    setExpandedKeys([]);
+    LocalStore.removeCatalogExpandKeys();
+  }, []);
+
   return (
     <div className={props.className} ref={rootRef} style={{width: props.width || 400}}>
       <div className="com_header">
         <div className="com_title">Catalog</div>
         <div className="com_ops">
           <WikiCreateButton mode="catalog" className="com_op" catalogName="/" />
+          <Button onClick={onExpandAll} className="com_op" type="text" size="small"><ExpandOutlined /></Button>
+          <Button onClick={onShrinkAll} className="com_op" type="text" size="small"><CompressOutlined /></Button>
         </div>
       </div>
       <div className="catalog_body">

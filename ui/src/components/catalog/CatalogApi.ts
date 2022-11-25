@@ -19,9 +19,18 @@ const move = (name: string, toName: string, place: MovePlace, cb: (success: bool
     });
 };
 
+const nodes = (cb: (nodeNames: string[]) => void) => {
+  axios.get(`${Constant.API_BASE}/catalog/nodes`)
+    .then(res => {
+      const nodeNames = res.data?.data || [];
+      cb(nodeNames);
+    });
+};
+
 export const CatalogApi = {
   query,
   move,
+  nodes,
 };
 
 export default CatalogApi;

@@ -8,7 +8,7 @@ import CatalogApi from "./CatalogApi";
 import LocalStore from "@/components/common/LocalStore";
 import WikiCreateButton from "@/components/wiki/WikiCreateButton";
 import TreeDragDrop from "@/components/common/TreeDragDrop";
-import WikiMenu from "../wiki/WikiMenu";
+import WikiOps from "../wiki/WikiOps";
 
 // TODO: move to last node
 
@@ -119,7 +119,7 @@ export default (props: CatalogTreeProps) => {
               <div className="catalog_node_title_text">{node.title}</div>
               <div className="catalog_node_title_ops">
                 <WikiCreateButton mode="catalog" catalogName={node.name} />
-                <WikiMenu mode="catalog" className="com_op" name={node.name} title={node.title} />
+                <WikiOps mode="catalog" className="com_op" name={node.name} title={node.title} />
               </div>
             </div>
           )}

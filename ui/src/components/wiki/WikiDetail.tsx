@@ -5,7 +5,7 @@ import Time from "@/components/common/Time";
 import { createEditor, Descendant, Transforms } from "slate";
 import { Slate, Editable, withReact, ReactEditor } from "slate-react";
 import { withHistory } from "slate-history";
-import WikiMenu from "./WikiMenu";
+import WikiOps from "./WikiOps";
 import WikiCreateButton from "./WikiCreateButton";
 import MyElement from "./WikiElement";
 import WikiEditor from "./WikiEditor";
@@ -15,8 +15,9 @@ import { history } from "umi";
 import LocalStore from "@/components/common/LocalStore";
 import WikiBreadcrumb from "./WikiBreadCrumb";
 import { WikiNameUpdatedEventData, WikiTitleUpdatedEventData } from "@/components/common/EventBus";
-import { onUpdateName, onUpdateTitle } from "./WikiMenu";
+import { onUpdateName, onUpdateTitle } from "./WikiOps";
 import { Button } from "antd";
+import { css } from "@emotion/react";
 
 // TODO:
 // - reload select wiki when ancestor name changed
@@ -98,7 +99,7 @@ export default (props: WikiDetailProps) => {
           <button className="com_op btn_text" onClick={onNameClick}>
             <WikiBreadcrumb path={path} name={props.name} />
           </button>
-          <WikiMenu mode={props.mode} className="com_op" name={props.name} title={title} onTitleUpdated={onTitleUpdated} />
+          <WikiOps mode={props.mode} className="com_op" name={props.name} title={title} onTitleUpdated={onTitleUpdated} />
           <WikiCreateButton className="com_op" mode={props.mode} catalogName={props.name} />
         </div>
       </div>

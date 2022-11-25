@@ -1,4 +1,3 @@
-
 import { Button, Dropdown, Popconfirm } from "antd";
 import WikiApi from "./WikiApi";
 import { history } from "umi";
@@ -7,7 +6,7 @@ import { WikiMode } from "./WikiModel";
 import EventBus, { WikiNameUpdatedEventData, WikiTitleUpdatedEventData } from "@/components/common/EventBus";
 import { EventType } from "@/components/common/EventBus";
 
-// TODO: rewrite wiki menu
+// TODO: rewrite WikiOps
 
 export const onUpdateName = (mode: WikiMode, name: string, cb?: (data: WikiNameUpdatedEventData) => void) => {
   const newName = prompt("Update Name:", name);
@@ -54,7 +53,7 @@ export interface WikiMenuProps {
   onTitleUpdated?: (data: WikiTitleUpdatedEventData) => void,
 };
 
-export default (props: WikiMenuProps) => {
+const WikiOps = (props: WikiMenuProps) => {
 
   const clickUpdateName = (event: any) => {
     event.stopPropagation();
@@ -96,3 +95,5 @@ export default (props: WikiMenuProps) => {
     </Dropdown>
   );
 };
+
+export default WikiOps;

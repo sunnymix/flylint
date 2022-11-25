@@ -57,7 +57,7 @@ const items: NavItemProps[] = [
     key: "metadata",
   },
   {
-    label: <>OKR</>,
+    label: <>Okr</>,
     path: "/okr",
     key: "okr",
   },

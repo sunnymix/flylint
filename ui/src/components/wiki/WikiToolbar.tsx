@@ -19,6 +19,7 @@ const WikiToolbar = (props: WikiToolbarProps) => {
   const editor = useSlate();
   const inFocus = useFocused();
 
+  // Will call in every click/render:
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
@@ -48,14 +49,13 @@ const WikiToolbar = (props: WikiToolbarProps) => {
         top: -10000px;
         left: -1000px;
         opacity: 0;
-        border-radius: 6px;
         display: flex;
         align-items: center;
         `)}>
-        <div className={cx(css`
+        {/* <div className={cx(css`
           border-style: solid;
           border-width: 5px 4px;
-          border-color: #000 transparent transparent transparent;`)}></div>
+          border-color: #000 transparent transparent transparent;`)}></div> */}
         {/* <Button type="text" size="small" style={{color: "#fff"}}><EllipsisOutlined/></Button>
         <Button type="text" size="small" style={{color: "#fff"}}><FileImageFilled/></Button> */}
       </div>

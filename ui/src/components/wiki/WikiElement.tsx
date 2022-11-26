@@ -47,14 +47,16 @@ export const ImageBlock = (props: any) => {
   const selected = useSelected();
   const focused = useFocused();
   const onEnter = (event: any) => {
+    event.preventDefault();
+    event.stopPropagation();
     const [row] = path;
     if (!row) return;
-    Transforms.insertNodes(editor, {children: [{text: ''}]}, {at: [row + 1]});
+    const at = [row + 1];
+    Transforms.insertNodes(editor, {children: [{text: ''}]}, {at});
+    Transforms.select(editor, at);
   };
   const onRemove = (event: any) => {
-    if (confirm('Remove?')) {
-      Transforms.removeNodes(editor, {at: path});
-    }
+    Transforms.removeNodes(editor, {at: path});
   };
   return (
     <div className={`block image-block ${active(selected, focused)}`} {...props.attributes}>
@@ -84,7 +86,7 @@ export const Leaf = (props: any) => {
 
 export const Edge = () => {
   return (
-    <span contentEditable={false} style={{fontSize:0}}>${String.fromCodePoint(160)}</span>
+    <span contentEditable={false} style={{fontSize:0}}>{String.fromCodePoint(160)}</span>
   )
 };
 

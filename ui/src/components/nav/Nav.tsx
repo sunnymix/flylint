@@ -2,7 +2,7 @@
 import "./NavStyle.css";
 import { ReactNode, useEffect, useState } from "react";
 import { history, useLocation, Link } from "umi";
-import { HeatMapOutlined } from "@ant-design/icons";
+import { ContainerOutlined } from "@ant-design/icons";
 
 interface NavItemProps {
   label: ReactNode,
@@ -12,7 +12,7 @@ interface NavItemProps {
 
 const items: NavItemProps[] = [
   {
-    label: <><HeatMapOutlined /></>,
+    label: <><ContainerOutlined /></>,
     path: "/",
     key: "",
   },

@@ -32,6 +32,8 @@ export default (props: CatalogTreeProps) => {
 
   const rootRef = useRef<HTMLDivElement|null>(null)
 
+  const treeRef = useRef<any>(null);
+
   const [bodyHeight, setBodyHeight] = useState<number|undefined>();
 
   const getRootRefSize = useCallback(() => {
@@ -40,6 +42,14 @@ export default (props: CatalogTreeProps) => {
       width: rootRef.current.offsetWidth - 10,
       height: rootRef.current.offsetHeight - 50,
     };
+  }, []);
+
+  const scrollToKey = useCallback((keys: string[]) => {
+    if (!treeRef || !treeRef.current) return;
+    if (!keys || !keys.length) return;
+    setTimeout(() => {
+      treeRef.current.scrollTo({key: keys[0]});
+    }, 10);
   }, []);
 
   const refreshBodySize = useCallback(() => {
@@ -61,6 +71,10 @@ export default (props: CatalogTreeProps) => {
   }, []);
 
   useEffect(() => {
+    if (!props.refreshSignal) return;
+
+    console.log('catalog tree render', props.refreshSignal);
+
     CatalogApi.query((trees: CatalogTree[]) => {
       const newTrees = trees as DataNode[];
       if (!newTrees) {
@@ -70,8 +84,10 @@ export default (props: CatalogTreeProps) => {
 
       setTrees(newTrees);
       setExpandedKeys(LocalStore.getCatalogExpandKeys());
-      setSelectedKeys(LocalStore.getCatalogSelectKeys());
 
+      const selectedKeys = LocalStore.getCatalogSelectKeys();
+      setSelectedKeys(selectedKeys);
+      scrollToKey(selectedKeys);
 
       refreshBodySize();
     });
@@ -116,12 +132,13 @@ export default (props: CatalogTreeProps) => {
         <div className="com_title">Catalog</div>
         <div className="com_ops">
           <WikiCreateButton mode="catalog" className="com_op" catalogName="/" />
-          <Button onClick={onExpandAll} className="com_op" type="text" size="small"><ExpandOutlined /></Button>
           <Button onClick={onShrinkAll} className="com_op" type="text" size="small"><CompressOutlined /></Button>
+          <Button onClick={onExpandAll} className="com_op" type="text" size="small"><ExpandOutlined /></Button>
         </div>
       </div>
       <div className="catalog_body">
         <Tree
+          ref={treeRef}
           height={bodyHeight}
           switcherIcon={<CaretDownFilled />}
           expandedKeys={expandedKeys}

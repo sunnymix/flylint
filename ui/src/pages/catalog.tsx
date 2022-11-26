@@ -8,7 +8,7 @@ export default () => {
   const route = useRouteMatch();
   const params: any = route.params;
 
-  const [refreshSignal, setRefreshSignal] = useState<string>(Time.refreshSignal());
+  const [refreshSignal, setRefreshSignal] = useState<string>('');
 
   const handleEmptyName = useCallback(() => {
     setTimeout(() => {
@@ -26,7 +26,7 @@ export default () => {
     }
 
     LocalStore.setCatalogSelectedKeys([params.name]);
-    setRefreshSignal(Time.refreshSignal());
+    setRefreshSignal(params.name);
   }, [params.name]);
 
   return <Catalog defaultName={params.name} refreshSignal={refreshSignal} />;

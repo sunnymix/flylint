@@ -73,8 +73,6 @@ export default (props: CatalogTreeProps) => {
   useEffect(() => {
     if (!props.refreshSignal) return;
 
-    console.log('catalog tree render', props.refreshSignal);
-
     CatalogApi.query((trees: CatalogTree[]) => {
       const newTrees = trees as DataNode[];
       if (!newTrees) {

@@ -13,7 +13,7 @@ const WikiEditor = {
 
   isBoldMarkActive(editor: BaseEditor & ReactEditor) {
     const [isMatch] = Editor.nodes(editor, {
-      match: (node: any) => node.bold === true,
+      match: (ele: any) => ele.bold === true,
       universal: true,
     });
     return !!isMatch;
@@ -24,13 +24,13 @@ const WikiEditor = {
     Transforms.setNodes(
       editor,
       {bold: isActive ? null : true, children: []},
-      {match: (node: any) => Text.isText(node), split: true},
+      {match: (ele: any) => Text.isText(ele), split: true},
     );
   },
 
   isCodeBlockActive(editor: BaseEditor & ReactEditor) {
     const [isMatch] = Editor.nodes(editor, {
-      match: (node: any) => node.type === "code-block",
+      match: (ele: any) => ele.type === "code-block",
     });
     return !!isMatch;
   },
@@ -40,13 +40,13 @@ const WikiEditor = {
     Transforms.setNodes(
       editor,
       {type: isActive ? null : "code-block", children: []},
-      {match: (node: any) => Editor.isBlock(editor, node)},
+      {match: (ele: any) => Editor.isBlock(editor, ele)},
     );
   },
 
   isHeadingOneBlockActive(editor: any) {
     const [isMatch] = Editor.nodes(editor, {
-      match: (node: any) => node.type === "heading-one",
+      match: (ele: any) => ele.type === "heading-one",
     });
     return !!isMatch;
   },
@@ -56,13 +56,13 @@ const WikiEditor = {
     Transforms.setNodes(
       editor,
       {type: isActive ? null : "heading-one", children: []},
-      {match: (node: any) => Editor.isBlock(editor, node)},
+      {match: (ele: any) => Editor.isBlock(editor, ele)},
     )
   },
 
   isHeadingTwoBlockActive(editor: any) {
     const [isMatch] = Editor.nodes(editor, {
-      match: (node: any) => node.type === "heading-two",
+      match: (ele: any) => ele.type === "heading-two",
     });
     return !!isMatch;
   },
@@ -72,13 +72,13 @@ const WikiEditor = {
     Transforms.setNodes(
       editor,
       {type: isActive ? null : "heading-two", children: []},
-      {match: (node: any) => Editor.isBlock(editor, node)},
+      {match: (ele: any) => Editor.isBlock(editor, ele)},
     )
   },
 
   isHeadingThreeBlockActive(editor: any) {
     const [isMatch] = Editor.nodes(editor, {
-      match: (node: any) => node.type === "heading-three",
+      match: (ele: any) => ele.type === "heading-three",
     });
     return !!isMatch;
   },
@@ -88,17 +88,17 @@ const WikiEditor = {
     Transforms.setNodes(
       editor,
       {type: isActive ? null : "heading-three", children: []},
-      {match: (node: any) => Editor.isBlock(editor, node)},
+      {match: (ele: any) => Editor.isBlock(editor, ele)},
     );
   },
 
-  isElement(editor: any, node: any) {
-    return !Editor.isEditor(node) && SlateElement.isElement(node);
+  isElement(editor: any, ele: any) {
+    return !Editor.isEditor(ele) && SlateElement.isElement(ele);
   },
 
   isLinkActive(editor: any) {
     const [isMatch] = Editor.nodes(editor, {
-      match: (node: any) => node.type === "link",
+      match: (ele: any) => ele.type === "link",
     });
     return !!isMatch;
   },
@@ -126,7 +126,7 @@ const WikiEditor = {
 
   unwrapLink(editor: any) {
     Transforms.unwrapNodes(editor, {
-      match: (node: any) => node.type === "link" && WikiEditor.isElement(editor, node),
+      match: (ele: any) => ele.type === "link" && WikiEditor.isElement(editor, ele),
     });
   },
 
@@ -148,9 +148,11 @@ const WikiEditor = {
   withInlines(editor: any) {
     const { insertData, insertText, isInline, isVoid } = editor;
 
-    editor.isVoid = (element: any) => ['image-block'].includes(element.type) || isVoid(element);
+    editor.isVoid = (ele: any) => ['image-block'].includes(ele.type) || isVoid(ele);
   
-    editor.isInline = (element: any) => ['link'].includes(element.type) || isInline(element);
+    editor.isInline = (ele: any) => ['link'].includes(ele.type) || isInline(ele);
+
+    editor.isToc = (ele: any) => ['heading-one', 'heading-two', 'heading-three'].includes(ele.type);
   
     editor.insertText = (text: any) => {
       if (text && isUrl(text)) {
@@ -234,12 +236,8 @@ const WikiEditor = {
 
       case "j": {
         event.preventDefault();
-        const loc = editor.selection as Location;
-        if (!loc) {
-          return;
-        }
-        const node = Editor.node(editor, loc);
-        console.log(loc, node);
+        const tocEles = (editor.children || []).filter((ele: any) => editor.isToc(ele));
+        console.log(tocEles);
       }
     }
   },

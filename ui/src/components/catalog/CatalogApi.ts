@@ -27,7 +27,7 @@ const nodes = (cb: (nodeNames: string[]) => void) => {
     });
 };
 
-export const CatalogApi = {
+const CatalogApi = {
   query,
   move,
   nodes,

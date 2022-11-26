@@ -1,12 +1,11 @@
-
-import { 
-  createEditor, Descendant, Editor, Transforms, Text, BaseEditor, 
-  Element as SlateElement, Range, Path, Point, Location } from "slate";
-import { Slate, Editable, withReact, ReactEditor, useSelected } from "slate-react";
-import { LinkData } from "./WikiElement";
+import { Descendant, Editor, Transforms, Text, BaseEditor } from "slate";
+import { Element as SlateElement, Range, Location } from "slate";
+import { ReactEditor } from "slate-react";
+import { LinkData, ImageBlockData } from "./WikiElement";
 import isUrl from "is-url";
 import { isKeyHotkey } from "is-hotkey";
 import WikiApi from "./WikiApi";
+import MediaApi from "../media/MediaApi";
 
 const initialEmptyContent = JSON.stringify([{"type":"paragraph","children":[{"text":""}]}]);
 
@@ -127,7 +126,7 @@ const WikiEditor = {
 
   unwrapLink(editor: any) {
     Transforms.unwrapNodes(editor, {
-      match: (node: any) => node.type === 'link' && WikiEditor.isElement(editor, node),
+      match: (node: any) => node.type === "link" && WikiEditor.isElement(editor, node),
     });
   },
 
@@ -137,8 +136,19 @@ const WikiEditor = {
     }
   },
 
+  insertImageBlock(editor: any, url: string) {
+    const data: ImageBlockData = {
+      type: 'image-block',
+      url,
+      children: [{text: ""}]
+    };
+    Transforms.insertNodes(editor, data);
+  },
+
   withInlines(editor: any) {
-    const { insertData, insertText, isInline } = editor
+    const { insertData, insertText, isInline, isVoid } = editor;
+
+    editor.isVoid = (element: any) => ['image-block'].includes(element.type) || isVoid(element);
   
     editor.isInline = (element: any) => ['link'].includes(element.type) || isInline(element);
   
@@ -168,12 +178,12 @@ const WikiEditor = {
 
     if (isKeyHotkey('left', nativeEvent)) {
       event.preventDefault();
-      Transforms.move(editor, {unit: "offset", reverse: true});
+      Transforms.move(editor, {unit: 'offset', reverse: true});
       return;
     }
     if (isKeyHotkey('right', nativeEvent)) {
       event.preventDefault();
-      Transforms.move(editor, {unit: "offset"});
+      Transforms.move(editor, {unit: 'offset'});
       return;
     }
 
@@ -241,6 +251,10 @@ const WikiEditor = {
       if (file && file.type.indexOf('image/') >= 0) {
         event.preventDefault();
         console.log("paste image");
+        MediaApi.uploadImage(file, (imageUrl: string|null) => {
+          if (!imageUrl) return;
+          WikiEditor.insertImageBlock(editor, imageUrl);
+        });
       }
     }
   },

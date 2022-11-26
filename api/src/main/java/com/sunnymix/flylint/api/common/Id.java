@@ -22,4 +22,20 @@ public class Id {
                 .toLowerCase();
     }
 
+    public static String randomFilename(String filename) {
+        if (Strings.isEmpty(filename)) {
+            return filename;
+        }
+
+        int dotIndex = filename.lastIndexOf(".");
+        if (dotIndex < 0) {
+            return filename;
+        }
+
+        var filenameWithoutExt = filename.substring(0, dotIndex);
+        var ext = filename.substring(dotIndex);
+        var filenameWithRandomId = String.format("%s-%s%s", filenameWithoutExt, Id.newId(), ext);
+        return filenameWithRandomId;
+    }
+
 }

@@ -46,6 +46,8 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-jooq"
     compileOnly "org.jooq:jooq-meta:$jooqVersion"
     compileOnly "org.jooq:jooq-codegen:$jooqVersion"
+    // Oss
+    implementation "com.aliyun.oss:aliyun-sdk-oss:3.10.2"
 }
 
 tasks.named('test') {

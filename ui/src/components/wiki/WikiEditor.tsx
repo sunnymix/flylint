@@ -111,7 +111,7 @@ const WikiEditor = {
     const { selection } = editor;
     const isCollapsed = selection && Range.isCollapsed(selection);
     const link: LinkData = {
-      type: "link",
+      type: 'link',
       url,
       children: isCollapsed ? [{text: url}] : [],
     };
@@ -120,7 +120,7 @@ const WikiEditor = {
       Transforms.insertNodes(editor, link);
     } else {
       Transforms.wrapNodes(editor, link, {split: true});
-      Transforms.collapse(editor, {edge: "end"});
+      Transforms.collapse(editor, {edge: 'end'});
     }
   },
 
@@ -140,7 +140,7 @@ const WikiEditor = {
     const data: ImageBlockData = {
       type: 'image-block',
       url,
-      children: [{text: ""}]
+      children: [{text: ''}]
     };
     Transforms.insertNodes(editor, data);
   },
@@ -224,7 +224,7 @@ const WikiEditor = {
 
       case "k": {
         event.preventDefault();
-        const url = window.prompt('Enter URL of the link:')
+        const url = window.prompt('Url:')
         if (!url) {
           return;
         }
@@ -250,7 +250,6 @@ const WikiEditor = {
       const file = files[0];
       if (file && file.type.indexOf('image/') >= 0) {
         event.preventDefault();
-        console.log("paste image");
         MediaApi.uploadImage(file, (imageUrl: string|null) => {
           if (!imageUrl) return;
           WikiEditor.insertImageBlock(editor, imageUrl);
@@ -276,7 +275,7 @@ const WikiEditor = {
   },
 
   initialContent() {
-    return [{"type":"paragraph","children":[{"text":""}]}];
+    return [{type: 'block', children:[{text: ''}]}];
   },
 
   initialContentRaw() {

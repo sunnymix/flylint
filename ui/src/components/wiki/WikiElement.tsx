@@ -1,12 +1,13 @@
 import { Descendant, Transforms } from 'slate';
 import { useSelected, useFocused, useSlateStatic, ReactEditor } from 'slate-react';
 import { Button } from 'antd';
-import { DeleteOutlined } from '@ant-design/icons';
+import { EnterOutlined, DeleteOutlined } from '@ant-design/icons';
+import { active } from '@/components/common/Style';
 
 export const HeadingOne = (props: any) => {
   const style = {textAlign: props.element.align};
   return (
-    <h1 style={style} {...props.attributes}>
+    <h1 className='block heading-one' style={style} {...props.attributes}>
       {props.children}
     </h1>
   );
@@ -15,7 +16,7 @@ export const HeadingOne = (props: any) => {
 export const HeadingTwo = (props: any) => {
   const style = {textAlign: props.element.align};
   return (
-    <h2 style={style} {...props.attributes}>
+    <h2 className='block heading-two' style={style} {...props.attributes}>
       {props.children}
     </h2>
   );
@@ -24,7 +25,7 @@ export const HeadingTwo = (props: any) => {
 export const HeadingThree = (props: any) => {
   const style = {textAlign: props.element.align};
   return (
-    <h3 style={style} {...props.attributes}>
+    <h3 className='block heading-three' style={style} {...props.attributes}>
       {props.children}
     </h3>
   );
@@ -32,7 +33,7 @@ export const HeadingThree = (props: any) => {
 
 export const CodeBlock = (props: any) => {
   return (
-    <pre {...props.attributes}>
+    <pre className='block code-block' {...props.attributes}>
       <code>{props.children}</code>
     </pre>
   );
@@ -45,13 +46,24 @@ export const ImageBlock = (props: any) => {
   const path = ReactEditor.findPath(editor, props.element);
   const selected = useSelected();
   const focused = useFocused();
+  const onEnter = (event: any) => {
+    const [row] = path;
+    if (!row) return;
+    Transforms.insertNodes(editor, {children: [{text: ''}]}, {at: [row + 1]});
+  };
+  const onRemove = (event: any) => {
+    if (confirm('Remove?')) {
+      Transforms.removeNodes(editor, {at: path});
+    }
+  };
   return (
-    <div {...props.attributes} className='block'>
+    <div className={`block image-block ${active(selected, focused)}`} {...props.attributes}>
       {props.children}
-      <div contentEditable={false} style={{position: 'relative'}}>
-        <img src={props.element.url} style={{display: 'block', boxShadow: selected && focused ? '0 0 0 3px #b4d5ff' : 'none'}} />
-        <div contentEditable={false} style={{position: 'absolute', left: 5, top: 5}}>
-          <Button onClick={() => Transforms.removeNodes(editor, {at: path})} type='text' size='small'><DeleteOutlined /></Button>
+      <div className={`image-body`} contentEditable={false}>
+        <img className={`image-img`} src={props.element.url} />
+        <div className={`image-ops`} contentEditable={false}>
+          <Button onClick={onEnter} type='default' size='small'><EnterOutlined /></Button>
+          <Button onClick={onRemove} type='default' size='small'><DeleteOutlined /></Button>
         </div>
       </div>
     </div>
@@ -81,9 +93,7 @@ export type LinkData = { type: 'link'; url: string; children: Descendant[] };
 export const Link = (props: any) => {
   const selected = useSelected();
   return (
-    <a {...props.attributes} href={props.element.url}
-      style={{boxShadow: selected ? '0 0 0 3px #b4d5ff' : 'none'}}
-      >
+    <a {...props.attributes} href={props.element.url} className={`link ${active(selected)}`}>
       <Edge />{props.children}<Edge />
     </a>
   )

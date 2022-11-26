@@ -1,4 +1,37 @@
 
+/* Image: */
+
+.image-body {
+  position: relative;
+}
+
+.image-img {
+  display: block;
+  max-width: 90%;
+}
+
+.image-block.active .image-img {
+  box-shadow: 0 0 0 3px #b4d5ff;
+}
+
+.image-ops {
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  display: none;
+}
+
+.image-block:hover .image-ops {
+  display: flex;
+}
+
+
+/* Link: */
+
+.link.active {
+  box-shadow: 0 0 0 3px #b4d5ff;
+}
+
 
 .wiki_time {
   color: #00000073;

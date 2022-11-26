@@ -9,12 +9,18 @@ import Time from "@/components/common/Time";
 import LocalStore from "../common/LocalStore";
 
 export interface CatalogProps {
-  defaultName?: string
+  defaultName?: string,
+  refreshSignal?: string,
 };
 
 export const Catalog = (props: CatalogProps) => {
 
   const [refreshSignal, setRefreshSignal] = useState<string>(Time.refreshSignal());
+
+  useEffect(() => {
+    if (!props.refreshSignal) return;
+    setRefreshSignal(props.refreshSignal);
+  }, [props.refreshSignal]);
 
   const onSelect = (names: string[]) => {
     history.push(`/catalog/${names[0]}`);

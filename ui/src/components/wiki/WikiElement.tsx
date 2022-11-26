@@ -1,8 +1,9 @@
-import { Descendant, Transforms } from 'slate';
+import { Descendant, Transforms, Editor } from 'slate';
 import { useSelected, useFocused, useSlateStatic, ReactEditor } from 'slate-react';
 import { Button } from 'antd';
 import { EnterOutlined, DeleteOutlined } from '@ant-design/icons';
 import { active } from '@/components/common/Style';
+import { goto } from '@/components/common/Url';
 
 export const HeadingOne = (props: any) => {
   const style = {textAlign: props.element.align};
@@ -93,9 +94,14 @@ export const Edge = () => {
 export type LinkData = { type: 'link'; url: string; children: Descendant[] };
 
 export const Link = (props: any) => {
+  const editor: any = useSlateStatic();
   const selected = useSelected();
+  const onClick = (event: any) => {
+    if (!props.element.url) return;
+    goto(props.element.url);
+  };
   return (
-    <a {...props.attributes} href={props.element.url} className={`link ${active(selected)}`}>
+    <a className={`inline link ${active(selected)}`} {...props.attributes} href={props.element.url} onClick={onClick}>
       <Edge />{props.children}<Edge />
     </a>
   )

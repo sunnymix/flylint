@@ -31,12 +31,14 @@ const WikiToolbar = (props: WikiToolbarProps) => {
       return;
     }
 
-    const domSelection: any = window.getSelection();
-    const domRange = domSelection.getRangeAt(0);
-    const rect = domRange.getBoundingClientRect();
-    el.style.opacity = '0.6';
-    el.style.top = `${rect.top + window.pageYOffset - el.offsetHeight}px`;
-    el.style.left = `${rect.left + window.pageXOffset - el.offsetWidth / 2 + rect.width / 2}px`;
+    try {
+      const domSelection: any = window.getSelection();
+      const domRange = domSelection.getRangeAt(0);
+      const rect = domRange.getBoundingClientRect();
+      el.style.opacity = '0.6';
+      el.style.top = `${rect.top + window.pageYOffset - el.offsetHeight}px`;
+      el.style.left = `${rect.left + window.pageXOffset - el.offsetWidth / 2 + rect.width / 2}px`;
+    } catch (error) {}
   });
 
   const preventClick = useCallback((event: any) => event.preventDefault(), []);

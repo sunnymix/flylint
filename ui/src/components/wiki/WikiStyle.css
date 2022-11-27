@@ -1,4 +1,15 @@
 
+/* Wiki Toc: */
+
+.wiki-toc {
+  position: fixed;
+  right: 0;
+  top: 60px;
+  bottom: 0;
+  z-index: 1;
+}
+
+
 /* Image: */
 
 .image-body {

@@ -26,7 +26,8 @@ html {
 /* com */
 /* === */
 
-.com_bread {
+.com_bread,
+.com-bread {
   margin: 0 10px 10px 10px;
   border-bottom: 1px solid #ddd;
   height: 40px;
@@ -35,7 +36,8 @@ html {
   overflow: hidden;
 }
 
-.com_header {
+.com_header,
+.com-header {
   margin: 0 10px 10px 10px;
   min-height: 40px;
   border-bottom: 1px solid #ddd;
@@ -43,32 +45,38 @@ html {
   align-items: center;
 }
 
-.com_title {
-  font-size: 1.3rem;
-  font-weight: 700;
+.com_title,
+.com-title {
+  color: #555;
+  font-weight: 500;
   margin-right: 10px;
 }
 
-.com_ops {
+.com_ops,
+.com-ops {
   display: flex;
   margin-right: 10px;
   align-items: center;
 }
 
-.com_op {
+.com_op,
+.com-op {
   margin-right: 10px;
 }
 
-.com_body {
+.com_body,
+.com-body {
   padding: 0 10px;
 }
 
-.com_cards {
+.com_cards,
+.com-cards {
   display: flex;
   flex-wrap: wrap;
 }
 
-.com_card {
+.com_card,
+.com-card {
   min-width: 250px;
   margin-right: 10px;
   margin-bottom: 10px;
@@ -77,11 +85,13 @@ html {
   border-radius: 6px;
 }
 
-.com_secondary {
+.com_secondary,
+.com-secondary {
   color: #666;
 }
 
-.btn_text {
+.btn_text,
+.btn-text {
   padding: 0;
   border: 0 none;
   background-color: transparent;

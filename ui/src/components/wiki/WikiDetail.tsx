@@ -18,6 +18,7 @@ import { WikiNameUpdatedEventData, WikiTitleUpdatedEventData } from "@/component
 import { onUpdateName, onUpdateTitle } from "./WikiOps";
 import { Button } from "antd";
 import WikiToolbar from "./WikiToolbar";
+import WikiToc from "./WikiToc";
 
 // TODO:
 // - reload select wiki when ancestor name changed
@@ -92,7 +93,7 @@ export default (props: WikiDetailProps) => {
   }, [props.name, title]);
 
   return (
-    <div>
+    <div className="wiki_page" style={{paddingRight: 400}}>
       <div className="com_bread">
         <div className="com_ops">
           <button className="com_op btn_text" onClick={onTitleClick}>{title}</button>
@@ -129,6 +130,7 @@ export default (props: WikiDetailProps) => {
           </div>
         </div>
       </div>
+      <WikiToc className="wiki-toc" width={400} />
     </div>
   );
 };

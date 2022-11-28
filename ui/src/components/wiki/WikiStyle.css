@@ -14,6 +14,13 @@
   line-height: 30px;
   min-height: 30px;
   color: #555;
+  padding: 0 6px;
+  border-radius: 4px;
+}
+
+.toc-item:hover {
+  color: #333;
+  background-color: #eee;
 }
 
 /* Wiki Top: */

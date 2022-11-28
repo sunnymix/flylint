@@ -3,7 +3,7 @@
 
 .wiki-toc {
   position: fixed;
-  top: 110px;
+  top: 160px;
   bottom: 10px;
   z-index: 1;
   padding: 0 10px;
@@ -16,10 +16,26 @@
   color: #555;
 }
 
+/* Wiki Top: */
+
+.wiki-top {
+  min-height: 110px;
+}
+
+/* Wiki Breadcrumb: */
+
+.wiki-breadcrumb {
+  padding: 4px 10px;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+}
+
 /* Wiki Head: */
 
 .wiki-head {
-  margin: 0 10px 10px 10px;
+  padding: 4px 10px;
+  min-height: 70px;
 }
 
 /* Wiki Title: */
@@ -31,6 +47,13 @@
 
 .wiki-time {
   color: #00000073;
+}
+
+/* Wiki Body: */
+
+.wiki-body {
+  padding: 0 10px;
+  overflow: auto;
 }
 
 /* Image: */

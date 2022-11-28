@@ -8,7 +8,7 @@
 }
 
 .body {
-  padding: 60px 10px 10px;
+  padding: 50px 0 0 0;
 }
 
 html,
@@ -18,16 +18,15 @@ body,
 }
 
 html {
-  overflow: hidden;
-  overflow-x: auto;
-  overflow-y: scroll;
+  overflow: auto;
 }
 
 /* com */
 /* === */
 
 .com_bread,
-.com-bread {
+.com-bread,
+.com-breadcrumb {
   margin: 0 10px 10px 10px;
   min-height: 40px;
   display: flex;

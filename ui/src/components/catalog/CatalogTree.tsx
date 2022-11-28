@@ -126,16 +126,17 @@ export default (props: CatalogTreeProps) => {
 
   return (
     <div className={props.className} ref={rootRef} style={{width: props.width || 400}}>
-      <div className="com_header">
-        <div className="com_title">CATALOG</div>
-        <div className="com_ops">
-          <WikiCreateButton mode="catalog" className="com_op" catalogName="/" />
-          <Button onClick={onShrinkAll} className="com_op" type="text" size="small"><CompressOutlined /></Button>
-          <Button onClick={onExpandAll} className="com_op" type="text" size="small"><ExpandOutlined /></Button>
+      <div className="com-header">
+        <div className="com-title">CATALOG</div>
+        <div className="com-ops">
+          <WikiCreateButton mode="catalog" className="com-op" catalogName="/" />
+          <Button onClick={onShrinkAll} className="com-op" type="text" size="small"><CompressOutlined /></Button>
+          <Button onClick={onExpandAll} className="com-op" type="text" size="small"><ExpandOutlined /></Button>
         </div>
       </div>
-      <div className="catalog_body">
+      <div className="catalog-body">
         <Tree
+          style={{paddingRight: 10}}
           ref={treeRef}
           height={bodyHeight}
           switcherIcon={<CaretDownFilled />}

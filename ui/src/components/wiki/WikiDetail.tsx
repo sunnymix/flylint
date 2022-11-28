@@ -19,6 +19,7 @@ import { onUpdateName, onUpdateTitle } from "./WikiOps";
 import { Button } from "antd";
 import WikiToolbar from "./WikiToolbar";
 import WikiToc from "./WikiToc";
+import Layout from "../common/Layout";
 
 // TODO:
 // - reload select wiki when ancestor name changed
@@ -36,18 +37,46 @@ export default (props: WikiDetailProps) => {
   const [title, setTitle] = useState<string>("");
   const [updateTime, setUpdateTime] = useState<string>("");
   const [tocData, setTocData] = useState<Toc[]>();
+  const topRef = useRef<any>(null);
+  const [bodyHeight, setBodyHeight] = useState<number>();
 
   // Editor:
-  const editor = useMemo(() => withReact(withInlines(withHistory(createEditor()))), []);
+  const [editor] = useState(withReact(withInlines(withHistory(createEditor()))));
+
+  // Init:
+  const onInit = useCallback(() => {
+    window.addEventListener("resize", onWindowResize);
+    refreshBodySize();
+  }, []);
 
   // Destroy:
   const onDestroy = useCallback(() => {
+    window.removeEventListener("resize", onWindowResize);
+
     // Unset editor selection
     Transforms.deselect(editor);
   }, []);
 
+  // Resize:
+
+  const refreshBodySize = useCallback(() => {
+    setTimeout(() => {
+      const winSize = Layout.winSize();
+      const topSize = Layout.refSize(topRef);
+      const bodyHeight = winSize.height - 60 - topSize.height;
+
+      setBodyHeight(bodyHeight);
+    }, 10);
+  }, []);
+
+  const onWindowResize = useCallback((event: UIEvent) => {
+    refreshBodySize();
+  }, []);
+
   // Load:
   useEffect(() => {
+    onInit();
+
     if (!props.name) {
       history.push(`/${props.mode}`);
       return;
@@ -66,6 +95,7 @@ export default (props: WikiDetailProps) => {
       setUpdateTime(wiki.updated ? Time.formatDatetime(wiki.updated) : "");
       WikiEditor.setContent(editor, wiki.content || WikiEditor.initialContentRaw());
       setTocData(WikiEditor.makeToc(editor));
+      refreshBodySize();
     });
 
     return () => {
@@ -103,29 +133,31 @@ export default (props: WikiDetailProps) => {
       setTimeout(() => {
         Transforms.select(editor, [toc.index]);
         Transforms.setPoint(editor, {path: [toc.index], offset: 0});
+        Transforms.move(editor, {unit: 'offset'});
       }, 10);
     }, 10);
-    // WikiEditor.gotoIndex(editor, toc.index);
   };
 
   return (
     <div className="wiki">
       <WikiToc className="wiki-toc" width={400} tocData={tocData} onClick={tocOnClick}/>
       <div className="wiki-page" style={{marginLeft: 400}}>
-        <div className="com-bread">
-          <div className="com-ops">
-            <button className='com-op btn-text' onClick={onNameClick}>{props.name}</button>
-            <div className='com-op'>·</div>
-            <button className='com-op btn-text' onClick={onTitleClick}>{title}</button>
-            <WikiOps mode={props.mode} className="com_op" name={props.name} title={title} onTitleUpdated={onTitleUpdated} />
-            <WikiCreateButton className="com_op" mode={props.mode} catalogName={props.name} />
+        <div className='wiki-top' ref={topRef}>
+          <div className="wiki-breadcrumb">
+            <div className="com-ops">
+              <button className='com-op btn-text' onClick={onNameClick}>{props.name}</button>
+              <div className='com-op'>·</div>
+              <button className='com-op btn-text' onClick={onTitleClick}>{title}</button>
+              <WikiOps mode={props.mode} className="com_op" name={props.name} title={title} onTitleUpdated={onTitleUpdated} />
+              <WikiCreateButton className="com_op" mode={props.mode} catalogName={props.name} />
+            </div>
+          </div>
+          <div className="wiki-head">
+            <div className="wiki-title">{title}</div>
+            <div className="wiki-time">{`${updateTime}`}</div>
           </div>
         </div>
-        <div className="wiki-head">
-          <div className="wiki-title">{title}</div>
-          <div className="wiki-time">{`${updateTime}`}</div>
-        </div>
-        <div className="com_body">
+        <div className="wiki-body" style={{height: `${bodyHeight ? bodyHeight + 'px' : 'auto'}`}}>
           <div className="wiki_content">
             <div className="wiki_content_editor">
               <Slate

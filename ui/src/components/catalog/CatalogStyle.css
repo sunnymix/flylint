@@ -1,13 +1,9 @@
 
-.catalog_side {
+.catalog-side {
   border-right: 1px solid #ddd;
   position: fixed;
-  top: 60px;
-  bottom: 10px;
-}
-
-.catalog_body {
-  padding-right: 10px;
+  top: 50px;
+  bottom: 0;
 }
 
 /* catalog node: */

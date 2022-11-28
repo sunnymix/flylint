@@ -6,6 +6,7 @@ import isUrl from "is-url";
 import { isKeyHotkey } from "is-hotkey";
 import WikiApi from "./WikiApi";
 import MediaApi from "../media/MediaApi";
+import { Toc } from "./WikiModel";
 
 const initialEmptyContent = JSON.stringify([{"type":"paragraph","children":[{"text":""}]}]);
 
@@ -236,10 +237,28 @@ const WikiEditor = {
 
       case "j": {
         event.preventDefault();
-        const tocEles = (editor.children || []).filter((ele: any) => editor.isToc(ele));
-        console.log(tocEles);
+        WikiEditor.makeToc(editor);
       }
     }
+  },
+
+  makeToc(editor: any) {
+    const eles = editor.children || [];
+    if (!eles || !eles.length) return [];
+
+    const tocList: Toc[] = [];
+    eles.forEach((ele: any, index: number) => {
+      if (!editor.isToc(ele)) return;
+      const toc: Toc = {
+        index,
+        type: ele.type,
+        text: ele.children[0]?.text || 'Empty',
+        level: 0,
+      };
+      tocList.push(toc);
+    });
+
+    return tocList;
   },
 
   onPaste(event: any, editor: any) {
@@ -280,19 +299,16 @@ const WikiEditor = {
     return JSON.stringify(WikiEditor.initialContent());
   },
 
-  onContentChange(name: string, editor: any, value: Descendant[], cb: () => void) {
-    const isAstChange = editor.operations.some((op: any) => 'set_selection' !== op.type);
+  isAstChange(editor: any) {
+    return editor.operations.some((op: any) => 'set_selection' !== op.type);
+  },
 
-    if (!isAstChange) {
-      return;
-    }
+  onContentChange(name: string, editor: any, value: Descendant[], cb: () => void) {
+    if (!WikiEditor.isAstChange(editor)) return;
 
     const content = JSON.stringify(value);
     WikiApi.updateContent(name, content, (success: boolean) => {
-      if (!success) {
-        return;
-      }
-
+      if (!success) return;
       cb();
     });
   },

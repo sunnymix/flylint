@@ -15,7 +15,7 @@ export interface CatalogProps {
 
 export const Catalog = (props: CatalogProps) => {
 
-  const [refreshSignal, setRefreshSignal] = useState<string>('');
+  const [refreshSignal, setRefreshSignal] = useState<string>(props.refreshSignal || 'init');
 
   useEffect(() => {
     if (!props.refreshSignal) return;

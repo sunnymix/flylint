@@ -3,7 +3,7 @@
   display: flex;
   flex-wrap: nowrap;
   background-color: #fff;
-  box-shadow: 0 1px 1px 0 #ddd;
+  border-bottom: 1px solid #ddd;
   padding: 10px;
   overflow: hidden;
   overflow-x: auto;

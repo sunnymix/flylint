@@ -8,7 +8,7 @@ export default () => {
   const route = useRouteMatch();
   const params: any = route.params;
 
-  const [refreshSignal, setRefreshSignal] = useState<string>('');
+  const [refreshSignal, setRefreshSignal] = useState<string>('init');
 
   const handleEmptyName = useCallback(() => {
     setTimeout(() => {

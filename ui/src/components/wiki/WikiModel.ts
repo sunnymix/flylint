@@ -20,4 +20,11 @@ export interface DetailWiki {
   updated: string,
 };
 
+export interface Toc {
+  index: number,
+  type: string,
+  text: string,
+  level: number,
+};
+
 export type WikiMode = "wiki" | "catalog";

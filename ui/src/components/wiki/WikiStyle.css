@@ -3,12 +3,35 @@
 
 .wiki-toc {
   position: fixed;
-  right: 0;
-  top: 60px;
-  bottom: 0;
+  top: 110px;
+  bottom: 10px;
   z-index: 1;
+  padding: 0 10px;
 }
 
+.toc-item {
+  display: block;
+  line-height: 30px;
+  min-height: 30px;
+  color: #555;
+}
+
+/* Wiki Head: */
+
+.wiki-head {
+  margin: 0 10px 10px 10px;
+}
+
+/* Wiki Title: */
+
+.wiki-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.wiki-time {
+  color: #00000073;
+}
 
 /* Image: */
 

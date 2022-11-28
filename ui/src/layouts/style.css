@@ -29,8 +29,7 @@ html {
 .com_bread,
 .com-bread {
   margin: 0 10px 10px 10px;
-  border-bottom: 1px solid #ddd;
-  height: 40px;
+  min-height: 40px;
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -40,7 +39,6 @@ html {
 .com-header {
   margin: 0 10px 10px 10px;
   min-height: 40px;
-  border-bottom: 1px solid #ddd;
   display: flex;
   align-items: center;
 }
@@ -95,6 +93,7 @@ html {
   padding: 0;
   border: 0 none;
   background-color: transparent;
+  color: #555;
 }
 
 /* basic */

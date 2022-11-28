@@ -1,21 +1,29 @@
 import { Toc } from './WikiModel';
 import { Button } from 'antd';
+import { useCallback } from 'react';
 
 export interface WikiTocProps {
   className?: string,
   left?: number,
   width?: number,
   tocData?: Toc[],
+  onClick?: (event: any, toc: Toc) => void,
 };
 
 const WikiToc = (props: WikiTocProps) => {
+
+  const onClick = useCallback((event: any, toc: Toc) => {
+    event.preventDefault();
+    event.stopPropagation();
+    props.onClick?.call(null, event, toc);
+  }, []);
   
   return (
     <div className={props.className || 'wiki-toc'} style={{ width: props.width || 400}}>
       <div className='toc-content'>
         {props.tocData && props.tocData.map((toc: Toc) => (
           <div key={toc.index}>
-            <a className='toc-item'>{toc.text}</a>
+            <a className='toc-item' onClick={(event: any) => onClick(event, toc)}>{toc.text}</a>
           </div>
         ))}
       </div>

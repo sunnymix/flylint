@@ -38,7 +38,7 @@ export default (props: WikiDetailProps) => {
   const [tocData, setTocData] = useState<Toc[]>();
 
   // Editor:
-  const [editor] = useState(withReact(withInlines(withHistory(createEditor()))));
+  const editor = useMemo(() => withReact(withInlines(withHistory(createEditor()))), []);
 
   // Destroy:
   const onDestroy = useCallback(() => {
@@ -97,9 +97,20 @@ export default (props: WikiDetailProps) => {
     WikiEditor.onContentChange(props.name, editor, value, () => setUpdateTime(Time.nowDatetime3()));
   }, [props.name, tocData]);
 
+  const tocOnClick = (event: any, toc: Toc) => {
+    setTimeout(() => {
+      ReactEditor.focus(editor);
+      setTimeout(() => {
+        Transforms.select(editor, [toc.index]);
+        Transforms.setPoint(editor, {path: [toc.index], offset: 0});
+      }, 10);
+    }, 10);
+    // WikiEditor.gotoIndex(editor, toc.index);
+  };
+
   return (
     <div className="wiki">
-      <WikiToc className="wiki-toc" width={400} tocData={tocData}/>
+      <WikiToc className="wiki-toc" width={400} tocData={tocData} onClick={tocOnClick}/>
       <div className="wiki-page" style={{marginLeft: 400}}>
         <div className="com-bread">
           <div className="com-ops">

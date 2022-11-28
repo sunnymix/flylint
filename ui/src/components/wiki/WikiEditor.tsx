@@ -320,6 +320,11 @@ const WikiEditor = {
     });
   },
 
+  gotoIndex(editor: any, index: number) {
+    Transforms.select(editor, {offset: 0, path: [0, 0]});
+    console.log(editor, index);
+  },
+
 };
 
 export default WikiEditor;

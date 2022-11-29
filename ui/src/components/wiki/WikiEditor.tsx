@@ -338,9 +338,14 @@ const WikiEditor = {
     });
   },
 
-  gotoIndex(editor: any, index: number) {
-    Transforms.select(editor, {offset: 0, path: [0, 0]});
-    console.log(editor, index);
+  focusIndex(editor: any, index: number) {
+    setTimeout(() => {
+      ReactEditor.focus(editor);
+      Transforms.select(editor, {
+        path: [index, 0],
+        offset: 0,
+      });
+    }, 10);
   },
 
 };

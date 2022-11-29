@@ -132,14 +132,7 @@ export default (props: WikiDetailProps) => {
   }, [props.name, tocData]);
 
   const tocOnClick = (event: any, toc: Toc) => {
-    setTimeout(() => {
-      ReactEditor.focus(editor);
-      setTimeout(() => {
-        Transforms.select(editor, [toc.index]);
-        Transforms.setPoint(editor, {path: [toc.index], offset: 0});
-        Transforms.move(editor, {unit: 'offset'});
-      }, 10);
-    }, 10);
+    WikiEditor.focusIndex(editor, toc.index);
   };
 
   return (

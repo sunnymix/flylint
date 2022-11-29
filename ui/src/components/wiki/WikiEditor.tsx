@@ -346,10 +346,12 @@ const WikiEditor = {
   focusIndex(editor: any, index: number) {
     setTimeout(() => {
       ReactEditor.focus(editor);
-      Transforms.select(editor, {
-        path: [index, 0],
-        offset: 0,
-      });
+      if (index === 0) {
+        Transforms.select(editor, {path: [index, 0], offset: -1});
+      }
+      setTimeout(() => {
+        Transforms.select(editor, {path: [index, 0], offset: 0});
+      }, 10);
     }, 10);
   },
 

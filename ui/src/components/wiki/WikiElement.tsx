@@ -9,12 +9,27 @@ export type ElementType =
   | 'heading-one'
   | 'heading-two'
   | 'heading-three'
+  | 'h1'
+  | 'h2'
+  | 'h3'
+  | 'h4'
+  | 'h5'
   | 'code-block'
   | 'image-block'
   | 'block'
   | 'leaf'
   | 'edge'
   | 'link';
+
+export const H1 = (props: any) => <h1 className='block h1' {...props.attributes}>{props.children}</h1>;
+
+export const H2 = (props: any) => <h2 className='block h2' {...props.attributes}>{props.children}</h2>;
+
+export const H3 = (props: any) => <h3 className='block h3' {...props.attributes}>{props.children}</h3>;
+
+export const H4 = (props: any) => <h4 className='block h4' {...props.attributes}>{props.children}</h4>;
+
+export const H5 = (props: any) => <h5 className='block h5' {...props.attributes}>{props.children}</h5>;
 
 export const HeadingOne = (props: any) => {
   const style = {textAlign: props.element.align};
@@ -124,11 +139,17 @@ export const typeLevel = (type: ElementType|null|undefined): number => {
     case 'heading-one': return 1;
     case 'heading-two': return 2;
     case 'heading-three': return 3;
+    case 'h1': return 1;
+    case 'h2': return 2;
+    case 'h3': return 3;
+    case 'h4': return 4;
+    case 'h5': return 5;
     default: return 0;
   }
 };
 
 export default {
+  H1, H2, H3, H4, H5,
   HeadingOne,
   HeadingTwo,
   HeadingThree,
@@ -147,14 +168,15 @@ export default {
         return <HeadingTwo {...props} />;
       case 'heading-three':
         return <HeadingThree {...props} />;
-      case 'code-block':
-        return <CodeBlock {...props} />;
-      case 'image-block':
-        return <ImageBlock {...props} />;
-      case 'link':
-        return <Link {...props} />;
-      default:
-        return <Block {...props} />;
+      case 'h1': return <H1 {...props} />;
+      case 'h2': return <H2 {...props} />;
+      case 'h3': return <H3 {...props} />;
+      case 'h4': return <H4 {...props} />;
+      case 'h5': return <H5 {...props} />;
+      case 'code-block': return <CodeBlock {...props} />;
+      case 'image-block': return <ImageBlock {...props} />;
+      case 'link': return <Link {...props} />;
+      default: return <Block {...props} />;
     }
   },
 

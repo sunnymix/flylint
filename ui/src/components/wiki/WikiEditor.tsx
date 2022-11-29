@@ -54,6 +54,22 @@ const WikiEditor = {
     );
   },
 
+  isHeadingActive(editor: any, level: number) {
+    const [isMatch] = Editor.nodes(editor, {
+      match: (ele: any) => ele.type === `h${level}`,
+    });
+    return !!isMatch;
+  },
+  
+  toggleHeading(editor: any, level: number) {
+    const isActive = WikiEditor.isHeadingActive(editor, level);
+    Transforms.setNodes(
+      editor,
+      {type: isActive ? null : `h${level}`, children: []},
+      {match: (ele: any) => Editor.isBlock(editor, ele)},
+    )
+  },
+
   isHeadingOneBlockActive(editor: any) {
     const [isMatch] = Editor.nodes(editor, {
       match: (ele: any) => ele.type === "heading-one",
@@ -202,42 +218,33 @@ const WikiEditor = {
       }
     }
 
-    if (!event.ctrlKey) {
-      return;
+    if (event.key === 'Enter') {
+      // TODO: void element press enter and insert new line
     }
 
+    if (!event.ctrlKey) return;
     switch (event.key) {
-      case "1": {
+      case '1':
+      case '2':
+      case '3':
+      case '4':
+      case '5':
         event.preventDefault();
-        WikiEditor.toggleHeadingOneBlock(editor);
+        const level = +event.key;
+        WikiEditor.toggleHeading(editor, level);
         break;
-      }
 
-      case "2": {
-        event.preventDefault();
-        WikiEditor.toggleHeadingTwoBlock(editor);
-        break;
-      }
-
-      case "3": {
-        event.preventDefault();
-        WikiEditor.toggleHeadingThreeBlock(editor);
-        break;
-      }
-
-      case "`": {
+      case "`":
         event.preventDefault();
         WikiEditor.toggleCodeBlock(editor);
         break;
-      }
 
-      case "b": {
+      case "b":
         event.preventDefault();
         WikiEditor.toggleBoldMark(editor);
         break;
-      }
 
-      case "k": {
+      case "k":
         event.preventDefault();
         const url = window.prompt('Url:')
         if (!url) {
@@ -245,18 +252,16 @@ const WikiEditor = {
         }
         WikiEditor.insertLink(editor, url);
         break;
-      }
 
-      case 'q': {
+      case 'q':
         event.preventDefault();
         WikiEditor.resetBlock(editor);
         break;
-      }
 
-      case "j": {
+      case "j":
         event.preventDefault();
         WikiEditor.makeToc(editor);
-      }
+        break;
     }
   },
 
@@ -270,7 +275,7 @@ const WikiEditor = {
       const toc: Toc = {
         index,
         type: ele.type,
-        text: ele.children[0]?.text || 'Empty',
+        text: ele.children[0]?.text || '-',
         level,
       };
       tocList.push(toc);

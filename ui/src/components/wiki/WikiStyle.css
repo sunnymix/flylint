@@ -10,7 +10,8 @@
 }
 
 .toc-item {
-  display: block;
+  display: flex;
+  align-items: center;
   line-height: 30px;
   min-height: 30px;
   color: #555;
@@ -21,6 +22,19 @@
 .toc-item:hover {
   color: #333;
   background-color: #eee;
+}
+
+.toc-level {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 14px;
+  width: 14px;
+  border-radius: 50%;
+  background: #bbb;
+  color: #fff;
+  font-size: 0.8rem;
+  margin-left: 4px;
 }
 
 /* Wiki Top: */
@@ -71,7 +85,7 @@
 
 .image-img {
   display: block;
-  max-width: 90%;
+  max-width: 100%;
 }
 
 .image-block.active .image-img {

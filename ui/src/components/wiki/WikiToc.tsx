@@ -24,7 +24,8 @@ const WikiToc = (props: WikiTocProps) => {
         {props.tocData && props.tocData.map((toc: Toc) => (
           <div key={toc.index}>
             <a className='toc-item' onClick={(event: any) => onClick(event, toc)}>
-              <div style={{paddingLeft: (toc.level - 1) * 20}}>{toc.text}</div>
+              <div className='toc-text' style={{paddingLeft: (toc.level - 1) * 20}}>{toc.text}</div>
+              <div className='toc-level'>{toc.level}</div>
             </a>
           </div>
         ))}

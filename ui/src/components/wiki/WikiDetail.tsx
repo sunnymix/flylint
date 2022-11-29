@@ -60,6 +60,10 @@ export default (props: WikiDetailProps) => {
   // Resize:
 
   const refreshBodySize = useCallback(() => {
+    return;
+
+    // Disable!
+
     setTimeout(() => {
       const winSize = Layout.winSize();
       const topSize = Layout.refSize(topRef);

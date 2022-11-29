@@ -5,6 +5,17 @@ import { EnterOutlined, DeleteOutlined } from '@ant-design/icons';
 import { active } from '@/components/common/Style';
 import { goto } from '@/components/common/Url';
 
+export type ElementType = 
+  | 'heading-one'
+  | 'heading-two'
+  | 'heading-three'
+  | 'code-block'
+  | 'image-block'
+  | 'block'
+  | 'leaf'
+  | 'edge'
+  | 'link';
+
 export const HeadingOne = (props: any) => {
   const style = {textAlign: props.element.align};
   return (
@@ -105,6 +116,16 @@ export const Link = (props: any) => {
       <Edge />{props.children}<Edge />
     </a>
   )
+};
+
+export const typeLevel = (type: ElementType|null|undefined): number => {
+  if (!type) return 0;
+  switch (type) {
+    case 'heading-one': return 1;
+    case 'heading-two': return 2;
+    case 'heading-three': return 3;
+    default: return 0;
+  }
 };
 
 export default {

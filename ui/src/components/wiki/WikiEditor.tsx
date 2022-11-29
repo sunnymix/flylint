@@ -7,10 +7,19 @@ import { isKeyHotkey } from "is-hotkey";
 import WikiApi from "./WikiApi";
 import MediaApi from "../media/MediaApi";
 import { Toc } from "./WikiModel";
+import { typeLevel } from "./WikiElement";
 
 const initialEmptyContent = JSON.stringify([{"type":"paragraph","children":[{"text":""}]}]);
 
 const WikiEditor = {
+
+  resetBlock(editor: any) {
+    Transforms.setNodes(
+      editor, 
+      {type: null, children: []},
+      {match: (ele: any) => Editor.isBlock(editor, ele)},
+    );
+  },
 
   isBoldMarkActive(editor: BaseEditor & ReactEditor) {
     const [isMatch] = Editor.nodes(editor, {
@@ -153,7 +162,7 @@ const WikiEditor = {
   
     editor.isInline = (ele: any) => ['link'].includes(ele.type) || isInline(ele);
 
-    editor.isToc = (ele: any) => ['heading-one', 'heading-two', 'heading-three'].includes(ele.type);
+    editor.isToc = (ele: any) => typeLevel(ele.type) > 0;
   
     editor.insertText = (text: any) => {
       if (text && isUrl(text)) {
@@ -177,17 +186,20 @@ const WikiEditor = {
   },
 
   onKeyDown(event: React.KeyboardEvent<HTMLDivElement>, editor: any) {
-    const { nativeEvent } = event;
 
-    if (isKeyHotkey('left', nativeEvent)) {
-      event.preventDefault();
-      Transforms.move(editor, {unit: 'offset', reverse: true});
-      return;
-    }
-    if (isKeyHotkey('right', nativeEvent)) {
-      event.preventDefault();
-      Transforms.move(editor, {unit: 'offset'});
-      return;
+    const { selection } = editor;
+    if (selection && Range.isCollapsed(selection)) {
+      const { nativeEvent } = event;
+      if (isKeyHotkey('left', nativeEvent)) {
+        event.preventDefault();
+        Transforms.move(editor, { unit: 'offset', reverse: true });
+        return;
+      }
+      if (isKeyHotkey('right', nativeEvent)) {
+        event.preventDefault();
+        Transforms.move(editor, { unit: 'offset' });
+        return;
+      }
     }
 
     if (!event.ctrlKey) {
@@ -235,6 +247,12 @@ const WikiEditor = {
         break;
       }
 
+      case 'q': {
+        event.preventDefault();
+        WikiEditor.resetBlock(editor);
+        break;
+      }
+
       case "j": {
         event.preventDefault();
         WikiEditor.makeToc(editor);
@@ -245,15 +263,15 @@ const WikiEditor = {
   makeToc(editor: any) {
     const eles = editor.children || [];
     if (!eles || !eles.length) return [];
-
     const tocList: Toc[] = [];
     eles.forEach((ele: any, index: number) => {
-      if (!editor.isToc(ele)) return;
+      const level = typeLevel(ele.type);
+      if (!level) return;
       const toc: Toc = {
         index,
         type: ele.type,
         text: ele.children[0]?.text || 'Empty',
-        level: 0,
+        level,
       };
       tocList.push(toc);
     });

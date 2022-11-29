@@ -59,7 +59,7 @@
 /* Wiki Body: */
 
 .wiki-body {
-  padding: 0 10px;
+  padding: 10px 20% 10px 10px;
   overflow: auto;
 }
 
@@ -75,7 +75,7 @@
 }
 
 .image-block.active .image-img {
-  box-shadow: 0 0 0 3px #b4d5ff;
+  box-shadow: 0 0 0 3px #1890ff50;
 }
 
 .image-ops {
@@ -93,9 +93,8 @@
 /* Link: */
 
 .link.active {
-  box-shadow: 0 0 0 3px #b4d5ff;
+  box-shadow: 0 0 0 3px #1890ff50;
 }
-
 
 .wiki_time {
   color: #00000073;

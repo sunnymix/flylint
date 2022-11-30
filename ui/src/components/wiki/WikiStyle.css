@@ -11,7 +11,7 @@
 
 .toc-item {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   line-height: 30px;
   min-height: 30px;
   color: #555;
@@ -24,17 +24,16 @@
   background-color: #eee;
 }
 
-.toc-level {
+/* Toc Lines: */
+
+.toc-lines {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 14px;
-  width: 14px;
-  border-radius: 50%;
-  background: #bbb;
-  color: #fff;
-  font-size: 0.8rem;
-  margin-left: 4px;
+  align-items: stretch;
+}
+
+.toc-line {
+  border-left: 1px dashed #ddd;
+  margin: 1px 8px;
 }
 
 /* Wiki Top: */

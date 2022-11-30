@@ -26,7 +26,7 @@ const WikiToc = (props: WikiTocProps) => {
             <a className='toc-item' onClick={(event: any) => onClick(event, toc)}>
               <div className='toc-lines'>
                 {[...Array(toc.level - 1).keys()].map((ele: any, index: number) => (
-                  <div className='toc-line'></div>
+                  <div key={index} className='toc-line'></div>
                 ))}
               </div>
               <div className='toc-text'>{toc.text}</div>

@@ -7,7 +7,7 @@ import com.sunnymix.flylint.api.common.Id;
  */
 public class WikiName {
 
-    public static final Integer MAX_LENGTH = 32;
+    public static final Integer MAX_LENGTH = 100;
 
     private final String name;
 

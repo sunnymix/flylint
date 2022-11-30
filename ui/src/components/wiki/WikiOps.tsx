@@ -9,7 +9,7 @@ import { EventType } from "@/components/common/EventBus";
 // TODO: rewrite WikiOps
 
 export const onUpdateName = (mode: WikiMode, name: string, cb?: (data: WikiNameUpdatedEventData) => void) => {
-  const newName = prompt("Update Name:", name);
+  const newName = prompt("name :", name);
     if (!newName || newName.trim().length < 0) return;
 
     WikiApi.updateName(name, newName, (success: boolean, updatedName: string) => {
@@ -27,7 +27,7 @@ export const onUpdateName = (mode: WikiMode, name: string, cb?: (data: WikiNameU
 };
 
 export const onUpdateTitle = (mode: WikiMode, name: string, title: string, cb?: (data: WikiTitleUpdatedEventData) => void) => {
-  const newTitle = prompt("Update Title:", title);
+  const newTitle = prompt("title :", title);
   if (!newTitle || newTitle.trim().length < 0) return;
 
   WikiApi.updateTitle(name, newTitle, (success: boolean, updatedTitle: string) => {

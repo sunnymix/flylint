@@ -218,8 +218,10 @@ const WikiEditor = {
       }
     }
 
-    if (event.key === 'Enter') {
-      // TODO: void element press enter and insert new line
+    if (!!event.metaKey && event.key === 'Enter') {
+      event.preventDefault();
+      event.stopPropagation();
+      WikiEditor.insertBlock(editor);
     }
 
     if (!event.ctrlKey) return;
@@ -353,6 +355,14 @@ const WikiEditor = {
         Transforms.select(editor, {path: [index, 0], offset: 0});
       }, 10);
     }, 10);
+  },
+
+  insertBlock(editor: any) {
+    const data = {
+      type: 'block',
+      children: [{text: ''}]
+    };
+    Transforms.insertNodes(editor, data);
   },
 
 };

@@ -1,4 +1,4 @@
-import { Descendant, Editor, Transforms, Text, BaseEditor } from "slate";
+import { Descendant, Editor, Transforms, Text, BaseEditor, Point, Node } from "slate";
 import { Element as SlateElement, Range, Location } from "slate";
 import { ReactEditor } from "slate-react";
 import { LinkData, ImageBlockData } from "./WikiElement";
@@ -218,10 +218,17 @@ const WikiEditor = {
       }
     }
 
+    if (!!event.shiftKey && event.key === 'Enter') {
+      event.preventDefault();
+      event.stopPropagation();
+      WikiEditor.prependBlock(editor);
+    }
+
     if (!!event.metaKey && event.key === 'Enter') {
       event.preventDefault();
       event.stopPropagation();
-      WikiEditor.insertBlock(editor);
+      WikiEditor.appendBlock(editor);
+      return;
     }
 
     if (!event.ctrlKey) return;
@@ -317,7 +324,7 @@ const WikiEditor = {
   },
 
   initialContent() {
-    return [{type: 'block', children:[{text: ''}]}];
+    return [WikiEditor.emptyBlock()];
   },
 
   initialContentRaw() {
@@ -357,12 +364,33 @@ const WikiEditor = {
     }, 10);
   },
 
-  insertBlock(editor: any) {
-    const data = {
-      type: 'block',
-      children: [{text: ''}]
-    };
-    Transforms.insertNodes(editor, data);
+  currentPoint(editor: any) {
+    if (!editor || !editor.selection || !editor.selection.anchor) return null;
+    return editor.selection.anchor;
+  },
+
+  emptyBlock() {
+    return {type: 'block', children: [{text: ''}]} as Node;
+  },
+
+  insertBlock(editor: any, node: Node, at: Point) {
+    Transforms.insertNodes(editor, node, {at});
+  },
+
+  appendBlock(editor: any) {
+    Transforms.insertNodes(editor, WikiEditor.emptyBlock());
+  },
+
+  prependBlock(editor: any) {
+    const point = WikiEditor.currentPoint(editor);
+    if (!point) return;
+    const [row] = point.path;
+    const previousPoint = {
+      offset: 0,
+      path: [row, 0],
+    }
+    WikiEditor.insertBlock(editor, WikiEditor.emptyBlock(), previousPoint);
+    WikiEditor.focusIndex(editor, row);
   },
 
 };

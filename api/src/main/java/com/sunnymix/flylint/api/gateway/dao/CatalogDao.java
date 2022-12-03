@@ -75,7 +75,7 @@ public class CatalogDao {
             .update(WIKI)
             .set(WIKI.PATH, replace(WIKI.PATH, descendantPath, newPath))
             .set(WIKI.UPDATED, OffsetDateTime.now())
-            .where(WIKI.NAME.startsWith(descendantPath))
+            .where(WIKI.PATH.startsWith(descendantPath))
             .execute();
     }
 

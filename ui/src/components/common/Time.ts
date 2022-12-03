@@ -1,11 +1,11 @@
 
 import moment from "moment"
 
-const FORMAT_DATETIME = "YYYY-MM-DD HH:mm:ss";
+const FORMAT_DATETIME = "YYYY.MM.DD HH:mm:ss";
 
-const FORMAT_DATETIME3 = "YYYY-MM-DD HH:mm:ss.SSS";
+const FORMAT_DATETIME3 = "YYYY.MM.DD HH:mm:ss.SSS";
 
-const FORMAT_DATE = "YYYY-MM-DD";
+const FORMAT_DATE = "YYYY.MM.DD";
 
 const formatFromMillis = (millis: string, format: string) => moment(new Date(millis)).format(format);
 

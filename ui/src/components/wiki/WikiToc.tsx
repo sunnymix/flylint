@@ -21,15 +21,20 @@ const WikiToc = (props: WikiTocProps) => {
   return (
     <div className={props.className || 'wiki-toc'} style={{ width: props.width || 400}}>
       <div className='toc-content'>
-        {props.tocData && props.tocData.map((toc: Toc) => (
+        {props.tocData && props.tocData.map((toc: Toc) => (                                                                                                                                                                                                                                                                                                                                                                                                                                 
           <div key={toc.index}>
             <a className='toc-item' onClick={(event: any) => onClick(event, toc)}>
               <div className='toc-lines'>
-                {[...Array(toc.level - 1).keys()].map((ele: any, index: number) => (
+                {[...Array(toc.level).keys()].map((ele: any, index: number) => (
                   <div key={index} className='toc-line'></div>
                 ))}
               </div>
-              <div className='toc-text'>{toc.text}</div>
+              <div className='toc-text'>
+                <div className='toc-indicator'>
+                  <div className='toc-dot'></div>
+                </div>
+                {toc.text}
+              </div>
             </a>
           </div>
         ))}

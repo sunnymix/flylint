@@ -284,7 +284,7 @@ const WikiEditor = {
       const toc: Toc = {
         index,
         type: ele.type,
-        text: ele.children[0]?.text || '-',
+        text: ele.children[0]?.text || '···',
         level,
       };
       tocList.push(toc);

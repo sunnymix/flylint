@@ -9,8 +9,14 @@ export const active = (...args: boolean[]) => {
   return className('active', ...args);
 };
 
+export const last = (...args: boolean[]) => {
+  return className('last', ...args);
+};
+
 export const Style = {
+  className,
   active,
+  last,
 };
 
 export default Style;

@@ -38,13 +38,19 @@
   align-items: stretch;
 }
 
+.toc-line-body {
+  width: 20px;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+}
+
 .toc-line {
   width: 3px;
   background-color: #ddd;
-  margin: 0 8px;
 }
 
-.toc-line.last {
+.toc-line-body.last .toc-line {
   background-color: transparent;
 }
 
@@ -69,10 +75,9 @@
   margin-top: 11px;
   width: 7px;
   height: 7px;
-  border: 2px solid #fff;
-  /* border-radius: 50%; */
-  border-radius: 4px;
-  background-color: #aaa;
+  border: 1px solid #fff;
+  border-radius: 50%;
+  background-color: #bbb;
 }
 
 /* Wiki Top: */

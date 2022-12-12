@@ -4,7 +4,7 @@
   flex-wrap: nowrap;
   background-color: #fff;
   border-bottom: 1px solid #ddd;
-  padding: 10px;
+  padding: 0;
   overflow: hidden;
   overflow-x: auto;
 }
@@ -12,19 +12,31 @@
 .nav_item {
   position: relative;
   cursor: pointer;
-  padding: 0 10px;
-  height: 30px;
-  line-height: 30px;
+  padding: 0 20px;
+  height: 50px;
+  line-height: 50px;
   color: #555;
   font-weight: 500;
-  border-radius: 4px;
-  margin-right: 10px;
+}
+
+.nav_item::after {
+  content: ' ';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-bottom: 2px solid transparent;
 }
 
 .nav_item:hover {
-  background: #ddd;
+  /* background: #ddd; */
 }
 
-.nav_item.active {
-  background-color: #1890ff30;
+.nav_item:hover::after {
+  border-color: #ddd;
+}
+
+.nav_item.active::after {
+  /* background-color: #1890ff30; */
+  border-color: #1890ff;
 }

@@ -17,52 +17,52 @@ const items: NavItemProps[] = [
     key: "",
   },
   {
-    label: <>WIKI</>,
+    label: <>wiki</>,
     path: "/wiki",
     key: "wiki",
   },
   {
-    label: <>CATALOG</>,
+    label: <>catalog</>,
     path: "/catalog",
     key: "catalog",
   },
   {
-    label: <>TOPIC</>,
+    label: <>topic</>,
     path: "/topic",
     key: "topic",
   },
   {
-    label: <>MEDIA</>,
+    label: <>media</>,
     path: "/media",
     key: "media",
   },
   {
-    label: <>DRAW</>,
+    label: <>draw</>,
     path: "/draw",
     key: "draw",
   },
   {
-    label: <>TOOL</>,
+    label: <>tool</>,
     path: "/tool",
     key: "tool",
   },
   {
-    label: <>TAG</>,
+    label: <>tag</>,
     path: "/tag",
     key: "tag",
   },
   {
-    label: <>METADATA</>,
-    path: "/metadata",
-    key: "metadata",
+    label: <>meta</>,
+    path: "/meta",
+    key: "meta",
   },
   {
-    label: <>OKR</>,
+    label: <>okr</>,
     path: "/okr",
     key: "okr",
   },
   {
-    label: <>ABOUT</>,
+    label: <>about</>,
     path: "/about",
     key: "about",
   },
@@ -100,8 +100,8 @@ export default (props: any) => {
     if (pathname.startsWith("/tag")) {
       key = "tag";
     }
-    if (pathname.startsWith("/metadata")) {
-      key = "metadata";
+    if (pathname.startsWith("/meta")) {
+      key = "meta";
     }
     if (pathname.startsWith("/okr")) {
       key = "okr";

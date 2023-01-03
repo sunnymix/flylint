@@ -3,11 +3,11 @@ export default () => {
   return (
     <div>
       <div className="com_header">
-        <div className="com_title">TOPIC</div>
+        <div className="com_title">topic</div>
       </div>
       <div className="com_body">
         <div>
-          <h2>RECENT</h2>
+          <h2>recent</h2>
           <div className="com_cards">
             <div className="com_card">
               <h3>书单</h3>

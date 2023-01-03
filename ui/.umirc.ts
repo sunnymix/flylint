@@ -24,7 +24,7 @@ export default defineConfig({
         { path: "/draw", exact: true, component: "@/pages/draw" },
         { path: "/tool", exact: true, component: "@/pages/tool" },
         { path: "/tag", exact: true, component: "@/pages/tag" },
-        { path: "/metadata", exact: true, component: "@/pages/metadata" },
+        { path: "/meta", exact: true, component: "@/pages/meta" },
         { path: "/okr", exact: true, component: "@/pages/okr" },
         { path: "/about", exact: true, component: "@/pages/about" },
       ],

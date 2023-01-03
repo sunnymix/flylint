@@ -127,7 +127,7 @@ export default (props: CatalogTreeProps) => {
   return (
     <div className={props.className} ref={rootRef} style={{width: props.width || 400}}>
       <div className="com-header">
-        <div className="com-title">CATALOG</div>
+        <div className="com-title">catalog</div>
         <div className="com-ops">
           <WikiCreateButton mode="catalog" className="com-op" catalogName="/" />
           <Button onClick={onShrinkAll} className="com-op" type="text" size="small"><CompressOutlined /></Button>

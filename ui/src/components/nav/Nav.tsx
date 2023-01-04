@@ -27,6 +27,11 @@ const items: NavItemProps[] = [
     key: "catalog",
   },
   {
+    label: <>meta</>,
+    path: "/meta",
+    key: "meta",
+  },
+  {
     label: <>topic</>,
     path: "/topic",
     key: "topic",
@@ -50,11 +55,6 @@ const items: NavItemProps[] = [
     label: <>tag</>,
     path: "/tag",
     key: "tag",
-  },
-  {
-    label: <>meta</>,
-    path: "/meta",
-    key: "meta",
   },
   {
     label: <>okr</>,

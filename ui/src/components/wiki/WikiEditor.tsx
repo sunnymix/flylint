@@ -266,6 +266,11 @@ const WikiEditor = {
         event.preventDefault();
         WikiEditor.resetBlock(editor);
         break;
+      
+      case 'i':
+        event.preventDefault();
+        console.log('icon');
+        break;
 
       case "j":
         event.preventDefault();

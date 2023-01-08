@@ -4,6 +4,7 @@ import { Button } from 'antd';
 import { EnterOutlined, DeleteOutlined } from '@ant-design/icons';
 import { active } from '@/components/common/Style';
 import { goto } from '@/components/common/Url';
+import Icons from './icon/AstroIcons';
 
 export type ElementType = 
   | 'heading-one'
@@ -19,7 +20,9 @@ export type ElementType =
   | 'block'
   | 'leaf'
   | 'edge'
-  | 'link';
+  | 'link'
+  | 'icon'
+;
 
 export const H1 = (props: any) => <h1 className='block h1' {...props.attributes}>{props.children}</h1>;
 
@@ -111,11 +114,7 @@ export const Leaf = (props: any) => {
   );
 };
 
-export const Edge = () => {
-  return (
-    <span contentEditable={false} style={{fontSize:0}}>{String.fromCodePoint(160)}</span>
-  )
-};
+export const Edge = () => <span contentEditable={false} style={{fontSize:0}}>{String.fromCodePoint(160)}</span>;
 
 export type LinkData = { type: 'link'; url: string; children: Descendant[] };
 
@@ -132,6 +131,10 @@ export const Link = (props: any) => {
     </a>
   )
 };
+
+export type IconData = { type: 'icon'; icon: string; };
+
+export const Icon = (props: any) => <span className='inline icon'><Icons.PiscesIcon /></span>;
 
 export const typeLevel = (type: ElementType|null|undefined): number => {
   if (!type) return 0;
@@ -159,6 +162,7 @@ export default {
   Leaf,
   Edge,
   Link,
+  Icon,
   
   renderElement(props: any) {
     switch (props.element.type) {
@@ -176,6 +180,7 @@ export default {
       case 'code-block': return <CodeBlock {...props} />;
       case 'image-block': return <ImageBlock {...props} />;
       case 'link': return <Link {...props} />;
+      case 'icon': return <Icon {...props} />;
       default: return <Block {...props} />;
     }
   },

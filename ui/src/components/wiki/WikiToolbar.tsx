@@ -5,7 +5,7 @@ import { css, cx } from "@emotion/css";
 import { useFocused, useSlate } from "slate-react";
 import { Range, Editor } from "slate";
 import { EllipsisOutlined, FileImageFilled } from "@ant-design/icons";
-import Icons from "./icon/AstrologyIcons";
+import Icons from "./icon/AstroIcons";
 
 export interface ToolButtonProps {
   children: React.ReactNode,

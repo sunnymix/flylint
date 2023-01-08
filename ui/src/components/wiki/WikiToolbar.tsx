@@ -5,6 +5,7 @@ import { css, cx } from "@emotion/css";
 import { useFocused, useSlate } from "slate-react";
 import { Range, Editor } from "slate";
 import { EllipsisOutlined, FileImageFilled } from "@ant-design/icons";
+import Icons from "./icon/AstrologyIcons";
 
 export interface ToolButtonProps {
   children: React.ReactNode,
@@ -35,8 +36,8 @@ const WikiToolbar = (props: WikiToolbarProps) => {
       const domSelection: any = window.getSelection();
       const domRange = domSelection.getRangeAt(0);
       const rect = domRange.getBoundingClientRect();
-      el.style.opacity = '0.6';
-      el.style.top = `${rect.top + window.pageYOffset - el.offsetHeight}px`;
+      el.style.opacity = '1.0';
+      el.style.top = `${rect.top + window.pageYOffset - el.offsetHeight - 4}px`;
       el.style.left = `${rect.left + window.pageXOffset - el.offsetWidth / 2 + rect.width / 2}px`;
     } catch (error) {}
   });
@@ -53,13 +54,24 @@ const WikiToolbar = (props: WikiToolbarProps) => {
         opacity: 0;
         display: flex;
         align-items: center;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        border-radius: 2px;
+        padding: 6px 0 0 0;
+        box-shadow: 0 0 2px 1px #00000020;
         `)}>
-        {/* <div className={cx(css`
-          border-style: solid;
-          border-width: 5px 4px;
-          border-color: #000 transparent transparent transparent;`)}></div> */}
-        {/* <Button type="text" size="small" style={{color: "#fff"}}><EllipsisOutlined/></Button>
-        <Button type="text" size="small" style={{color: "#fff"}}><FileImageFilled/></Button> */}
+        <Button type="text" size="small"><Icons.AriesIcon /></Button>
+        <Button type="text" size="small"><Icons.TaurusIcon /></Button>
+        <Button type="text" size="small"><Icons.GeminiIcon /></Button>
+        <Button type="text" size="small"><Icons.CancerIcon /></Button>
+        <Button type="text" size="small"><Icons.LeoIcon /></Button>
+        <Button type="text" size="small"><Icons.VirgoIcon /></Button>
+        <Button type="text" size="small"><Icons.LibraIcon /></Button>
+        <Button type="text" size="small"><Icons.ScorpioIcon /></Button>
+        <Button type="text" size="small"><Icons.SagittariusIcon /></Button>
+        <Button type="text" size="small"><Icons.CapricornIcon /></Button>
+        <Button type="text" size="small"><Icons.AquariusIcon /></Button>
+        <Button type="text" size="small"><Icons.PiscesIcon /></Button>
       </div>
     </Portal>
   );

@@ -178,3 +178,14 @@ br {
   margin: 0;
   padding: 0;
 }
+
+/* icon */
+
+.inline.icon {
+  display: inline-flex;
+  align-items: center;
+}
+
+.inline.icon.active {
+  box-shadow: 0 0 0 1px #1890ff;
+}

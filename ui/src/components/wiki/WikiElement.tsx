@@ -116,7 +116,7 @@ export const Leaf = (props: any) => {
 
 export const Edge = () => <span contentEditable={false} style={{fontSize:0}}>{String.fromCodePoint(160)}</span>;
 
-export type LinkData = { type: 'link'; url: string; children: Descendant[] };
+export type LinkData = { type: 'link'; url: string; children: Descendant[]; };
 
 export const Link = (props: any) => {
   const editor: any = useSlateStatic();
@@ -132,9 +132,17 @@ export const Link = (props: any) => {
   )
 };
 
-export type IconData = { type: 'icon'; icon: string; };
+export type IconData = { type: 'icon'; icon: string; children: [{'text': ''}]; };
 
-export const Icon = (props: any) => <span className='inline icon'><Icons.PiscesIcon /></span>;
+export const Icon = (props: any) => {
+  const selected = useSelected();
+  const iconEle = Icons.getIcon(props.element.icon);
+  return (
+    <span className={`inline icon ${active(selected)}`} {...props.attributes} contentEditable={false}>
+      {iconEle}{props.children}
+    </span>
+  );
+};
 
 export const typeLevel = (type: ElementType|null|undefined): number => {
   if (!type) return 0;

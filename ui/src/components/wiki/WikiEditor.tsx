@@ -1,13 +1,14 @@
 import { Descendant, Editor, Transforms, Text, BaseEditor, Point, Node } from "slate";
 import { Element as SlateElement, Range, Location } from "slate";
 import { ReactEditor } from "slate-react";
-import { LinkData, ImageBlockData } from "./WikiElement";
+import { LinkData, ImageBlockData, IconData } from "./WikiElement";
 import isUrl from "is-url";
 import { isKeyHotkey } from "is-hotkey";
 import WikiApi from "./WikiApi";
 import MediaApi from "../media/MediaApi";
 import { Toc } from "./WikiModel";
 import { typeLevel } from "./WikiElement";
+import { IconNames } from "./icon/AstroIcons";
 
 const initialEmptyContent = JSON.stringify([{"type":"paragraph","children":[{"text":""}]}]);
 
@@ -174,9 +175,9 @@ const WikiEditor = {
   withInlines(editor: any) {
     const { insertData, insertText, isInline, isVoid } = editor;
 
-    editor.isVoid = (ele: any) => ['image-block'].includes(ele.type) || isVoid(ele);
+    editor.isVoid = (ele: any) => ['image-block', 'icon'].includes(ele.type) || isVoid(ele);
   
-    editor.isInline = (ele: any) => ['link'].includes(ele.type) || isInline(ele);
+    editor.isInline = (ele: any) => ['link', 'icon'].includes(ele.type) || isInline(ele);
 
     editor.isToc = (ele: any) => typeLevel(ele.type) > 0;
   
@@ -267,9 +268,10 @@ const WikiEditor = {
         WikiEditor.resetBlock(editor);
         break;
       
-      case 'i':
+      case 's':
         event.preventDefault();
         console.log('icon');
+        WikiEditor.insertIcon(editor, 'Aries');
         break;
 
       case "j":
@@ -396,6 +398,16 @@ const WikiEditor = {
     }
     WikiEditor.insertBlock(editor, WikiEditor.emptyBlock(), previousPoint);
     WikiEditor.focusIndex(editor, row);
+  },
+
+  insertIcon(editor: any, name: IconNames) {
+    const data: IconData = {
+      type: 'icon',
+      icon: name,
+      children: [{'text': ''}],
+    };
+
+    Transforms.insertNodes(editor, data);
   },
 
 };

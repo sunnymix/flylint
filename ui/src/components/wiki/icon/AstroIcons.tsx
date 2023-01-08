@@ -1,4 +1,19 @@
 
+export type IconNames = 
+| 'Aries'
+| 'Taurus'
+| 'Gemini'
+| 'Cancer'
+| 'Leo'
+| 'Virgo'
+| 'Libra'
+| 'Scorpio'
+| 'Sagittarius'
+| 'Capricorn'
+| 'Aquarius'
+| 'Pisces'
+;
+
 const AriesIcon = () => (
   <svg width="12pt" height="12pt" version="1.1" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
   <defs>
@@ -177,6 +192,21 @@ const PiscesIcon = () => (
   </svg>
 );
 
+const getIcon = (name: IconNames) => {
+  if (name === 'Aries') return <AriesIcon />;
+  if (name === 'Taurus') return <TaurusIcon />;
+  if (name === 'Gemini') return <GeminiIcon />;
+  if (name === 'Cancer') return <CancerIcon />;
+  if (name === 'Virgo') return <VirgoIcon />;
+  if (name === 'Libra') return <LibraIcon />;
+  if (name === 'Scorpio') return <ScorpioIcon />;
+  if (name === 'Sagittarius') return <SagittariusIcon />;
+  if (name === 'Capricorn') return <CapricornIcon />;
+  if (name === 'Aquarius') return <AquariusIcon />;
+  if (name === 'Pisces') return <PiscesIcon />;
+  return null;
+};
+
 const Icons = {
   AriesIcon,
   TaurusIcon,
@@ -190,6 +220,8 @@ const Icons = {
   CapricornIcon,
   AquariusIcon,
   PiscesIcon,
+
+  getIcon,
 };
 
 export default Icons;

@@ -163,6 +163,10 @@ p,
   padding: 0;
 }
 
+pre, code, kbd, samp {
+  font-family: "Verily", SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace !important;
+}
+
 hr {
   margin: 10px 0;
   border: 0 none;

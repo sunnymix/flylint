@@ -183,6 +183,7 @@ br {
 
 .inline.icon {
   padding: 0 2px;
+  margin: 0 4px;
 }
 
 .inline.icon.active {

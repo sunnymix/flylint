@@ -1,5 +1,6 @@
 
 export type IconNames = 
+// Constellation:
 | 'Aries'
 | 'Taurus'
 | 'Gemini'
@@ -12,10 +13,31 @@ export type IconNames =
 | 'Capricorn'
 | 'Aquarius'
 | 'Pisces'
+// Planets:
+| 'Sun'
+| 'Moon'
+| 'Mercury'
+| 'Venus'
+| 'Earth'
+| 'Mars'
+| 'Jupiter'
+| 'Saturn'
+| 'Uranus'
+| 'Neptune'
+| 'Pluto'
+// Aspects:
+| 'Conjunction'
+| 'Opposition'
+| 'Trine'
+| 'Square'
+| 'Sextile'
+// Others:
+| 'AscendingNode'
+| 'DescendingNode'
 ;
 
 const AriesIcon = () => (
-  <svg width="12pt" height="12pt" version="1.1" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
+  <svg x="0" y="0" width="12pt" height="12pt" version="1.1" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
   <g transform="matrix(.14925 0 0 .14925 .00026658 .15027)" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeWidth="4.0201">
   <g fill="none" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeWidth="40.201">
   <path transform="matrix(.1 0 0 -.1 0 80.4)" d="m116.05 451.07c-31.406 31.406-49.063 74.023-49.063 118.44s17.656 87.031 49.063 118.44c31.406 31.406 74.023 49.062 118.44 49.062 92.5 0 167.5-75 167.5-167.5v-502.5"/>
@@ -187,7 +209,170 @@ const PiscesIcon = () => (
   </svg>
 );
 
+const SunIcon = () => (
+  <svg width="12pt" height="12pt" version="1.1" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
+  <path d="m6.8984 6c0-0.49609-0.40234-0.89844-0.89844-0.89844s-0.89844 0.40234-0.89844 0.89844 0.40234 0.89844 0.89844 0.89844 0.89844-0.40234 0.89844-0.89844"/>
+  <path transform="matrix(.1 0 0 -.1 0 12)" d="m110 60c0 27.617-22.383 50-50 50s-50-22.383-50-50 22.383-50 50-50 50 22.383 50 50z" fill="none" stroke="#000" strokeMiterlimit="10" strokeWidth="6"/>
+  </svg>  
+);
+
+const MoonIcon = () => (
+  <svg width="12pt" height="12pt" version="1.1" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
+  <path d="m3.4999 1c2.7617 0 5 2.2383 5 5s-2.2383 5-5 5c1.7852-1.0312 2.8867-2.9375 2.8867-5s-1.1016-3.9688-2.8867-5zm0 0" fill="none" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="1.5" strokeWidth=".6"/>
+  </svg>  
+);
+
+const MercuryIcon = () => (
+  <svg width="12pt" height="12pt" version="1.1" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
+  <path d="m8 5c0-1.1055-0.89453-2-2-2s-2 0.89453-2 2 0.89453 2 2 2 2-0.89453 2-2zm0 0" fill="none" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="10" strokeWidth=".6"/>
+  <path d="m4 1c0 1.1055 0.89453 2 2 2s2-0.89453 2-2" fill="none" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="10" strokeWidth=".6"/>
+  <path d="m6 11v-4" fill="none" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="10" strokeWidth=".6"/>
+  <path d="m4 9h4" fill="none" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="10" strokeWidth=".6"/>
+  </svg>  
+);
+
+const VenusIcon = () => (
+  <svg width="12pt" height="12pt" version="1.1" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
+  <path d="m8.5 3.5c0-1.3789-1.1211-2.5-2.5-2.5s-2.5 1.1211-2.5 2.5 1.1211 2.5 2.5 2.5 2.5-1.1211 2.5-2.5zm0 0" fill="none" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="10" strokeWidth=".6"/>
+  <path d="m6 11v-5" fill="none" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="10" strokeWidth=".6"/>
+  <path d="m3.5 8.5h5" fill="none" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="10" strokeWidth=".6"/>
+  </svg>
+);
+
+const EarthIcon = () => (
+  <svg width="12pt" height="12pt" version="1.1" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
+  <g fill="none" stroke="#000" strokeMiterlimit="10" strokeWidth="6">
+  <path transform="matrix(.1 0 0 -.1 0 12)" d="m110 60c0 27.617-22.383 50-50 50s-50-22.383-50-50 22.383-50 50-50 50 22.383 50 50z"/>
+  <path transform="matrix(.1 0 0 -.1 0 12)" d="m60 10v100"/>
+  <path transform="matrix(.1 0 0 -.1 0 12)" d="m10 60h100"/>
+  </g>
+  </svg>  
+);
+
+const MarsIcon = () => (
+  <svg width="12pt" height="12pt" version="1.1" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
+  <path d="m9 7c0-2.207-1.793-4-4-4s-4 1.793-4 4 1.793 4 4 4 4-1.793 4-4zm0 0" fill="none" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="10" strokeWidth=".6"/>
+  <path d="M 7.828125,4.171875 11,1" fill="none" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="10" strokeWidth=".6"/>
+  <path d="m9.2305 1h1.7695v1.7695" fill="none" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="10" strokeWidth=".6"/>
+  </svg>  
+);
+
+const JupiterIcon = () => (
+  <svg width="12pt" height="12pt" version="1.1" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
+  <path d="m2.25 1c1.3398 0.77344 2.1641 2.2031 2.1641 3.75s-0.82422 2.9766-2.1641 3.75h7.5" fill="none" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="1.5" strokeWidth=".6"/>
+  <path d="m7.25 6v5" fill="none" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="1.5" strokeWidth=".6"/>
+  </svg>  
+);
+
+const SaturnIcon = () => (
+  <svg width="12pt" height="12pt" version="1.1" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
+  <path d="m3 3h4" fill="none" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="10" strokeWidth=".6"/>
+  <path d="m5 1v5" fill="none" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="10" strokeWidth=".6"/>
+  <path d="m5 6c0-1.1055 0.89453-2 2-2s2 0.89453 2 2c0 0.53125-0.21094 1.0391-0.58594 1.4141-0.90625 0.90625-1.4141 2.3047-1.4141 3.5859" fill="none" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="10" strokeWidth=".6"/>
+  </svg>  
+);
+
+const UranusIcon = () => (
+  <svg width="12pt" height="12pt" version="1.1" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
+  <path d="m7.25 9.75c0-0.69141-0.55859-1.25-1.25-1.25s-1.25 0.55859-1.25 1.25c0 0.69141 0.55859 1.25 1.25 1.25s1.25-0.55859 1.25-1.25zm0 0" fill="none" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="10" strokeWidth=".6"/>
+  <path d="m6 8.5v-6.25" fill="none" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="10" strokeWidth=".6"/>
+  <path d="m3.5 1v5" fill="none" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="10" strokeWidth=".6"/>
+  <path d="m8.5 1v5" fill="none" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="10" strokeWidth=".6"/>
+  <path d="m3.5 3.5h5" fill="none" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="10" strokeWidth=".6"/>
+  </svg>  
+);
+
+const NeptuneIcon = () => (
+  <svg width="12pt" height="12pt" version="1.1" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
+  <g fill="none" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="10" strokeWidth=".6">
+  <path d="m6 11v-10"/>
+  <path d="m3.5 7.25h5"/>
+  <path d="m2.25 1c0 2.0703 1.6797 3.75 3.75 3.75s3.75-1.6797 3.75-3.75"/>
+  </g>
+  </svg>  
+);
+
+const PlutoIcon = () => (
+  <svg width="12pt" height="12pt" version="1.1" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
+  <g fill="none" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="10" strokeWidth=".6">
+  <path d="m6 11v-6.25"/>
+  <path d="m3.5 7.25h5"/>
+  <path d="m2.25 1c0 2.0703 1.6797 3.75 3.75 3.75s3.75-1.6797 3.75-3.75"/>
+  <path d="m7.25 2.25c0-0.69141-0.55859-1.25-1.25-1.25s-1.25 0.55859-1.25 1.25c0 0.69141 0.55859 1.25 1.25 1.25s1.25-0.55859 1.25-1.25z"/>
+  </g>
+  </svg>
+);
+
+const ConjunctionIcon = () => (
+  <svg width="12pt" height="12pt" version="1.1" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
+  <path d="m5.3362 8.3318c0-0.46094-0.18652-0.87793-0.48828-1.1797-0.30176-0.30176-0.71875-0.48828-1.1797-0.48828-0.92188 0-1.668 0.74609-1.668 1.668 0 0.92187 0.74609 1.668 1.668 1.668 0.92187 0 1.668-0.74609 1.668-1.668z" fill="none" stroke="#000" strokeMiterlimit="10" strokeWidth=".6"/>
+  <path d="m4.848 7.152 3.4838-3.4838" fill="none" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeWidth=".6"/>
+  </svg>
+);
+
+const OppositionIcon = () => (
+  <svg width="12pt" height="12pt" version="1.1" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
+  <path d="m9.9998 3.6682c0-0.92188-0.74609-1.668-1.668-1.668-0.92188 0-1.668 0.74609-1.668 1.668 0 0.46094 0.18652 0.87793 0.48828 1.1797 0.30176 0.30176 0.71875 0.48828 1.1797 0.48828 0.92187 0 1.668-0.74609 1.668-1.668z" fill="none" stroke="#000" strokeMiterlimit="10" strokeWidth=".6"/>
+  <path d="m5.3362 8.3318c0-0.46094-0.18652-0.87793-0.48828-1.1797-0.30176-0.30176-0.71875-0.48828-1.1797-0.48828-0.92188 0-1.668 0.74609-1.668 1.668 0 0.92187 0.74609 1.668 1.668 1.668 0.92187 0 1.668-0.74609 1.668-1.668z" fill="none" stroke="#000" strokeMiterlimit="10" strokeWidth=".6"/>
+  <path d="m4.848 7.152 2.304-2.304" fill="none" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeWidth=".6"/>
+  </svg>  
+);
+
+const TrineIcon = () => (
+  <svg width="12pt" height="12pt" version="1.1" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(0 .6662)">
+  <g transform="translate(11.593 -2.1191)" fill="none" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="10" strokeWidth=".6">
+  <path d="m-0.59297 12.449-5.0002-8.6607"/>
+  <path d="m-0.59297 12.449h-10.001"/>
+  <path d="m-10.593 12.449 5.0003-8.6607"/>
+  </g>
+  </g>
+  </svg>  
+);
+
+const SquareIcon = () => (
+  <svg width="12pt" height="12pt" version="1.1" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(11.593 -1.4492)" fill="none" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="10" strokeWidth=".6">
+  <path d="m-0.59297 12.449v-10"/>
+  <path d="m-0.59297 2.4489h-10"/>
+  <path d="m-0.59297 12.449h-10.001"/>
+  <path d="m-10.593 12.449v-10.001"/>
+  </g>
+  </svg>
+);
+
+const SextileIcon = () => (
+  <svg width="12pt" height="12pt" version="1.1" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
+  <path d="m11 6h-10" fill="none" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="10" strokeWidth=".6"/>
+  <path d="m6 6 2.4999 4.33" fill="none" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="10" strokeWidth=".6"/>
+  <path d="m3.5001 1.67 2.4999 4.33" fill="none" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="10" strokeWidth=".6"/>
+  <path d="m8.4999 1.67-2.4999 4.33" fill="none" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="10" strokeWidth=".6"/>
+  <path d="m6 6-2.4999 4.33" fill="none" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="10" strokeWidth=".6"/>
+  </svg>
+);
+
+const AscendingNodeIcon = () => (
+  <svg width="12pt" height="12pt" version="1.1" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
+  <g transform="rotate(-45 5.2335 5.4283)" fill="none" stroke="#000" strokeWidth=".6">
+  <path d="m5.7119 10.034c2.207 0 4-1.793 4-4s-1.793-4-4-4-4 1.793-4 4"/>
+  <path d="m1.7119 6.0339c0-0.69141-0.55859-1.25-1.25-1.25-0.69141 0-1.25 0.55859-1.25 1.25s0.55859 1.25 1.25 1.25c0.69141 0 1.25-0.55859 1.25-1.25z"/>
+  <path d="m6.9619 11.284c0-0.69141-0.55859-1.25-1.25-1.25-0.69141 0-1.25 0.55859-1.25 1.25s0.55859 1.25 1.25 1.25c0.69141 0 1.25-0.55859 1.25-1.25z"/>
+  </g>
+  </svg>  
+);
+
+const DescendingNodeIcon = () => (
+  <svg width="12pt" height="12pt" version="1.1" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
+  <g transform="matrix(.70711 .70711 .70711 -.70711 -2.3055 6.7095)" fill="none" stroke="#000" strokeWidth=".6">
+  <path d="m5.7119 10.034c2.207 0 4-1.793 4-4s-1.793-4-4-4-4 1.793-4 4"/>
+  <path d="m1.7119 6.0339c0-0.69141-0.55859-1.25-1.25-1.25-0.69141 0-1.25 0.55859-1.25 1.25s0.55859 1.25 1.25 1.25c0.69141 0 1.25-0.55859 1.25-1.25z"/>
+  <path d="m6.9619 11.284c0-0.69141-0.55859-1.25-1.25-1.25-0.69141 0-1.25 0.55859-1.25 1.25s0.55859 1.25 1.25 1.25c0.69141 0 1.25-0.55859 1.25-1.25z"/>
+  </g>
+  </svg>  
+);
+
 const getIcon = (name: IconNames) => {
+  // Constellation:
   if (name === 'Aries') return <AriesIcon />;
   if (name === 'Taurus') return <TaurusIcon />;
   if (name === 'Leo') return <LeoIcon />
@@ -200,10 +385,33 @@ const getIcon = (name: IconNames) => {
   if (name === 'Capricorn') return <CapricornIcon />;
   if (name === 'Aquarius') return <AquariusIcon />;
   if (name === 'Pisces') return <PiscesIcon />;
+  // Planets:
+  if (name === 'Sun') return <SunIcon />;
+  if (name === 'Moon') return <MoonIcon />;
+  if (name === 'Mercury') return <MercuryIcon />;
+  if (name === 'Venus') return <VenusIcon />;
+  if (name === 'Earth') return <EarthIcon />;
+  if (name === 'Mars') return <MarsIcon />;
+  if (name === 'Jupiter') return <JupiterIcon />;
+  if (name === 'Saturn') return <SaturnIcon />;
+  if (name === 'Uranus') return <UranusIcon />;
+  if (name === 'Neptune') return <NeptuneIcon />;
+  if (name === 'Pluto') return <PlutoIcon />;
+  // Aspects:
+  if (name === 'Conjunction') return <ConjunctionIcon />;
+  if (name === 'Opposition') return <OppositionIcon />;
+  if (name === 'Trine') return <TrineIcon />;
+  if (name === 'Square') return <SquareIcon />;
+  if (name === 'Sextile') return <SextileIcon />;
+  // Others:
+  if (name === 'AscendingNode') return <AscendingNodeIcon />;
+  if (name === 'DescendingNode') return <DescendingNodeIcon />;
+  
   return null;
 };
 
 const Icons = {
+  // Constellation:
   AriesIcon,
   TaurusIcon,
   GeminiIcon,
@@ -216,7 +424,28 @@ const Icons = {
   CapricornIcon,
   AquariusIcon,
   PiscesIcon,
-
+  // Planets:
+  SunIcon,
+  MoonIcon,
+  MercuryIcon,
+  VenusIcon,
+  EarthIcon,
+  MarsIcon,
+  JupiterIcon,
+  SaturnIcon,
+  UranusIcon,
+  NeptuneIcon,
+  PlutoIcon,
+  // Aspects:
+  ConjunctionIcon,
+  OppositionIcon,
+  TrineIcon,
+  SquareIcon,
+  SextileIcon,
+  // Others:
+  AscendingNodeIcon,
+  DescendingNodeIcon,
+  // Method:
   getIcon,
 };
 

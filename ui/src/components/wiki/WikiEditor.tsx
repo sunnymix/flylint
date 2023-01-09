@@ -406,7 +406,6 @@ const WikiEditor = {
       icon: name,
       children: [{'text': ''}],
     };
-
     Transforms.insertNodes(editor, data);
   },
 

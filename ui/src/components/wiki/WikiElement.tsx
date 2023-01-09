@@ -139,7 +139,7 @@ export const Icon = (props: any) => {
   const iconEle = Icons.getIcon(props.element.icon);
   return (
     <span className={`inline icon ${active(selected)}`} {...props.attributes} contentEditable={false}>
-      {iconEle}{props.children}
+      <Edge />{iconEle}{props.children}<Edge />
     </span>
   );
 };

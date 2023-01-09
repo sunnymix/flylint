@@ -16,11 +16,6 @@ export type IconNames =
 
 const AriesIcon = () => (
   <svg width="12pt" height="12pt" version="1.1" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-  <clipPath id="a">
-  <path d="m0 0h80.398v80.398h-80.398z"/>
-  </clipPath>
-  </defs>
   <g transform="matrix(.14925 0 0 .14925 .00026658 .15027)" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeWidth="4.0201">
   <g fill="none" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeWidth="40.201">
   <path transform="matrix(.1 0 0 -.1 0 80.4)" d="m116.05 451.07c-31.406 31.406-49.063 74.023-49.063 118.44s17.656 87.031 49.063 118.44c31.406 31.406 74.023 49.062 118.44 49.062 92.5 0 167.5-75 167.5-167.5v-502.5"/>

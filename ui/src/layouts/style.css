@@ -184,6 +184,9 @@ br {
 .inline.icon {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  height: 20px;
+  width: 20px;
 }
 
 .inline.icon.active {

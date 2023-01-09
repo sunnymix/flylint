@@ -195,6 +195,7 @@ const PiscesIcon = () => (
 const getIcon = (name: IconNames) => {
   if (name === 'Aries') return <AriesIcon />;
   if (name === 'Taurus') return <TaurusIcon />;
+  if (name === 'Leo') return <LeoIcon />
   if (name === 'Gemini') return <GeminiIcon />;
   if (name === 'Cancer') return <CancerIcon />;
   if (name === 'Virgo') return <VirgoIcon />;

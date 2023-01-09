@@ -6,6 +6,7 @@ import { useFocused, useSlate } from "slate-react";
 import { Range, Editor } from "slate";
 import { EllipsisOutlined, FileImageFilled } from "@ant-design/icons";
 import Icons from "./icon/AstroIcons";
+import WikiEditor from "./WikiEditor";
 
 export interface ToolButtonProps {
   children: React.ReactNode,
@@ -37,16 +38,15 @@ const WikiToolbar = (props: WikiToolbarProps) => {
       const domRange = domSelection.getRangeAt(0);
       const rect = domRange.getBoundingClientRect();
       el.style.opacity = '1.0';
-      el.style.top = `${rect.top + window.pageYOffset - el.offsetHeight - 4}px`;
+      el.style.top = `${rect.top + window.pageYOffset + el.offsetHeight}px`;
       el.style.left = `${rect.left + window.pageXOffset - el.offsetWidth / 2 + rect.width / 2}px`;
     } catch (error) {}
   });
 
-  const preventClick = useCallback((event: any) => event.preventDefault(), []);
-
   return (
     <Portal>
-      <div ref={ref} onClick={preventClick} className={cx(css`
+      <div ref={ref} onMouseDown={e => e.preventDefault()}
+        className={cx(css`
         position: absolute;
         z-index: 1;
         top: -10000px;
@@ -60,18 +60,18 @@ const WikiToolbar = (props: WikiToolbarProps) => {
         padding: 6px 0 0 0;
         box-shadow: 0 0 2px 1px #00000020;
         `)}>
-        <Button type="text" size="small"><Icons.AriesIcon /></Button>
-        <Button type="text" size="small"><Icons.TaurusIcon /></Button>
-        <Button type="text" size="small"><Icons.GeminiIcon /></Button>
-        <Button type="text" size="small"><Icons.CancerIcon /></Button>
-        <Button type="text" size="small"><Icons.LeoIcon /></Button>
-        <Button type="text" size="small"><Icons.VirgoIcon /></Button>
-        <Button type="text" size="small"><Icons.LibraIcon /></Button>
-        <Button type="text" size="small"><Icons.ScorpioIcon /></Button>
-        <Button type="text" size="small"><Icons.SagittariusIcon /></Button>
-        <Button type="text" size="small"><Icons.CapricornIcon /></Button>
-        <Button type="text" size="small"><Icons.AquariusIcon /></Button>
-        <Button type="text" size="small"><Icons.PiscesIcon /></Button>
+        <Button type="text" size="small" onClick={() => WikiEditor.insertIcon(editor, 'Aries')}><Icons.AriesIcon /></Button>
+        <Button type="text" size="small" onClick={() => WikiEditor.insertIcon(editor, 'Taurus')}><Icons.TaurusIcon /></Button>
+        <Button type="text" size="small" onClick={() => WikiEditor.insertIcon(editor, 'Gemini')}><Icons.GeminiIcon /></Button>
+        <Button type="text" size="small" onClick={() => WikiEditor.insertIcon(editor, 'Cancer')}><Icons.CancerIcon /></Button>
+        <Button type="text" size="small" onClick={() => WikiEditor.insertIcon(editor, 'Leo')}><Icons.LeoIcon /></Button>
+        <Button type="text" size="small" onClick={() => WikiEditor.insertIcon(editor, 'Virgo')}><Icons.VirgoIcon /></Button>
+        <Button type="text" size="small" onClick={() => WikiEditor.insertIcon(editor, 'Libra')}><Icons.LibraIcon /></Button>
+        <Button type="text" size="small" onClick={() => WikiEditor.insertIcon(editor, 'Scorpio')}><Icons.ScorpioIcon /></Button>
+        <Button type="text" size="small" onClick={() => WikiEditor.insertIcon(editor, 'Sagittarius')}><Icons.SagittariusIcon /></Button>
+        <Button type="text" size="small" onClick={() => WikiEditor.insertIcon(editor, 'Capricorn')}><Icons.CapricornIcon /></Button>
+        <Button type="text" size="small" onClick={() => WikiEditor.insertIcon(editor, 'Aquarius')}><Icons.AquariusIcon /></Button>
+        <Button type="text" size="small" onClick={() => WikiEditor.insertIcon(editor, 'Pisces')}><Icons.PiscesIcon /></Button>
       </div>
     </Portal>
   );

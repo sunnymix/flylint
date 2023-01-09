@@ -34,13 +34,29 @@ const WikiToolbar = (props: WikiToolbarProps) => {
     }
 
     try {
-      const domSelection: any = window.getSelection();
-      const domRange = domSelection.getRangeAt(0);
-      const rect = domRange.getBoundingClientRect();
+      const selection: any = window.getSelection();
+      if (!selection) return;
+
+      const focusEle = selection.focusNode.parentNode;
+      if (!focusEle) return;
+
+      console.log(selection);
+
+      const focusLeaf = focusEle.closest('.inline');
+      if (!focusLeaf) return;
+      
+      const focusRect = focusLeaf.getBoundingClientRect();
+      if (!focusRect) return;
+
+      const top = `${focusRect.top + window.pageYOffset + focusRect.height + 6}px`;
+      const left = `${focusRect.left + window.pageXOffset - el.offsetWidth / 2 + focusRect.width / 2}px`;
+
       el.style.opacity = '1.0';
-      el.style.top = `${rect.top + window.pageYOffset + el.offsetHeight}px`;
-      el.style.left = `${rect.left + window.pageXOffset - el.offsetWidth / 2 + rect.width / 2}px`;
-    } catch (error) {}
+      el.style.top = top;
+      el.style.left = left;
+    } catch (error) {
+      console.log('ERROR:', error);
+    }
   });
 
   return (

@@ -108,13 +108,13 @@ export const Block = (props: any) => {
 
 export const Leaf = (props: any) => {
   return (
-    <span {...props.attributes} style={{fontWeight: props.leaf.bold ? 'bold' : 'normal'}}>
+    <span className={`inline`} {...props.attributes} style={{fontWeight: props.leaf.bold ? 'bold' : 'normal'}}>
       {props.children}
     </span>
   );
 };
 
-export const Edge = () => <span contentEditable={false} style={{fontSize:0}}>{String.fromCodePoint(160)}</span>;
+export const Edge = () => <span contentEditable={false} style={{fontSize:0}}>${String.fromCodePoint(160)}</span>;
 
 export type LinkData = { type: 'link'; url: string; children: Descendant[]; };
 

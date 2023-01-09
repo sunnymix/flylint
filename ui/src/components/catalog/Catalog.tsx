@@ -1,7 +1,7 @@
 import CatalogTree from "./CatalogTree";
 import "./CatalogStyle.css";
 import { useCallback, useEffect, useState } from "react";
-import WikiDetail from "../wiki/WikiDetail";
+import WikiPage from "../wiki/WikiPage";
 import { history } from "umi";
 import EventBus, { WikiCreatedEventData, WikiDeletedEventData, WikiMovedEventData, WikiNameUpdatedEventData, WikiTitleUpdatedEventData } from "@/components/common/EventBus";
 import { EventType } from "@/components/common/EventBus";
@@ -78,7 +78,7 @@ export const Catalog = (props: CatalogProps) => {
     <div>
       <CatalogTree className="catalog-side" width={400} onSelect={onSelect} refreshSignal={refreshSignal} />
       <div className="catalog-wiki" style={{marginLeft: 400}}>
-        {props.defaultName && <WikiDetail name={props.defaultName} mode="catalog" />}
+        {props.defaultName && <WikiPage name={props.defaultName} mode="catalog" />}
       </div>
     </div>
   );

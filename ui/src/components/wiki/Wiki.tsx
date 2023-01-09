@@ -1,5 +1,5 @@
 import WikiList from "./WikiList";
-import WikiDetail from "./WikiDetail";
+import WikiPage from "./WikiPage";
 import "./WikiStyle.css";
 
 export interface WikiProps {
@@ -11,5 +11,5 @@ export default (props: WikiProps) => {
     return <WikiList />
   }
   
-  return <WikiDetail name={props.name} mode="wiki" />
+  return <WikiPage name={props.name} mode="wiki" />
 };

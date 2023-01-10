@@ -23,7 +23,7 @@ export const Catalog = (props: CatalogProps) => {
   }, [props.refreshSignal]);
 
   const onSelect = (names: string[]) => {
-    history.push(`/catalog/${names[0]}`);
+    history.push(`/wiki/${names[0]}`);
   };
 
   const onWikiNameUpdated = useCallback((data: any) => {
@@ -78,7 +78,7 @@ export const Catalog = (props: CatalogProps) => {
     <div>
       <CatalogTree className="catalog-side" width={400} onSelect={onSelect} refreshSignal={refreshSignal} />
       <div className="catalog-wiki" style={{marginLeft: 400}}>
-        {props.defaultName && <WikiPage name={props.defaultName} mode="catalog" />}
+        {props.defaultName && <WikiPage name={props.defaultName} mode="wiki" />}
       </div>
     </div>
   );

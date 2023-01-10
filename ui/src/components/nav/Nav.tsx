@@ -22,11 +22,6 @@ const items: NavItemProps[] = [
     key: "wiki",
   },
   {
-    label: <>catalog</>,
-    path: "/catalog",
-    key: "catalog",
-  },
-  {
     label: <>sheet</>,
     path: "/sheet",
     key: "sheet",
@@ -86,9 +81,6 @@ export default (props: any) => {
     var key = "";
     if (pathname.startsWith("/wiki")) {
       key = "wiki";
-    }
-    if (pathname.startsWith("/catalog")) {
-      key = "catalog";
     }
     if (pathname.startsWith("/sheet")) {
       key = "sheet";

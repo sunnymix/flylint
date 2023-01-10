@@ -202,7 +202,7 @@ const WikiEditor = {
     return editor;
   },
 
-  onKeyDown(event: React.KeyboardEvent<HTMLDivElement>, editor: any, displayToolbar?: () => void) {
+  onKeyDown(event: React.KeyboardEvent<HTMLDivElement>, editor: any, toolbar?: (cmd: string|any) => void) {
 
     const { selection } = editor;
     if (selection && Range.isCollapsed(selection)) {
@@ -231,6 +231,8 @@ const WikiEditor = {
       WikiEditor.appendBlock(editor);
       return;
     }
+
+    toolbar?.call(null, null);
 
     if (!event.ctrlKey) return;
     switch (event.key) {
@@ -270,7 +272,7 @@ const WikiEditor = {
       
       case 's':
         event.preventDefault();
-        displayToolbar?.call(null);
+        toolbar?.call(null, 'show:' + +(+ new Date()));
         break;
 
       case "j":

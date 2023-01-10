@@ -168,7 +168,7 @@ export default (props: WikiDetailProps) => {
                   placeholder="Empty"
                   renderElement={MyElement.renderElement}
                   renderLeaf={MyElement.renderLeaf}
-                  onKeyDown={(event) => WikiEditor.onKeyDown(event, editor, () => setToolbarDisplayCmd(`display:${+(new Date())}`))}
+                  onKeyDown={(event) => WikiEditor.onKeyDown(event, editor, (cmd: string|any) => setToolbarDisplayCmd(cmd))}
                   onPaste={(event) => WikiEditor.onPaste(event, editor)}
                   onClick={(event) => setToolbarDisplayCmd(null)}
                   />

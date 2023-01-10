@@ -22,7 +22,7 @@ const WikiToolbar = (props: WikiToolbarProps) => {
   const editor = useSlate();
   const inFocus = useFocused();
 
-  const display = () => {
+  const show = () => {
     const el = ref.current;
     if (!el) return;
 
@@ -57,11 +57,10 @@ const WikiToolbar = (props: WikiToolbarProps) => {
   };
 
   useEffect(() => {
-    props.cmd ? display() : hide();
+    props.cmd ? show() : hide();
   }, [props.cmd]);
 
   const clickIcon = useCallback((name: IconNames) => {
-    hide();
     WikiEditor.insertIcon(editor, name);
   }, []);
 

@@ -202,7 +202,7 @@ const WikiEditor = {
     return editor;
   },
 
-  onKeyDown(event: React.KeyboardEvent<HTMLDivElement>, editor: any) {
+  onKeyDown(event: React.KeyboardEvent<HTMLDivElement>, editor: any, displayToolbar?: () => void) {
 
     const { selection } = editor;
     if (selection && Range.isCollapsed(selection)) {
@@ -270,8 +270,7 @@ const WikiEditor = {
       
       case 's':
         event.preventDefault();
-        console.log('icon');
-        WikiEditor.insertIcon(editor, 'Aries');
+        displayToolbar?.call(null);
         break;
 
       case "j":

@@ -39,6 +39,7 @@ export default (props: WikiDetailProps) => {
   const [tocData, setTocData] = useState<Toc[]>();
   const topRef = useRef<any>(null);
   const [bodyHeight, setBodyHeight] = useState<number>();
+  const [toolbarDisplayCmd, setToolbarDisplayCmd] = useState<string|any>();
 
   // Editor:
   const [editor] = useState(withReact(withInlines(withHistory(createEditor()))));
@@ -162,13 +163,14 @@ export default (props: WikiDetailProps) => {
                 value={WikiEditor.initialContent()}
                 onChange={onEditorChange}
                 >
-                <WikiToolbar />
+                <WikiToolbar cmd={toolbarDisplayCmd} />
                 <Editable
                   placeholder="Empty"
                   renderElement={MyElement.renderElement}
                   renderLeaf={MyElement.renderLeaf}
-                  onKeyDown={(event) => WikiEditor.onKeyDown(event, editor)}
+                  onKeyDown={(event) => WikiEditor.onKeyDown(event, editor, () => setToolbarDisplayCmd(`display:${+(new Date())}`))}
                   onPaste={(event) => WikiEditor.onPaste(event, editor)}
+                  onClick={(event) => setToolbarDisplayCmd(null)}
                   />
               </Slate>
             </div>

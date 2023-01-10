@@ -5,7 +5,7 @@ import { css, cx } from "@emotion/css";
 import { useFocused, useSlate } from "slate-react";
 import { Range, Editor } from "slate";
 import { EllipsisOutlined, FileImageFilled } from "@ant-design/icons";
-import Icons from "./icon/AstroIcons";
+import Icons, { IconNames } from "./icon/AstroIcons";
 import WikiEditor from "./WikiEditor";
 
 export interface ToolButtonProps {
@@ -13,6 +13,7 @@ export interface ToolButtonProps {
 };
 
 export interface WikiToolbarProps {
+  cmd?: string,
 };
 
 const WikiToolbar = (props: WikiToolbarProps) => {
@@ -21,17 +22,9 @@ const WikiToolbar = (props: WikiToolbarProps) => {
   const editor = useSlate();
   const inFocus = useFocused();
 
-  // Will call in every click/render:
-  useEffect(() => {
+  const display = () => {
     const el = ref.current;
     if (!el) return;
-
-    const { selection } = editor;
-
-    if (!selection || !inFocus) {
-      el.removeAttribute("style");
-      return;
-    }
 
     try {
       const selection: any = window.getSelection();
@@ -55,7 +48,22 @@ const WikiToolbar = (props: WikiToolbarProps) => {
     } catch (error) {
       console.log('ERROR:', error);
     }
-  });
+  };
+
+  const hide = () => {
+    const el = ref.current;
+    if (!el) return;
+    el.removeAttribute('style');
+  };
+
+  useEffect(() => {
+    props.cmd ? display() : hide();
+  }, [props.cmd]);
+
+  const clickIcon = useCallback((name: IconNames) => {
+    hide();
+    WikiEditor.insertIcon(editor, name);
+  }, []);
 
   return (
     <Portal>
@@ -80,18 +88,18 @@ const WikiToolbar = (props: WikiToolbarProps) => {
           align-items: center;
           justify-content: center;
           `)}>
-          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => WikiEditor.insertIcon(editor, 'Aries')}><Icons.AriesIcon /></Button>
-          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => WikiEditor.insertIcon(editor, 'Taurus')}><Icons.TaurusIcon /></Button>
-          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => WikiEditor.insertIcon(editor, 'Gemini')}><Icons.GeminiIcon /></Button>
-          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => WikiEditor.insertIcon(editor, 'Cancer')}><Icons.CancerIcon /></Button>
-          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => WikiEditor.insertIcon(editor, 'Leo')}><Icons.LeoIcon /></Button>
-          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => WikiEditor.insertIcon(editor, 'Virgo')}><Icons.VirgoIcon /></Button>
-          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => WikiEditor.insertIcon(editor, 'Libra')}><Icons.LibraIcon /></Button>
-          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => WikiEditor.insertIcon(editor, 'Scorpio')}><Icons.ScorpioIcon /></Button>
-          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => WikiEditor.insertIcon(editor, 'Sagittarius')}><Icons.SagittariusIcon /></Button>
-          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => WikiEditor.insertIcon(editor, 'Capricorn')}><Icons.CapricornIcon /></Button>
-          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => WikiEditor.insertIcon(editor, 'Aquarius')}><Icons.AquariusIcon /></Button>
-          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => WikiEditor.insertIcon(editor, 'Pisces')}><Icons.PiscesIcon /></Button>
+          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => clickIcon('Aries')}><Icons.AriesIcon /></Button>
+          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => clickIcon('Taurus')}><Icons.TaurusIcon /></Button>
+          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => clickIcon('Gemini')}><Icons.GeminiIcon /></Button>
+          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => clickIcon('Cancer')}><Icons.CancerIcon /></Button>
+          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => clickIcon('Leo')}><Icons.LeoIcon /></Button>
+          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => clickIcon('Virgo')}><Icons.VirgoIcon /></Button>
+          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => clickIcon('Libra')}><Icons.LibraIcon /></Button>
+          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => clickIcon('Scorpio')}><Icons.ScorpioIcon /></Button>
+          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => clickIcon('Sagittarius')}><Icons.SagittariusIcon /></Button>
+          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => clickIcon('Capricorn')}><Icons.CapricornIcon /></Button>
+          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => clickIcon('Aquarius')}><Icons.AquariusIcon /></Button>
+          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => clickIcon('Pisces')}><Icons.PiscesIcon /></Button>
         </div>
         <div
           className={cx(css`
@@ -99,17 +107,17 @@ const WikiToolbar = (props: WikiToolbarProps) => {
           align-items: center;
           justify-content: center;
           `)}>
-          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => WikiEditor.insertIcon(editor, 'Sun')}><Icons.SunIcon /></Button>
-          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => WikiEditor.insertIcon(editor, 'Moon')}><Icons.MoonIcon /></Button>
-          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => WikiEditor.insertIcon(editor, 'Mercury')}><Icons.MercuryIcon /></Button>
-          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => WikiEditor.insertIcon(editor, 'Venus')}><Icons.VenusIcon /></Button>
-          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => WikiEditor.insertIcon(editor, 'Earth')}><Icons.EarthIcon /></Button>
-          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => WikiEditor.insertIcon(editor, 'Mars')}><Icons.MarsIcon /></Button>
-          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => WikiEditor.insertIcon(editor, 'Jupiter')}><Icons.JupiterIcon /></Button>
-          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => WikiEditor.insertIcon(editor, 'Saturn')}><Icons.SaturnIcon /></Button>
-          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => WikiEditor.insertIcon(editor, 'Uranus')}><Icons.UranusIcon /></Button>
-          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => WikiEditor.insertIcon(editor, 'Neptune')}><Icons.NeptuneIcon /></Button>
-          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => WikiEditor.insertIcon(editor, 'Pluto')}><Icons.PlutoIcon /></Button>
+          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => clickIcon('Sun')}><Icons.SunIcon /></Button>
+          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => clickIcon('Moon')}><Icons.MoonIcon /></Button>
+          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => clickIcon('Mercury')}><Icons.MercuryIcon /></Button>
+          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => clickIcon('Venus')}><Icons.VenusIcon /></Button>
+          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => clickIcon('Earth')}><Icons.EarthIcon /></Button>
+          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => clickIcon('Mars')}><Icons.MarsIcon /></Button>
+          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => clickIcon('Jupiter')}><Icons.JupiterIcon /></Button>
+          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => clickIcon('Saturn')}><Icons.SaturnIcon /></Button>
+          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => clickIcon('Uranus')}><Icons.UranusIcon /></Button>
+          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => clickIcon('Neptune')}><Icons.NeptuneIcon /></Button>
+          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => clickIcon('Pluto')}><Icons.PlutoIcon /></Button>
         </div>
         <div
           className={cx(css`
@@ -117,11 +125,11 @@ const WikiToolbar = (props: WikiToolbarProps) => {
           align-items: center;
           justify-content: center;
           `)}>
-          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => WikiEditor.insertIcon(editor, 'Conjunction')}><Icons.ConjunctionIcon /></Button>
-          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => WikiEditor.insertIcon(editor, 'Opposition')}><Icons.OppositionIcon /></Button>
-          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => WikiEditor.insertIcon(editor, 'Trine')}><Icons.TrineIcon /></Button>
-          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => WikiEditor.insertIcon(editor, 'Square')}><Icons.SquareIcon /></Button>
-          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => WikiEditor.insertIcon(editor, 'Sextile')}><Icons.SextileIcon /></Button>
+          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => clickIcon('Conjunction')}><Icons.ConjunctionIcon /></Button>
+          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => clickIcon('Opposition')}><Icons.OppositionIcon /></Button>
+          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => clickIcon('Square')}><Icons.SquareIcon /></Button>
+          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => clickIcon('Trine')}><Icons.TrineIcon /></Button>
+          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => clickIcon('Sextile')}><Icons.SextileIcon /></Button>
         </div>
         <div
           className={cx(css`
@@ -129,8 +137,8 @@ const WikiToolbar = (props: WikiToolbarProps) => {
           align-items: center;
           justify-content: center;
           `)}>
-          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => WikiEditor.insertIcon(editor, 'AscendingNode')}><Icons.AscendingNodeIcon /></Button>
-          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => WikiEditor.insertIcon(editor, 'DescendingNode')}><Icons.DescendingNodeIcon /></Button>
+          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => clickIcon('AscendingNode')}><Icons.AscendingNodeIcon /></Button>
+          <Button type="text" size="small" style={{paddingTop: 2}} onClick={() => clickIcon('DescendingNode')}><Icons.DescendingNodeIcon /></Button>
         </div>
       </div>
     </Portal>

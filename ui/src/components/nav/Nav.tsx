@@ -1,8 +1,8 @@
 
 import "./NavStyle.css";
 import { ReactNode, useEffect, useState } from "react";
-import { history, useLocation, Link } from "umi";
-import { ProjectOutlined } from "@ant-design/icons";
+import { history, useLocation } from "umi";
+import { BookOutlined } from "@ant-design/icons";
 
 interface NavItemProps {
   label: ReactNode,
@@ -12,7 +12,7 @@ interface NavItemProps {
 
 const items: NavItemProps[] = [
   {
-    label: <><ProjectOutlined /></>,
+    label: <><BookOutlined /></>,
     path: "/",
     key: "",
   },
@@ -22,14 +22,9 @@ const items: NavItemProps[] = [
     key: "wiki",
   },
   {
-    label: <>meta</>,
-    path: "/meta",
-    key: "meta",
-  },
-  {
-    label: <>topic</>,
-    path: "/topic",
-    key: "topic",
+    label: <>tag</>,
+    path: "/tag",
+    key: "tag",
   },
   {
     label: <>media</>,
@@ -37,29 +32,9 @@ const items: NavItemProps[] = [
     key: "media",
   },
   {
-    label: <>draw</>,
-    path: "/draw",
-    key: "draw",
-  },
-  {
-    label: <>tool</>,
-    path: "/tool",
-    key: "tool",
-  },
-  {
-    label: <>tag</>,
-    path: "/tag",
-    key: "tag",
-  },
-  {
-    label: <>okr</>,
-    path: "/okr",
-    key: "okr",
-  },
-  {
-    label: <>about</>,
-    path: "/about",
-    key: "about",
+    label: <>meta</>,
+    path: "/meta",
+    key: "meta",
   },
 ];
 

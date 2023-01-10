@@ -2,7 +2,7 @@ import { Tree } from "antd";
 import type { DataNode, TreeProps, EventDataNode } from "antd/es/tree";
 import TreeDataType from "antd/es/tree"
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import { CaretDownFilled, ExpandOutlined, CompressOutlined } from "@ant-design/icons";
+import { CaretDownFilled, VerticalAlignMiddleOutlined, ColumnHeightOutlined } from "@ant-design/icons";
 import { CatalogTree } from "./CatalogModel";
 import CatalogApi from "./CatalogApi";
 import LocalStore from "@/components/common/LocalStore";
@@ -130,8 +130,8 @@ export default (props: CatalogTreeProps) => {
         <div className="com-title">catalog</div>
         <div className="com-ops">
           <WikiCreateButton mode="catalog" className="com-op" catalogName="/" />
-          <Button onClick={onShrinkAll} className="com-op" type="text" size="small"><CompressOutlined /></Button>
-          <Button onClick={onExpandAll} className="com-op" type="text" size="small"><ExpandOutlined /></Button>
+          <Button onClick={onShrinkAll} className="com-op" type="text" size="small"><VerticalAlignMiddleOutlined /></Button>
+          <Button onClick={onExpandAll} className="com-op" type="text" size="small"><ColumnHeightOutlined /></Button>
         </div>
       </div>
       <div className="catalog-body">

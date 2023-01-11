@@ -19,6 +19,7 @@ import java.util.List;
 public class CatalogTree {
 
     private String key;
+    private String type;
     private String name;
     private String path;
     private Integer pathIndex;
@@ -56,6 +57,7 @@ public class CatalogTree {
 
         return CatalogTree.builder()
             .key(catalog.getName())
+            .type(catalog.getType())
             .name(catalog.getName())
             .path(catalog.getPath())
             .pathIndex(catalog.getPathIndex())

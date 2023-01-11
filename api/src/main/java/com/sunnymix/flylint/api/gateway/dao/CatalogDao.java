@@ -34,7 +34,7 @@ public class CatalogDao {
     private DSLContext dsl;
 
     public List<CatalogTree> query() {
-        var catalogList = dsl.select(WIKI.NAME, WIKI.PATH, WIKI.PATH_INDEX, WIKI.TITLE)
+        var catalogList = dsl.select(WIKI.TYPE, WIKI.NAME, WIKI.PATH, WIKI.PATH_INDEX, WIKI.TITLE)
             .from(WIKI)
             .where(WIKI.PATH.ne(""))
             .fetchStreamInto(CatalogWiki.class)
@@ -53,7 +53,7 @@ public class CatalogDao {
             return Optional.empty();
         }
 
-        return dsl.select(WIKI.NAME, WIKI.PATH, WIKI.PATH_INDEX)
+        return dsl.select(WIKI.TYPE, WIKI.NAME, WIKI.PATH, WIKI.PATH_INDEX)
             .from(WIKI)
             .where(WIKI.NAME.eq(name))
             .limit(1)

@@ -69,6 +69,7 @@ public class WikiDao {
         var randomName = new WikiName().name();
         var record = new WikiRecord();
         record.setId(null);
+        record.setType("wiki");
         record.setName(randomName);
         record.setPath(path);
         record.setPathIndex(pathIndex);
@@ -173,7 +174,7 @@ public class WikiDao {
         var condition = conditions.stream().reduce(Condition::and).orElse(trueCondition());
 
         return dsl
-            .select(WIKI.ID, WIKI.NAME, WIKI.PATH, WIKI.PATH_INDEX, WIKI.TITLE, WIKI.CREATED, WIKI.UPDATED)
+            .select(WIKI.ID, WIKI.TYPE, WIKI.NAME, WIKI.PATH, WIKI.PATH_INDEX, WIKI.TITLE, WIKI.CREATED, WIKI.UPDATED)
             .from(WIKI)
             .where(condition)
             .orderBy(WIKI.UPDATED.desc())
@@ -183,7 +184,7 @@ public class WikiDao {
 
     public Optional<DetailWiki> detail(String name) {
         return dsl
-            .select(WIKI.ID, WIKI.NAME, WIKI.PATH, WIKI.PATH_INDEX, WIKI.TITLE, WIKI.CONTENT, WIKI.CREATED, WIKI.UPDATED)
+            .select(WIKI.ID, WIKI.TYPE, WIKI.NAME, WIKI.PATH, WIKI.PATH_INDEX, WIKI.TITLE, WIKI.CONTENT, WIKI.CREATED, WIKI.UPDATED)
             .from(WIKI)
             .where(WIKI.NAME.eq(name))
             .limit(1)

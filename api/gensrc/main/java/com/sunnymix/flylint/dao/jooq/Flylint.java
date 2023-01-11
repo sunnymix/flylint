@@ -4,6 +4,7 @@
 package com.sunnymix.flylint.dao.jooq;
 
 
+import com.sunnymix.flylint.dao.jooq.tables.Media;
 import com.sunnymix.flylint.dao.jooq.tables.Wiki;
 
 import java.util.Arrays;
@@ -28,6 +29,11 @@ public class Flylint extends SchemaImpl {
     public static final Flylint FLYLINT = new Flylint();
 
     /**
+     * The table <code>flylint.media</code>.
+     */
+    public final Media MEDIA = Media.MEDIA;
+
+    /**
      * The table <code>flylint.wiki</code>.
      */
     public final Wiki WIKI = Wiki.WIKI;
@@ -48,6 +54,7 @@ public class Flylint extends SchemaImpl {
     @Override
     public final List<Table<?>> getTables() {
         return Arrays.asList(
+            Media.MEDIA,
             Wiki.WIKI
         );
     }

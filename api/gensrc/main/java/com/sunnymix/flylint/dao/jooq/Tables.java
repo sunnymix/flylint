@@ -4,6 +4,7 @@
 package com.sunnymix.flylint.dao.jooq;
 
 
+import com.sunnymix.flylint.dao.jooq.tables.Media;
 import com.sunnymix.flylint.dao.jooq.tables.Wiki;
 
 
@@ -12,6 +13,11 @@ import com.sunnymix.flylint.dao.jooq.tables.Wiki;
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tables {
+
+    /**
+     * The table <code>flylint.media</code>.
+     */
+    public static final Media MEDIA = Media.MEDIA;
 
     /**
      * The table <code>flylint.wiki</code>.

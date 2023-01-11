@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Catalog {
 
+    private String type;
     private String name;
     private String path;
     private Integer pathIndex;

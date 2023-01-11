@@ -17,13 +17,13 @@ import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function8;
+import org.jooq.Function9;
 import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row8;
+import org.jooq.Row9;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -62,9 +62,14 @@ public class Wiki extends TableImpl<WikiRecord> {
     public final TableField<WikiRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "ID");
 
     /**
-     * The column <code>flylint.wiki.name</code>. 名称
+     * The column <code>flylint.wiki.type</code>. 类型
      */
-    public final TableField<WikiRecord, String> NAME = createField(DSL.name("name"), SQLDataType.VARCHAR(100).nullable(false).defaultValue(DSL.inline("", SQLDataType.VARCHAR)), this, "名称");
+    public final TableField<WikiRecord, String> TYPE = createField(DSL.name("type"), SQLDataType.VARCHAR(50).nullable(false).defaultValue(DSL.inline("wiki", SQLDataType.VARCHAR)), this, "类型");
+
+    /**
+     * The column <code>flylint.wiki.name</code>. Name
+     */
+    public final TableField<WikiRecord, String> NAME = createField(DSL.name("name"), SQLDataType.VARCHAR(100).nullable(false).defaultValue(DSL.inline("", SQLDataType.VARCHAR)), this, "Name");
 
     /**
      * The column <code>flylint.wiki.path</code>. 路径
@@ -194,18 +199,18 @@ public class Wiki extends TableImpl<WikiRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row8 type methods
+    // Row9 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row8<Long, String, String, Integer, String, String, OffsetDateTime, OffsetDateTime> fieldsRow() {
-        return (Row8) super.fieldsRow();
+    public Row9<Long, String, String, String, Integer, String, String, OffsetDateTime, OffsetDateTime> fieldsRow() {
+        return (Row9) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function8<? super Long, ? super String, ? super String, ? super Integer, ? super String, ? super String, ? super OffsetDateTime, ? super OffsetDateTime, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function9<? super Long, ? super String, ? super String, ? super String, ? super Integer, ? super String, ? super String, ? super OffsetDateTime, ? super OffsetDateTime, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -213,7 +218,7 @@ public class Wiki extends TableImpl<WikiRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function8<? super Long, ? super String, ? super String, ? super Integer, ? super String, ? super String, ? super OffsetDateTime, ? super OffsetDateTime, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function9<? super Long, ? super String, ? super String, ? super String, ? super Integer, ? super String, ? super String, ? super OffsetDateTime, ? super OffsetDateTime, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

@@ -4,7 +4,7 @@ import { BasicWiki } from "./WikiModel";
 import Time from "@/components/common/Time";
 import { history } from "umi";
 import { Button, Dropdown, MenuProps } from "antd";
-import { EllipsisOutlined } from "@ant-design/icons";
+import { FileTextFilled, FileExcelFilled } from "@ant-design/icons";
 import wiki from "@/pages/wiki";
 import WikiCreateButton from "./WikiCreateButton";
 
@@ -51,7 +51,13 @@ export default forwardRef((props: WikiListProps, ref) => {
         <div className="wiki_list">
           {wikis.map((wiki: BasicWiki, index: number) => (
             <div className="wiki_list_item" key={wiki.name} onClick={() => clickWiki(wiki)}>
-              <div className="wiki_list_item_title">{wiki.title}</div>
+              <div className="wiki_list_item_title">
+                <span style={{marginRight: 18}}>
+                  {wiki.type == 'wiki' && <FileTextFilled style={{color: '#1677ff'}} />}
+                  {wiki.type == 'sheet' && <FileExcelFilled style={{color: '#52c41a'}} />}
+                </span>
+                {wiki.title}
+              </div>
               <div className="wiki_time">{Time.formatDate(wiki.created)}</div>
             </div>
           ))}

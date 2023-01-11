@@ -1,5 +1,5 @@
 import { Button } from "antd";
-import { FileTextOutlined, FileExcelOutlined } from "@ant-design/icons";
+import { FileTextFilled, FileExcelFilled } from "@ant-design/icons";
 import WikiApi from "./WikiApi";
 import { history } from "umi";
 import { useCallback } from "react";
@@ -43,7 +43,7 @@ export default (props: WikiCreateButtonProps) => {
   }, [props.catalogName]);
 
   return <div style={{display: 'inline-flex'}}>
-    <Button className={props.className} onClick={(event) => create(event, 'wiki')} size="small" type="text"><FileTextOutlined /></Button>
-    <Button className={props.className} onClick={(event) => create(event, 'sheet')} size="small" type="text"><FileExcelOutlined /></Button>
+    <Button className={props.className} onClick={(event) => create(event, 'wiki')} size="small" type="text"><FileTextFilled style={{color: '#1677ff'}} /></Button>
+    <Button className={props.className} onClick={(event) => create(event, 'sheet')} size="small" type="text"><FileExcelFilled style={{color: '#52c41a'}} /></Button>
   </div>;
 };

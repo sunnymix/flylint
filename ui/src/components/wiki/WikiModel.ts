@@ -1,6 +1,7 @@
 
 export interface BasicWiki {
   id: string,
+  type: WikiType,
   name: string,
   path: string,
   pathIndex: number,
@@ -11,6 +12,7 @@ export interface BasicWiki {
 
 export interface DetailWiki {
   id: string,
+  type: WikiType,
   name: string,
   path: string,
   pathIndex: number,

@@ -48,16 +48,13 @@ export default forwardRef((props: WikiListProps, ref) => {
         </div>
       </div>
       <div className="com-body">
-        <div>
-          <h4>recent</h4>
-          <div className="wiki_list">
-            {wikis.map((wiki: BasicWiki, index: number) => (
-              <div className="wiki_list_item" key={wiki.name} onClick={() => clickWiki(wiki)}>
-                <div className="wiki_list_item_title">{wiki.title}</div>
-                <div className="wiki_time">{Time.formatDate(wiki.created)}</div>
-              </div>
-            ))}
-          </div>
+        <div className="wiki_list">
+          {wikis.map((wiki: BasicWiki, index: number) => (
+            <div className="wiki_list_item" key={wiki.name} onClick={() => clickWiki(wiki)}>
+              <div className="wiki_list_item_title">{wiki.title}</div>
+              <div className="wiki_time">{Time.formatDate(wiki.created)}</div>
+            </div>
+          ))}
         </div>
       </div>
     </div>

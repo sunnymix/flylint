@@ -1,11 +1,12 @@
 import { Button } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { FileAddOutlined, FileExcelOutlined } from "@ant-design/icons";
 import WikiApi from "./WikiApi";
 import { history } from "umi";
 import { useCallback } from "react";
 import { WikiMode } from "./WikiModel";
 import EventBus, { WikiCreatedEventData } from "@/components/common/EventBus";
 import LocalStore from "@/components/common/LocalStore";
+import { WikiType } from "./WikiModel";
 
 export interface WikiCreateButtonProps {
   mode: WikiMode,
@@ -15,12 +16,12 @@ export interface WikiCreateButtonProps {
 
 export default (props: WikiCreateButtonProps) => {
 
-  const onClick = useCallback((event: any) => {
+  const create = useCallback((event: any, type: WikiType) => {
     event.stopPropagation();
 
     if (props.mode === "wiki") {
       WikiApi.create((name: string) => {
-        history.push(`/${props.mode}/${name}`);
+        history.push(`/wiki/${name}`);
       });
     }
 
@@ -36,12 +37,13 @@ export default (props: WikiCreateButtonProps) => {
         LocalStore.appendCatalogExpandKeys(props.catalogName ? [props.catalogName] : []);
 
         LocalStore.setCatalogSelectedKeys([name]);
-        history.push(`/${props.mode}/${name}`);
+        history.push(`/wiki/${name}`);
       });
     }
   }, [props.catalogName]);
 
-  return <Button className={props.className} onClick={onClick} size="small" type="text">
-    <PlusOutlined />
-  </Button>;
+  return <div style={{display: 'inline-flex'}}>
+    <Button className={props.className} onClick={(event) => create(event, 'wiki')} size="small" type="text"><FileAddOutlined /></Button>
+    <Button className={props.className} onClick={(event) => create(event, 'sheet')} size="small" type="text"><FileExcelOutlined /></Button>
+  </div>;
 };

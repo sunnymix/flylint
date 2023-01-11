@@ -28,7 +28,7 @@ html {
 .com_bread,
 .com-bread,
 .com-breadcrumb {
-  margin: 0 10px 10px 10px;
+  margin: 0 10px;
   min-height: 40px;
   display: flex;
   align-items: center;
@@ -37,7 +37,7 @@ html {
 
 .com_header,
 .com-header {
-  margin: 0 10px 10px 10px;
+  margin: 0 10px;
   min-height: 40px;
   display: flex;
   align-items: center;
@@ -163,7 +163,7 @@ p,
   padding: 0;
 }
 
-pre, code, kbd, samp {
+pre, code, kbd, samp, .code-block, .code-block .inline {
   font-family: "Verily", SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace !important;
 }
 

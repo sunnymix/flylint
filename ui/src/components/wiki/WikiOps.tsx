@@ -59,7 +59,7 @@ const WikiOps = (props: WikiMenuProps) => {
     event.stopPropagation();
     onUpdateName(props.mode, props.name, (data: WikiNameUpdatedEventData) => {
       props.onNameUpdated?.call(null, data);
-      history.push(`/${props.mode}/${data.name}`);
+      history.push(`/wiki/${data.name}`);
     });
   };
 
@@ -78,7 +78,7 @@ const WikiOps = (props: WikiMenuProps) => {
         name: props.name,
       })
       
-      history.push(`/${props.mode}`);
+      history.push(`/wiki`);
     });
   };
 

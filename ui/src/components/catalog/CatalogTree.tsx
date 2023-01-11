@@ -40,7 +40,7 @@ export default (props: CatalogTreeProps) => {
     if (!rootRef || !rootRef.current) return;
     return {
       width: rootRef.current.offsetWidth - 10,
-      height: rootRef.current.offsetHeight - 50,
+      height: rootRef.current.offsetHeight - 40,
     };
   }, []);
 

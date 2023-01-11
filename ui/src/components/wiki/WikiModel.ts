@@ -28,3 +28,5 @@ export interface Toc {
 };
 
 export type WikiMode = "wiki" | "catalog";
+
+export type WikiType = 'wiki' | 'sheet';

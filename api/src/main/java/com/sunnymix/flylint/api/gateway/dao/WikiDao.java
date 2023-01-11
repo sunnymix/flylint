@@ -5,7 +5,6 @@ import com.sunnymix.flylint.dao.jooq.tables.records.WikiRecord;
 import lombok.Getter;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
-import org.jooq.impl.QOM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -45,7 +44,7 @@ public class WikiDao {
         var catalogName = catalogNameOpt.get().trim();
 
         if (catalogName.equals(ROOT_PATH)) {
-            return create(ROOT_PATH, maxPathIndexOfMyDescendant(ROOT_PATH));
+            return __create(ROOT_PATH, maxPathIndexOfMyDescendant(ROOT_PATH));
         }
 
         var catalogOpt = one(catalogName);
@@ -56,14 +55,17 @@ public class WikiDao {
         var catalog = catalogOpt.get();
         var path = DescendantPath.of(catalog.getPath(), catalog.getName()).value();
         var pathIndex = maxPathIndexOfMyDescendant(path) + 1;
-        return create(path, pathIndex);
+        return __create(path, pathIndex);
     }
 
     private String create() {
-        return create(EMPTY_PATH, EMPTY_PATH_INDEX);
+        return __create(EMPTY_PATH, EMPTY_PATH_INDEX);
     }
 
-    private String create(String path, Integer pathIndex) {
+    /**
+     * the lowest create method
+     */
+    private String __create(String path, Integer pathIndex) {
         var randomName = new WikiName().name();
         var record = new WikiRecord();
         record.setId(null);

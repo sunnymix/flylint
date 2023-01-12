@@ -36,40 +36,41 @@ public class WikiDao {
     private DSLContext dsl;
 
     @Transactional
-    public String create(Optional<String> catalogNameOpt) {
+    public String create(Optional<String> catalogNameOpt,
+                         Optional<String> type) {
         if (catalogNameOpt.isEmpty()) {
-            return create();
+            return create(type);
         }
 
         var catalogName = catalogNameOpt.get().trim();
 
         if (catalogName.equals(ROOT_PATH)) {
-            return __create(ROOT_PATH, maxPathIndexOfMyDescendant(ROOT_PATH));
+            return __create(ROOT_PATH, maxPathIndexOfMyDescendant(ROOT_PATH), type);
         }
 
         var catalogOpt = one(catalogName);
         if (catalogOpt.isEmpty()) {
-            return create();
+            return create(type);
         }
 
         var catalog = catalogOpt.get();
         var path = DescendantPath.of(catalog.getPath(), catalog.getName()).value();
         var pathIndex = maxPathIndexOfMyDescendant(path) + 1;
-        return __create(path, pathIndex);
+        return __create(path, pathIndex, type);
     }
 
-    private String create() {
-        return __create(EMPTY_PATH, EMPTY_PATH_INDEX);
+    private String create(Optional<String> type) {
+        return __create(EMPTY_PATH, EMPTY_PATH_INDEX, type);
     }
 
     /**
      * the lowest create method
      */
-    private String __create(String path, Integer pathIndex) {
+    private String __create(String path, Integer pathIndex, Optional<String> type) {
         var randomName = new WikiName().name();
         var record = new WikiRecord();
         record.setId(null);
-        record.setType("wiki");
+        record.setType(type.orElse("wiki"));
         record.setName(randomName);
         record.setPath(path);
         record.setPathIndex(pathIndex);

@@ -1,5 +1,5 @@
 import { MovePlace } from "../catalog/CatalogModel";
-import { WikiMode } from "../wiki/WikiModel";
+import { WikiMode, WikiType } from "../wiki/WikiModel";
 
 export type EventType = 
   | "wiki.name.updated"
@@ -22,6 +22,7 @@ export interface WikiTitleUpdatedEventData {
 };
 
 export interface WikiCreatedEventData {
+  type: WikiType,
   mode: WikiMode,
   name: string,
   catalogName: string,

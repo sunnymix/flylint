@@ -20,14 +20,15 @@ export default (props: WikiCreateButtonProps) => {
     event.stopPropagation();
 
     if (props.mode === "wiki") {
-      WikiApi.create((name: string) => {
+      WikiApi.create(type, (name: string) => {
         history.push(`/wiki/${name}`);
       });
     }
 
     if (props.mode === "catalog" && !!props.catalogName) {
-      WikiApi.createByCatalogName(props.catalogName, (name) => {
+      WikiApi.createByCatalogName(props.catalogName, type, (name) => {
         const eventData = {
+          type,
           mode: props.mode,
           name,
           catalogName: props.catalogName,

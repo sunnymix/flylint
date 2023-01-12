@@ -144,14 +144,11 @@ export default (props: WikiDetailProps) => {
           <div className="wiki-breadcrumb">
             <div className="com-ops">
               <button className='com-op btn-text' onClick={onNameClick}>{props.name}</button>
-              <div className='com-op'>·</div>
-              <button className='com-op btn-text' onClick={onTitleClick}>{title}</button>
-              <WikiCreateButton className="com_op" mode={props.mode} catalogName={props.name} />
               <WikiOps mode={props.mode} className="com_op" name={props.name} title={title} onTitleUpdated={onTitleUpdated} />
             </div>
           </div>
           <div className="wiki-head">
-            <div className="wiki-title">{title}</div>
+            <div className="wiki-title" onClick={onTitleClick}>{title}</div>
             <div className="wiki-time">{`${updateTime}`}</div>
           </div>
         </div>

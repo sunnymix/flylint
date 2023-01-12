@@ -32,16 +32,18 @@
 .nav_item::after {
   content: ' ';
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  border-bottom: 2px solid transparent;
+  bottom: 6px;
+  left: 20px;
+  right: 20px;
+  /* border-bottom: 2px solid transparent; */
+  height: 2px;
+  border-radius: 2px;
 }
 
 .nav_item:hover::after {
-  border-color: #ddd;
+  background-color: #ddd;
 }
 
 .nav_item.active::after {
-  border-color: #1890ff;
+  background-color: #1890ff;
 }

@@ -33,7 +33,7 @@ public class WikiController {
 
     @PostMapping("/create")
     public Out<String> create(@RequestBody CreateWiki createWiki) {
-        var path = wikiDao.create(createWiki.getCatalogName());
+        var path = wikiDao.create(createWiki.getCatalogName(), createWiki.getType());
         return Out.ok(path);
     }
 

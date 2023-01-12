@@ -1,18 +1,18 @@
 
 import axios from "axios";
 import Constant from "@/components/common/Constant";
-import { BasicWiki, DetailWiki } from "./WikiModel";
+import { BasicWiki, DetailWiki, WikiType } from "./WikiModel";
 
-const create = (cb: (name: string) => void) => {
-  axios.post(`${Constant.API_BASE}/wiki/create`, {})
+const create = (type: WikiType, cb: (name: string) => void) => {
+  axios.post(`${Constant.API_BASE}/wiki/create`, { type })
     .then(res => {
       const name = res.data?.data || null;
       cb(name);
     });
 };
 
-const createByCatalogName = (catalogName: string, cb: (name: string) => void) => {
-  axios.post(`${Constant.API_BASE}/wiki/create`, { catalogName })
+const createByCatalogName = (catalogName: string, type: WikiType, cb: (name: string) => void) => {
+  axios.post(`${Constant.API_BASE}/wiki/create`, { catalogName, type })
     .then(res => {
       const name = res.data?.data || null;
       cb(name);

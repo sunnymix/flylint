@@ -1,6 +1,7 @@
 import "./NavStyle.css";
 import { ReactNode, useEffect, useState } from "react";
 import { history, useLocation } from "umi";
+import { HomeOutlined } from "@ant-design/icons";
 
 interface NavItemProps {
   label: ReactNode,
@@ -12,7 +13,7 @@ const items: NavItemProps[] = [
   {
     label: <>
       <div className="main-icon">
-      <svg viewBox="0 0 1088 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M259.072 881.536l128.896 135.808 566.208-132.16V125.76l-62.528-37.184-503.68 164.928-68.16-66.56 492.8-146.24-73.472-40-479.168 135.808-0.896 745.024z" fill="#1677ff"></path></svg>
+      <svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="56481" width="200" height="200"><path d="M426.666667 554.666667H170.666667c-23.466667 0-42.666667-19.2-42.666667-42.666667V170.666667c0-23.466667 19.2-42.666667 42.666667-42.666667h256c23.466667 0 42.666667 19.2 42.666666 42.666667v341.333333c0 23.466667-19.2 42.666667-42.666666 42.666667zM853.333333 896H597.333333c-23.466667 0-42.666667-19.2-42.666666-42.666667V512c0-23.466667 19.2-42.666667 42.666666-42.666667h256c23.466667 0 42.666667 19.2 42.666667 42.666667v341.333333c0 23.466667-19.2 42.666667-42.666667 42.666667z" fill="#185ABD" p-id="56482"></path><path d="M853.333333 384H597.333333c-23.466667 0-42.666667-19.2-42.666666-42.666667V170.666667c0-23.466667 19.2-42.666667 42.666666-42.666667h256c23.466667 0 42.666667 19.2 42.666667 42.666667v170.666666c0 23.466667-19.2 42.666667-42.666667 42.666667zM426.666667 896H170.666667c-23.466667 0-42.666667-19.2-42.666667-42.666667v-170.666666c0-23.466667 19.2-42.666667 42.666667-42.666667h256c23.466667 0 42.666667 19.2 42.666666 42.666667v170.666666c0 23.466667-19.2 42.666667-42.666666 42.666667z" fill="#41A5EE" p-id="56483"></path></svg>
       </div>
       </>,
     path: "/",
@@ -22,21 +23,6 @@ const items: NavItemProps[] = [
     label: <>wiki</>,
     path: "/wiki",
     key: "wiki",
-  },
-  {
-    label: <>tag</>,
-    path: "/tag",
-    key: "tag",
-  },
-  {
-    label: <>media</>,
-    path: "/media",
-    key: "media",
-  },
-  {
-    label: <>meta</>,
-    path: "/meta",
-    key: "meta",
   },
 ];
 
@@ -56,12 +42,6 @@ export default (props: any) => {
     }
     if (pathname.startsWith("/tag")) {
       key = "tag";
-    }
-    if (pathname.startsWith("/meta")) {
-      key = "meta";
-    }
-    if (pathname.startsWith("/media")) {
-      key = "media";
     }
     setActiveKey(key);
   }, [pathname]);

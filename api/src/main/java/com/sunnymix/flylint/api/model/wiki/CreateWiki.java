@@ -19,4 +19,7 @@ public class CreateWiki {
     @Builder.Default
     private Optional<String> catalogName = Optional.empty();
 
+    @Builder.Default
+    private Optional<String> type = Optional.empty();
+
 }

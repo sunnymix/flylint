@@ -1,5 +1,5 @@
 
-/* Wiki Toc: */
+/* _________ toc _________ */
 
 .wiki-toc {
   position: fixed;
@@ -7,7 +7,7 @@
   overflow: auto;
   display: flex;
   align-items: flex-start;
-  padding: 10px;
+  padding: 10px 0;
 }
 
 .toc-content {
@@ -28,8 +28,6 @@
   color: #333;
   background-color: #eee;
 }
-
-/* Toc Lines: */
 
 .toc-lines {
   display: flex;
@@ -52,13 +50,9 @@
   background-color: transparent;
 }
 
-/* Toc Text: */
-
 .toc-text {
   position: relative;
 }
-
-/* Toc Indicator: */
 
 .toc-indicator {
   position: absolute;
@@ -78,29 +72,7 @@
   background-color: #bbb;
 }
 
-/* Wiki Top: */
-
-.wiki-top {
-  min-height: 110px;
-}
-
-/* Wiki Breadcrumb: */
-
-.wiki-breadcrumb {
-  padding: 4px 10px;
-  min-height: 40px;
-  display: flex;
-  align-items: center;
-}
-
-/* Wiki Head: */
-
-.wiki-head {
-  padding: 4px 10px;
-  min-height: 70px;
-}
-
-/* Wiki Title: */
+/* __________ wiki-top __________ */
 
 .wiki-title {
   font-size: 1.4rem;
@@ -111,17 +83,17 @@
   color: #00000073;
 }
 
-/* Wiki Body: */
+/* __________ wiki-body __________ */
 
 .wiki-body {
   overflow: auto;
 }
 
 .wiki_content {
-  padding: 10px;
+  padding: 10px 0;
 }
 
-/* Image: */
+/* _________ image ________ */
 
 .image-body {
   position: relative;

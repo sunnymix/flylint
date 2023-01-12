@@ -10,8 +10,6 @@
 .nav {
   display: flex;
   flex-wrap: nowrap;
-  background-color: #fff;
-  border-bottom: 1px solid #ddd;
   padding: 0;
   overflow: hidden;
   overflow-x: auto;
@@ -35,7 +33,6 @@
   bottom: 6px;
   left: 20px;
   right: 20px;
-  /* border-bottom: 2px solid transparent; */
   height: 2px;
   border-radius: 2px;
 }

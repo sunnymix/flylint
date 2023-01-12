@@ -8,12 +8,8 @@ export interface WikiProps {
 }
 
 export default (props: WikiProps) => {
-  
-  if (!props.name || props.name.trim().length < 1) {
-    return <WikiList />;
-  }
 
-  LocalStore.setCatalogSelectedKeys([props.name]);
+  LocalStore.setCatalogSelectedKeys([]);
   
   return <Catalog defaultName={props.name} refreshSignal={'init'} />;
 };

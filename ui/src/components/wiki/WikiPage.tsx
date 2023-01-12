@@ -38,7 +38,7 @@ export default (props: WikiDetailProps) => {
     setTimeout(() => {
       const winSize = Layout.winSize();
       const topSize = Layout.refSize(topRef);
-      const topHeight = 60 + topSize.height;
+      const topHeight = topSize.height;
       const bodyHeight = winSize.height - topHeight;
       setTopHeight(topHeight);
       setBodyHeight(bodyHeight);
@@ -111,15 +111,12 @@ export default (props: WikiDetailProps) => {
     <div className="wiki">
       <div className="wiki-page">
         <div className='wiki-top' ref={topRef} style={{marginLeft: 400}}>
-          <div className="wiki-breadcrumb">
-            <div className="com-ops">
-              <button className='com-op btn-text' onClick={onNameClick}>{props.name}</button>
-              <WikiOps mode={props.mode} className="com_op" name={props.name} title={title} onTitleUpdated={onTitleUpdated} />
-            </div>
-          </div>
           <div className="wiki-head">
             <div className="wiki-title" onClick={onTitleClick}>{title}</div>
-            <div className="wiki-time">{`最近修改: ${updateTime}`}</div>
+            <div className="com-ops">
+              <div className='com-op wiki-time'>{`最近修改: ${updateTime}`}</div>
+              <WikiOps mode={props.mode} className="com_op" name={props.name} title={title} onTitleUpdated={onTitleUpdated} />
+            </div>
           </div>
         </div>
         <div className="wiki-body" style={{height: bodyHeight, position: 'relative'}}>

@@ -2,7 +2,7 @@ import { Tree } from "antd";
 import type { DataNode, TreeProps, EventDataNode } from "antd/es/tree";
 import TreeDataType from "antd/es/tree"
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import { CaretDownFilled, VerticalAlignMiddleOutlined, ColumnHeightOutlined } from "@ant-design/icons";
+import { CaretDownFilled, VerticalAlignMiddleOutlined, ColumnHeightOutlined, HomeOutlined } from "@ant-design/icons";
 import { CatalogTree } from "./CatalogModel";
 import CatalogApi from "./CatalogApi";
 import LocalStore from "@/components/common/LocalStore";
@@ -126,8 +126,7 @@ export default (props: CatalogTreeProps) => {
 
   return (
     <div className={props.className} ref={rootRef} style={{width: props.width || 400}}>
-      <div className="com-header">
-        <div className="com-title">catalog</div>
+      <div className="catalog-header">
         <div className="com-ops">
           <WikiCreateButton mode="catalog" className="com-op" catalogName="/" />
           <Button onClick={onShrinkAll} className="com-op" type="text" size="small"><VerticalAlignMiddleOutlined /></Button>

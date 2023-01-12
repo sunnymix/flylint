@@ -6,9 +6,6 @@ export default (props: any) => {
 
   return (
   <div>
-    <div className='header'>
-      <Nav />
-    </div>
     <div className='body'>
       {props.children}
     </div>

@@ -1,29 +1,18 @@
-import { Children, forwardRef, useCallback, useEffect, useState, useMemo, useRef } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 import WikiApi from "./WikiApi";
 import { DetailWiki, Toc } from "./WikiModel";
 import Time from "@/components/common/Time";
-import { createEditor, Descendant, Transforms } from "slate";
-import { Slate, Editable, withReact, ReactEditor } from "slate-react";
-import { withHistory } from "slate-history";
 import WikiOps from "./WikiOps";
-import WikiCreateButton from "./WikiCreateButton";
-import MyElement from "./WikiElement";
 import WikiEditor from "./WikiEditor";
 const { withInlines } = WikiEditor;
 import { WikiMode } from "./WikiModel";
 import { history } from "umi";
 import LocalStore from "@/components/common/LocalStore";
-import WikiBreadcrumb from "./WikiBreadCrumb";
 import { WikiNameUpdatedEventData, WikiTitleUpdatedEventData } from "@/components/common/EventBus";
 import { onUpdateName, onUpdateTitle } from "./WikiOps";
-import { Button } from "antd";
-import WikiToolbar from "./WikiToolbar";
 import WikiToc from "./WikiToc";
 import Layout from "../common/Layout";
-
-// TODO:
-// - reload select wiki when ancestor name changed
-// - table of content
+import WikiContent from "./WikiContent";
 
 export interface WikiDetailProps {
   name: string,
@@ -32,40 +21,26 @@ export interface WikiDetailProps {
 
 export default (props: WikiDetailProps) => {
 
-  // Wiki property:
+  // _________ state __________
+
+  const contentRef = useRef<any>();
   const [path, setPath] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [updateTime, setUpdateTime] = useState<string>("");
   const [tocData, setTocData] = useState<Toc[]>();
   const topRef = useRef<any>(null);
-  const [bodyHeight, setBodyHeight] = useState<number>();
-  const [toolbarDisplayCmd, setToolbarDisplayCmd] = useState<string|any>();
+  const [topHeight, setTopHeight] = useState<number>(0);
+  const [bodyHeight, setBodyHeight] = useState<number>(0);
 
-  // Editor:
-  const [editor] = useState(withReact(withInlines(withHistory(createEditor()))));
-
-  // Init:
-  const onInit = useCallback(() => {
-    window.addEventListener("resize", onWindowResize);
-    refreshBodySize();
-  }, []);
-
-  // Destroy:
-  const onDestroy = useCallback(() => {
-    window.removeEventListener("resize", onWindowResize);
-
-    // Unset editor selection
-    Transforms.deselect(editor);
-  }, []);
-
-  // Resize:
+  // __________ resize __________
 
   const refreshBodySize = useCallback(() => {
     setTimeout(() => {
       const winSize = Layout.winSize();
       const topSize = Layout.refSize(topRef);
-      const bodyHeight = winSize.height - 60 - topSize.height;
-
+      const topHeight = 60 + topSize.height;
+      const bodyHeight = winSize.height - topHeight;
+      setTopHeight(topHeight);
       setBodyHeight(bodyHeight);
     }, 10);
   }, []);
@@ -74,9 +49,20 @@ export default (props: WikiDetailProps) => {
     refreshBodySize();
   }, []);
 
-  // Load:
+  // ___________ load _________
+
+  const init = useCallback(() => {
+    window.addEventListener("resize", onWindowResize);
+    refreshBodySize();
+  }, []);
+
+  const destroy = useCallback(() => {
+    window.removeEventListener("resize", onWindowResize);
+    contentRef?.current?.deselect();
+  }, []);
+
   useEffect(() => {
-    onInit();
+    init();
 
     if (!props.name) {
       history.push(`/${props.mode}`);
@@ -94,15 +80,11 @@ export default (props: WikiDetailProps) => {
       setPath(wiki.path || "");
       setTitle(wiki.title || "");
       setUpdateTime(wiki.updated ? Time.formatDatetime(wiki.updated) : "");
-      WikiEditor.setContent(editor, wiki.content || WikiEditor.initialContentRaw());
-      setTocData(WikiEditor.makeToc(editor));
+      
       refreshBodySize();
     });
 
-    return () => {
-      onDestroy();
-    };
-
+    return () => destroy();
   }, [props.name]);
 
   const onTitleUpdated = useCallback((data: WikiTitleUpdatedEventData) => {
@@ -111,7 +93,7 @@ export default (props: WikiDetailProps) => {
 
   const onNameClick = useCallback(() => {
     onUpdateName(props.mode, props.name, (data: WikiNameUpdatedEventData) => {
-      history.push(`/${props.mode}/${data.name}`);
+      history.push(`/wiki/${data.name}`);
     });
   }, [props.name]);
 
@@ -121,21 +103,13 @@ export default (props: WikiDetailProps) => {
     });
   }, [props.name, title]);
 
-  const onEditorChange = useCallback((value: Descendant[]) => {
-    if (!WikiEditor.isAstChange(editor) && typeof tocData !== 'undefined') return;
-
-    setTocData(WikiEditor.makeToc(editor));
-    WikiEditor.onContentChange(props.name, editor, value, () => setUpdateTime(Time.nowDatetime3()));
-  }, [props.name, tocData]);
-
   const tocOnClick = (event: any, toc: Toc) => {
-    WikiEditor.focusIndex(editor, toc.index);
+    contentRef?.current.focus(toc.index);
   };
 
   return (
     <div className="wiki">
-      <WikiToc className="wiki-toc" width={400} tocData={tocData} onClick={tocOnClick}/>
-      <div className="wiki-page" style={{marginLeft: 400}}>
+      <div className="wiki-page">
         <div className='wiki-top' ref={topRef}>
           <div className="wiki-breadcrumb">
             <div className="com-ops">
@@ -148,26 +122,20 @@ export default (props: WikiDetailProps) => {
             <div className="wiki-time">{`最近修改: ${updateTime}`}</div>
           </div>
         </div>
-        <div className="wiki-body" style={{height: `${bodyHeight ? bodyHeight + 'px' : 'auto'}`}}>
-          <div className="wiki_content">
-            <div className="wiki_content_editor">
-              <Slate
-                editor={editor}
-                value={WikiEditor.initialContent()}
-                onChange={onEditorChange}
-                >
-                <WikiToolbar cmd={toolbarDisplayCmd} />
-                <Editable
-                  placeholder="Empty"
-                  renderElement={MyElement.renderElement}
-                  renderLeaf={MyElement.renderLeaf}
-                  onKeyDown={(event) => WikiEditor.onKeyDown(event, editor, (cmd: string|any) => setToolbarDisplayCmd(cmd))}
-                  onPaste={(event) => WikiEditor.onPaste(event, editor)}
-                  onClick={(event) => setToolbarDisplayCmd(null)}
-                  />
-              </Slate>
-            </div>
-          </div>
+        <div className="wiki-body" style={{height: bodyHeight, position: 'relative'}}>
+          <WikiToc
+            className="wiki-toc"
+            width={400}
+            top={topHeight}
+            tocData={tocData} 
+            onClick={tocOnClick}/>
+          <WikiContent
+            ref={contentRef}
+            name={props.name}
+            onChange={() => setUpdateTime(Time.nowDatetime3())}
+            onTocChange={(tocData: Toc[]) => setTocData(tocData)}
+            style={{marginLeft: 400}}
+            />
         </div>
       </div>
     </div>

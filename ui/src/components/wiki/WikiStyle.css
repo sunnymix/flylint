@@ -3,13 +3,11 @@
 
 .wiki-toc {
   position: fixed;
-  top: 50px;
   bottom: 0;
-  z-index: 1;
   overflow: auto;
   display: flex;
   align-items: flex-start;
-  padding: 4px;
+  padding: 10px;
 }
 
 .toc-content {
@@ -23,7 +21,7 @@
   min-height: 30px;
   color: #555;
   padding: 0 6px;
-  border-radius: 4px;
+  border-radius: 2px;
 }
 
 .toc-item:hover {
@@ -116,8 +114,11 @@
 /* Wiki Body: */
 
 .wiki-body {
-  padding: 10px 20% 10px 10px;
   overflow: auto;
+}
+
+.wiki_content {
+  padding: 10px;
 }
 
 /* Image: */

@@ -10,8 +10,6 @@ import { Toc } from "./WikiModel";
 import { typeLevel } from "./WikiElement";
 import { IconNames } from "./icon/AstroIcons";
 
-const initialEmptyContent = JSON.stringify([{"type":"paragraph","children":[{"text":""}]}]);
-
 const WikiEditor = {
 
   resetBlock(editor: any) {

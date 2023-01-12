@@ -6,8 +6,10 @@ import { last } from '@/components/common/Style';
 
 export interface WikiTocProps {
   className?: string,
+  height?: number,
   left?: number,
   width?: number,
+  top?: number,
   tocData?: Toc[],
   onClick?: (event: any, toc: Toc) => void,
 };
@@ -21,7 +23,7 @@ const WikiToc = (props: WikiTocProps) => {
   }, []);
   
   return (
-    <div className={props.className || 'wiki-toc'} style={{ width: props.width || 400}}>
+    <div className={props.className || 'wiki-toc'} style={{ width: props.width || 0, top: props.top || 0}}>
         <Scrollbars className='toc-content' autoHide>
           {props.tocData && props.tocData.map((toc: Toc) => (                                                                                                                                                                                                                                                                                                                                                                                                                                 
             <div key={toc.index}>

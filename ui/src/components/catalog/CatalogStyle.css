@@ -2,9 +2,9 @@
 .catalog-header {
   display: flex;
   align-items: center;
-  height: 40px;
+  height: 30px;
   padding: 0 10px;
-  border-bottom: 1px solid #ddd;
+  background: #eee;
 }
 
 .catalog-side {
@@ -13,8 +13,6 @@
   top: 0;
   bottom: 0;
 }
-
-/* catalog node: */
 
 .catalog_node_title {
   display: flex;

@@ -110,7 +110,7 @@ export default (props: WikiDetailProps) => {
   return (
     <div className="wiki">
       <div className="wiki-page">
-        <div className='wiki-top' ref={topRef}>
+        <div className='wiki-top' ref={topRef} style={{marginLeft: 400}}>
           <div className="wiki-breadcrumb">
             <div className="com-ops">
               <button className='com-op btn-text' onClick={onNameClick}>{props.name}</button>

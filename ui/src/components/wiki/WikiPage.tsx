@@ -61,10 +61,6 @@ export default (props: WikiDetailProps) => {
   // Resize:
 
   const refreshBodySize = useCallback(() => {
-    return;
-
-    // Disable!
-
     setTimeout(() => {
       const winSize = Layout.winSize();
       const topSize = Layout.refSize(topRef);
@@ -149,7 +145,7 @@ export default (props: WikiDetailProps) => {
           </div>
           <div className="wiki-head">
             <div className="wiki-title" onClick={onTitleClick}>{title}</div>
-            <div className="wiki-time">{`${updateTime}`}</div>
+            <div className="wiki-time">{`最近修改: ${updateTime}`}</div>
           </div>
         </div>
         <div className="wiki-body" style={{height: `${bodyHeight ? bodyHeight + 'px' : 'auto'}`}}>

@@ -31,6 +31,7 @@ export default (props: WikiDetailProps) => {
   const topRef = useRef<any>(null);
   const [topHeight, setTopHeight] = useState<number>(0);
   const [bodyHeight, setBodyHeight] = useState<number>(0);
+  const [tocWidth, setTocWidth] = useState<number>(400);
 
   // __________ resize __________
 
@@ -65,21 +66,23 @@ export default (props: WikiDetailProps) => {
     init();
 
     if (!props.name) {
-      history.push(`/${props.mode}`);
+      history.push(`/wiki`);
       return;
     }
 
     WikiApi.detail(props.name, (wiki: DetailWiki) => {
       if (!wiki) {
         LocalStore.removeCatalogSelectedKeys([props.name]);
-
-        history.push(`/${props.mode}`);
+        history.push(`/wiki`);
         return;
       }
 
       setPath(wiki.path || "");
       setTitle(wiki.title || "");
       setUpdateTime(wiki.updated ? Time.formatDatetime(wiki.updated) : "");
+
+      const tocWidth = wiki.type == 'wiki' ? 400 : 0;
+      setTocWidth(tocWidth);
       
       refreshBodySize();
     });
@@ -107,10 +110,12 @@ export default (props: WikiDetailProps) => {
     contentRef?.current.focus(toc.index);
   };
 
+  // _________ ui _________
+
   return (
     <div className="wiki">
       <div className="wiki-page">
-        <div className='wiki-top' ref={topRef} style={{marginLeft: 400}}>
+        <div className='wiki-top' ref={topRef} style={{marginLeft: tocWidth}}>
           <div className="wiki-head">
             <div className="wiki-title" onClick={onTitleClick}>{title}</div>
             <div className="com-ops">
@@ -122,7 +127,7 @@ export default (props: WikiDetailProps) => {
         <div className="wiki-body" style={{height: bodyHeight, position: 'relative'}}>
           <WikiToc
             className="wiki-toc"
-            width={400}
+            width={tocWidth}
             top={topHeight}
             tocData={tocData} 
             onClick={tocOnClick}/>
@@ -131,7 +136,7 @@ export default (props: WikiDetailProps) => {
             name={props.name}
             onChange={() => setUpdateTime(Time.nowDatetime3())}
             onTocChange={(tocData: Toc[]) => setTocData(tocData)}
-            style={{marginLeft: 400}}
+            style={{marginLeft: tocWidth}}
             />
         </div>
       </div>

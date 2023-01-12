@@ -21,7 +21,7 @@
   min-height: 30px;
   color: #555;
   padding: 0 6px;
-  border-radius: 2px;
+  border-radius: 0;
 }
 
 .toc-item:hover {

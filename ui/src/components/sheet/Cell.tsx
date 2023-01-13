@@ -27,7 +27,7 @@ const Cell = forwardRef((props: CellProps, ref: any) => {
         width: props.data.width,
         height: props.data.height,
       }}>
-      {props.data.key}
+      <div className='sheet-cell-key'>{props.data.key}</div>
     </div>
   );
 });

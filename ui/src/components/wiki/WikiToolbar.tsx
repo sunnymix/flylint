@@ -69,7 +69,7 @@ const WikiToolbar = (props: WikiToolbarProps) => {
       <div ref={ref} onMouseDown={e => e.preventDefault()}
         className={cx(css`
         position: absolute;
-        z-index: 1;
+        z-index: 1000;
         top: -10000px;
         left: -1000px;
         opacity: 0;

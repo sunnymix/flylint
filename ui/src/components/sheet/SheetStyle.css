@@ -1,0 +1,37 @@
+
+.sheet {
+  padding: 0;
+}
+
+/* __________ content __________ */
+
+.sheet-content {
+  position: relative;
+}
+
+/* __________ row __________ */
+
+.sheet-row {
+  position: absolute;
+  border-top: 1px solid #ddd;
+}
+
+/* __________ col __________ */
+
+.sheet-col {
+  position: absolute;
+  border-left: 1px solid #ddd;
+}
+
+.sheet-col:first-child {
+  border-left-color: transparent;
+}
+
+/* __________ cell __________ */
+
+.sheet-cell {
+  position: absolute;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+}

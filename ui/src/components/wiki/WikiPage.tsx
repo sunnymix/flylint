@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState, useRef } from "react";
 import WikiApi from "./WikiApi";
-import { DetailWiki, Toc } from "./WikiModel";
+import { DetailWiki, Toc, WikiType } from "./WikiModel";
 import Time from "@/components/common/Time";
 import WikiOps from "./WikiOps";
 import WikiEditor from "./WikiEditor";
@@ -13,6 +13,7 @@ import { onUpdateName, onUpdateTitle } from "./WikiOps";
 import WikiToc from "./WikiToc";
 import Layout from "../common/Layout";
 import WikiContent from "./WikiContent";
+import Sheet from "../sheet/Sheet";
 
 export interface WikiDetailProps {
   name: string,
@@ -24,6 +25,7 @@ export default (props: WikiDetailProps) => {
   // _________ state __________
 
   const contentRef = useRef<any>();
+  const [type, setType] = useState<WikiType>('wiki');
   const [path, setPath] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [updateTime, setUpdateTime] = useState<string>("");
@@ -77,6 +79,7 @@ export default (props: WikiDetailProps) => {
         return;
       }
 
+      setType(wiki.type || 'wiki');
       setPath(wiki.path || "");
       setTitle(wiki.title || "");
       setUpdateTime(wiki.updated ? Time.formatDatetime(wiki.updated) : "");
@@ -124,20 +127,20 @@ export default (props: WikiDetailProps) => {
             </div>
           </div>
         </div>
-        <div className="wiki-body" style={{height: bodyHeight, position: 'relative'}}>
-          <WikiToc
+        <WikiToc
             className="wiki-toc"
             width={tocWidth}
             top={topHeight}
             tocData={tocData} 
             onClick={tocOnClick}/>
-          <WikiContent
+        <div className="wiki-body" style={{height: bodyHeight, position: 'relative', marginLeft: tocWidth}}>
+          {type == 'wiki' && <WikiContent
             ref={contentRef}
             name={props.name}
             onChange={() => setUpdateTime(Time.nowDatetime3())}
             onTocChange={(tocData: Toc[]) => setTocData(tocData)}
-            style={{marginLeft: tocWidth}}
-            />
+            />}
+          {type == 'sheet' && <Sheet />}
         </div>
       </div>
     </div>

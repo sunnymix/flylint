@@ -3,6 +3,7 @@
 
 .wiki-toc {
   position: fixed;
+  z-index: 100;
   bottom: 0;
   overflow: auto;
   display: flex;
@@ -90,10 +91,11 @@
 
 .wiki-body {
   overflow: auto;
+  padding: 10px;
 }
 
 .wiki_content {
-  padding: 10px 20% 10px 10px;
+  padding: 0;
 }
 
 /* _________ image ________ */

@@ -4,7 +4,8 @@
   align-items: center;
   height: 30px;
   padding: 0 10px;
-  background: #eee;
+  border-bottom: 1px solid #eee;
+  background-color: #fff;
 }
 
 .catalog-side {

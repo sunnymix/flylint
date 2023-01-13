@@ -11,12 +11,28 @@
 
 /* __________ row __________ */
 
+.sheet-row-header {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #eee;
+}
+
 .sheet-row {
   position: absolute;
   border-top: 1px solid #ddd;
 }
 
 /* __________ col __________ */
+
+.sheet-col-header {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #eee;
+}
 
 .sheet-col {
   position: absolute;

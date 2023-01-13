@@ -8,14 +8,24 @@ export interface RowProps {
 const Row = forwardRef((props: RowProps, ref: any) => {
   
   return (
-    <div
-      className='sheet-row'
-      style={{
-        left: 0,
-        top: props.data.top,
-        width: props.data.width,
-        height: props.data.height,
-      }}></div>
+    <div>
+      <div
+        className='sheet-row-header'
+        style={{
+          left: 0,
+          top: props.data.top,
+          width: 50,
+          height: props.data.height,
+        }}>{props.data.index}</div>
+      <div
+        className='sheet-row'
+        style={{
+          left: 0,
+          top: props.data.top,
+          width: props.data.width,
+          height: props.data.height,
+        }}></div>
+    </div>
   );
 });
 

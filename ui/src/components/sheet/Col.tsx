@@ -8,14 +8,24 @@ export interface ColProps {
 const Col = forwardRef((props: ColProps, ref: any) => {
 
   return (
-    <div
-      className='sheet-col'
-      style={{
-        top: 0,
-        left: props.data.left,
-        width: props.data.width,
-        height: props.data.height,
-      }}></div>
+    <div>
+      <div
+        className='sheet-col-header'
+        style={{
+          top: 0,
+          left: 50 + props.data.left,
+          width: props.data.width,
+          height: 30,
+        }}>{props.data.index}</div>
+      <div
+        className='sheet-col'
+        style={{
+          top: 0,
+          left: 50 + props.data.left,
+          width: props.data.width,
+          height: props.data.height,
+        }}></div>
+    </div>
   );
 });
 

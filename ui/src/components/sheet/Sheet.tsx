@@ -1,5 +1,5 @@
 import { forwardRef, useImperativeHandle } from "react";
-import SheetContent from "./SheetContent";
+import SheetBody from "./SheetBody";
 import './SheetStyle.css';
 
 
@@ -20,7 +20,7 @@ const Sheet = forwardRef((props: SheetProps, ref) => {
   return (
     <div className='sheet'>
       <div>
-        <SheetContent />
+        <SheetBody />
       </div>
     </div>
   );

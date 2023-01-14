@@ -8,10 +8,11 @@ import {
 import SheetApi from "./SheetApi";
 import Cols from "./Cols";
 import Rows from "./Rows";
+import Peak from "./Peak";
 
-export interface SheetContentProps {};
+export interface SheetBodyProps {};
 
-const SheetContent = forwardRef((props: SheetContentProps, ref: any) => {
+const SheetBody = forwardRef((props: SheetBodyProps, ref: any) => {
 
   // __________ state __________
 
@@ -34,13 +35,14 @@ const SheetContent = forwardRef((props: SheetContentProps, ref: any) => {
   // __________ api __________
 
   useImperativeHandle(ref, () => ({
-    api: () => { console.log('sheet content api') },
+    api: () => { console.log('sheet body api') },
   }));
 
   // __________ ui __________
 
   return (
     <div>
+      <Peak />
       <Cells data={cells} />
       <Rows data={rows} />
       <Cols data={cols} />
@@ -48,4 +50,4 @@ const SheetContent = forwardRef((props: SheetContentProps, ref: any) => {
   );
 });
 
-export default SheetContent;
+export default SheetBody;

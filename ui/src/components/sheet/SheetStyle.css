@@ -5,8 +5,18 @@
 
 /* __________ content __________ */
 
-.sheet-content {
+.sheet-body {
   position: relative;
+}
+
+.sheet-peak {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50px;
+  height: 30px;
+  background-color: #f8f8f8;
+  border-top: 1px solid #ddd;
 }
 
 /* __________ row __________ */
@@ -16,7 +26,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #eee;
+  background-color: #f8f8f8;
 }
 
 .sheet-row {
@@ -31,7 +41,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #eee;
+  background-color: #f8f8f8;
+  border-top: 1px solid #ddd;
 }
 
 .sheet-col {

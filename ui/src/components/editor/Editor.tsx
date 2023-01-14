@@ -34,14 +34,23 @@ const Editor = forwardRef((props: EditorProps, ref: any) => {
     Transforms.deselect(editor);
   }, []);
 
-  useEffect(() => {
-    init();
-
+  const loadWiki = () => {
     WikiApi.detail(props.name, (wiki: DetailWiki) => {
       if (!wiki || wiki.type !== 'wiki') return;
       EditorApi.setContent(editor, wiki.content || EditorApi.initialContentRaw());
       props.onChange?.call(null, true, false, wiki.content);
     });
+  };
+
+  const loadCell = () => {
+
+  };
+
+  useEffect(() => {
+    init();
+
+    if (props.type === 'wiki') loadWiki();
+    if (props.type === 'cell') loadCell();
 
     return () => destroy();
   }, [props.name]);

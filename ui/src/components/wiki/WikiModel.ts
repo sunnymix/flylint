@@ -24,4 +24,4 @@ export interface DetailWiki {
 
 export type WikiMode = "wiki" | "catalog";
 
-export type WikiType = 'wiki' | 'sheet';
+export type WikiType = 'wiki' | 'sheet' | 'cell';

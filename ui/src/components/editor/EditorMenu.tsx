@@ -64,7 +64,7 @@ const EditorMenu = forwardRef((props: EditorMenuProps, refx: any) => {
       <div ref={rootRef} onMouseDown={e => e.preventDefault()}
         className={cx(css`
         position: absolute;
-        z-index: 1000;
+        z-index: 10000;
         top: -10000px;
         left: -1000px;
         opacity: 0;

@@ -1,4 +1,4 @@
-import { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from "react";
+import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from "react";
 import WikiApi from "../wiki/WikiApi";
 import { DetailWiki, WikiType } from "../wiki/WikiModel";
 import { createEditor, Descendant, Transforms } from "slate";
@@ -11,10 +11,10 @@ import EditorMenu from "./EditorMenu";
 import './EditorStyle.css';
 
 export interface EditorProps {
-  name: string,
+  name: string|null,
   type: WikiType,
   className?: string,
-  style?: any,
+  style?: React.CSSProperties,
   onChange?: (isInit: boolean, isAstChange: boolean, content: string) => void,
 };
 
@@ -35,6 +35,7 @@ const Editor = forwardRef((props: EditorProps, ref: any) => {
   }, []);
 
   const loadWiki = () => {
+    if (!props.name) return;
     WikiApi.detail(props.name, (wiki: DetailWiki) => {
       if (!wiki || wiki.type !== 'wiki') return;
       EditorApi.setContent(editor, wiki.content || EditorApi.initialContentRaw());
@@ -75,7 +76,7 @@ const Editor = forwardRef((props: EditorProps, ref: any) => {
   // __________ ui ___________
 
   return (
-    <div className="editor" style={{...props.style}}>
+    <div className={`editor ${props.className}`} style={{...props.style}}>
       <Slate
         editor={editor}
         value={EditorApi.initialContent()}
@@ -83,12 +84,13 @@ const Editor = forwardRef((props: EditorProps, ref: any) => {
         >
         <EditorMenu cmd={menuShowCmd} />
         <Editable
-          placeholder="Empty"
+          placeholder=''
           renderElement={EditorElement.renderElement}
           renderLeaf={EditorElement.renderLeaf}
           onKeyDown={(event) => EditorApi.onKeyDown(event, editor, (cmd: string|any) => setMenuShowCmd(cmd))}
           onPaste={(event) => EditorApi.onPaste(event, editor)}
           onClick={(event) => setMenuShowCmd(null)}
+          onResize={(event) => console.log('Editor: on resize: event=', event)}
           />
       </Slate>
     </div>

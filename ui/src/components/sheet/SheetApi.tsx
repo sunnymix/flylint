@@ -1,4 +1,7 @@
 import { sheet } from "@emotion/css";
+export const peakWidth = 50;
+export const defaultWidth = 250;
+export const defaultHeight = 30;
 
 export interface Sheet {
   colSize: number,
@@ -41,9 +44,9 @@ const SheetApi = {
       rows.push({
         key: r.toString(),
         index: r,
-        top: r * 30,
-        height: 30,
-        width: 50 + sheet.colSize * 100,
+        top: r * defaultHeight,
+        height: defaultHeight,
+        width: peakWidth + sheet.colSize * defaultWidth,
       } as Row);
     }
     return rows;
@@ -55,9 +58,9 @@ const SheetApi = {
       cols.push({
         key: c.toString(),
         index: c,
-        left: (c - 1) * 100,
-        width: 100,
-        height: (sheet.rowSize + 1) * 30,
+        left: (c - 1) * defaultWidth,
+        width: defaultWidth,
+        height: (sheet.rowSize + 1) * defaultHeight,
       } as Col);
     }
     return cols;
@@ -67,8 +70,8 @@ const SheetApi = {
     const cells: Cell[] = [];
     for (var r = 1; r <= sheet.rowSize; r++) {
       for (var c = 1; c <= sheet.colSize; c++) {
-        const left = (c - 1) * 100 + 50;
-        const top = (r - 1) * 30 + 30;
+        const left = peakWidth + (c - 1) * defaultWidth;
+        const top = defaultHeight + (r - 1) * defaultHeight;
 
         cells.push({
           key: `${c}-${r}`,
@@ -78,8 +81,8 @@ const SheetApi = {
           rowSize: 1,
           left: left,
           top: top,
-          width: 100,
-          height: 30,
+          width: defaultWidth,
+          height: defaultHeight,
         });
       }
     }

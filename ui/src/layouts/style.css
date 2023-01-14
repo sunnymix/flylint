@@ -158,7 +158,6 @@ h5 *,
 pre, 
 p,
 .block {
-  display: block;
   margin-bottom: 0;
   padding: 0;
 }
@@ -182,10 +181,21 @@ br {
 /* icon */
 
 .inline.icon {
-  padding: 0 2px;
-  margin: 0 4px;
+  padding: 0;
+  margin: 0;
+  position: relative;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
 }
 
-.inline.icon.active {
+.inline.icon svg {
+  position: absolute;
+  top: 4px;
+  width: 16px;
+  height: 16px;
+}
+
+.inline.icon.active svg {
   box-shadow: 0 0 0 1px #1890ff;
 }

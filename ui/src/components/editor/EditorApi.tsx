@@ -4,7 +4,6 @@ import { ReactEditor } from "slate-react";
 import { LinkData, ImageBlockData, IconData } from "./EditorElement";
 import isUrl from "is-url";
 import { isKeyHotkey } from "is-hotkey";
-import WikiApi from "../wiki/WikiApi";
 import MediaApi from "../media/MediaApi";
 import { typeLevel } from "./EditorElement";
 import { IconNames } from "../icon/AstroIcons";
@@ -281,8 +280,9 @@ const EditorApi = {
     }
   },
 
-  makeOutline(editor: any) {
-    const eles = editor.children || [];
+  makeOutline(content: string) {
+    if (!content) return [];
+    const eles = JSON.parse(content) || [];
     if (!eles || !eles.length) return [];
     const data: Outline[] = [];
     eles.forEach((ele: any, index: number) => {
@@ -340,16 +340,6 @@ const EditorApi = {
 
   isAstChange(editor: any) {
     return editor.operations.some((op: any) => 'set_selection' !== op.type);
-  },
-
-  onContentChange(name: string, editor: any, value: Descendant[], cb: () => void) {
-    if (!EditorApi.isAstChange(editor)) return;
-
-    const content = JSON.stringify(value);
-    WikiApi.updateContent(name, content, (success: boolean) => {
-      if (!success) return;
-      cb();
-    });
   },
 
   setContent(editor: any, content: string) {

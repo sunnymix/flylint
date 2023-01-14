@@ -64,7 +64,8 @@ const query = (keyword: string|null, cb: (wikis: BasicWiki[]) => void) => {
 const detail = (name: string, cb: (wiki: DetailWiki) => void) => {
   axios.get(`${Constant.API_BASE}/wiki/${name}`)
     .then(res => {
-      const wiki = res.data?.data || null;
+      const wiki = res.data?.data as DetailWiki || null;
+      console.log('wikiapi: detail, wiki=', wiki);
       cb(wiki);
     });
 };

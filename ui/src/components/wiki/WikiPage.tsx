@@ -15,7 +15,7 @@ import Sheet from "../sheet/Sheet";
 
 import Editor from "../editor/Editor";
 import EditorOutline from "../editor/EditorOutline";
-import { Outline } from "../editor/EditorApi";
+import EditorApi, { Outline } from "../editor/EditorApi";
 
 export interface WikiDetailProps {
   name: string,
@@ -27,11 +27,11 @@ export default (props: WikiDetailProps) => {
   // _________ state __________
 
   const contentRef = useRef<any>();
-  const [type, setType] = useState<WikiType>('wiki');
+  const [type, setType] = useState<WikiType|null>(null);
   const [path, setPath] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [updateTime, setUpdateTime] = useState<string>("");
-  const [outlines, setOutlines] = useState<Outline[]>();
+  const [outline, setOutline] = useState<Outline[]>();
   const topRef = useRef<any>(null);
   const [topHeight, setTopHeight] = useState<number>(0);
   const [bodyHeight, setBodyHeight] = useState<number>(0);
@@ -64,6 +64,7 @@ export default (props: WikiDetailProps) => {
   const destroy = useCallback(() => {
     window.removeEventListener("resize", onWindowResize);
     contentRef?.current?.deselect();
+    setType(null);
   }, []);
 
   useEffect(() => {
@@ -80,6 +81,8 @@ export default (props: WikiDetailProps) => {
         history.push(`/wiki`);
         return;
       }
+
+      console.log('wiki page: wiki.type=', wiki.type);
 
       setType(wiki.type || 'wiki');
       setPath(wiki.path || "");
@@ -115,6 +118,17 @@ export default (props: WikiDetailProps) => {
     contentRef?.current.focus(outline.index);
   };
 
+  const onEditorChange = (isInit: boolean, isAstChange: boolean, content: string) => {
+    const isUpdateOutline = isInit || isAstChange;
+    isUpdateOutline && setOutline(EditorApi.makeOutline(content));
+
+    const isSaveContent = !isInit && isAstChange;
+    isSaveContent && WikiApi.updateContent(props.name, content, (success: boolean) => {
+      if (!success) return console.log('ERROR');
+      return setUpdateTime(Time.nowDatetime());
+    });
+  };
+
   // _________ ui _________
 
   return (
@@ -133,16 +147,16 @@ export default (props: WikiDetailProps) => {
             className="wiki-outline"
             width={outlineWidth}
             top={topHeight}
-            data={outlines} 
+            data={outline}
             onClick={onOutlineClick}/>
         <div className="wiki-body" style={{height: bodyHeight, position: 'relative', marginLeft: outlineWidth}}>
-          {type == 'wiki' && <Editor
+          {type === 'wiki' && <Editor
             ref={contentRef}
             name={props.name}
-            onChange={() => setUpdateTime(Time.nowDatetime3())}
-            onOutlinesChange={(data: Outline[]) => setOutlines(data)}
+            type={type}
+            onChange={onEditorChange}
             />}
-          {type == 'sheet' && <Sheet />}
+          {type === 'sheet' && <Sheet />}
         </div>
       </div>
     </div>

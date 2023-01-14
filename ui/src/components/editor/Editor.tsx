@@ -1,6 +1,6 @@
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from "react";
 import WikiApi from "../wiki/WikiApi";
-import { DetailWiki, Toc } from "../wiki/WikiModel";
+import { DetailWiki, Toc, WikiType } from "../wiki/WikiModel";
 import { createEditor, Descendant, Transforms } from "slate";
 import { Slate, Editable, withReact } from "slate-react";
 import { withHistory } from "slate-history";
@@ -12,10 +12,10 @@ import './EditorStyle.css';
 
 export interface EditorProps {
   name: string,
+  type: WikiType,
   className?: string,
   style?: any,
-  onChange?: () => void,
-  onOutlinesChange?: (tocData: Toc[]) => void,
+  onChange?: (isInit: boolean, isAstChange: boolean, content: string) => void,
 };
 
 const Editor = forwardRef((props: EditorProps, ref: any) => {
@@ -36,13 +36,13 @@ const Editor = forwardRef((props: EditorProps, ref: any) => {
 
   useEffect(() => {
     init();
+    console.log('eidtor: load wiki name=', props.name, ',type=', props.type);
 
     WikiApi.detail(props.name, (wiki: DetailWiki) => {
       if (!wiki) return;
-
+      console.log('eidtor: api wiki name=', props.name, ',type=', props.type);
       EditorApi.setContent(editor, wiki.content || EditorApi.initialContentRaw());
-      
-      props.onOutlinesChange?.call(null, EditorApi.makeOutline(editor));
+      props.onChange?.call(null, true, false, wiki.content);
     });
 
     return () => destroy();
@@ -51,11 +51,7 @@ const Editor = forwardRef((props: EditorProps, ref: any) => {
   // __________ editor __________
 
   const onEditorChange = useCallback((value: Descendant[]) => {
-    if (!EditorApi.isAstChange(editor)) return;
-
-    props.onOutlinesChange?.call(null, EditorApi.makeOutline(editor));
-    
-    EditorApi.onContentChange(props.name, editor, value, () => props.onChange?.call(null));
+    props.onChange?.call(null, false, EditorApi.isAstChange(editor), JSON.stringify(value));
   }, [props.name]);
 
   // __________ api __________

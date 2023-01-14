@@ -281,23 +281,23 @@ const EditorApi = {
     }
   },
 
-  makeOutlines(editor: any) {
+  makeOutline(editor: any) {
     const eles = editor.children || [];
     if (!eles || !eles.length) return [];
-    const outlines: Outline[] = [];
+    const data: Outline[] = [];
     eles.forEach((ele: any, index: number) => {
       const level = typeLevel(ele.type);
       if (!level) return;
-      const outline: Outline = {
+      const item: Outline = {
         index,
         type: ele.type,
         text: ele.children[0]?.text || '···',
         level,
       };
-      outlines.push(outline);
+      data.push(item);
     });
 
-    return outlines;
+    return data;
   },
 
   onPaste(event: any, editor: any) {

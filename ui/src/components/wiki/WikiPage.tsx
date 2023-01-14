@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState, useRef } from "react";
 import WikiApi from "./WikiApi";
-import { DetailWiki, Toc, WikiType } from "./WikiModel";
+import { DetailWiki, WikiType } from "./WikiModel";
 import Time from "@/components/common/Time";
 import WikiOps from "./WikiOps";
 import WikiEditor from "./WikiEditor";
@@ -10,13 +10,11 @@ import { history } from "umi";
 import LocalStore from "@/components/common/LocalStore";
 import { WikiNameUpdatedEventData, WikiTitleUpdatedEventData } from "@/components/common/EventBus";
 import { onUpdateName, onUpdateTitle } from "./WikiOps";
-import WikiToc from "./WikiToc";
 import Layout from "../common/Layout";
-import WikiContent from "./WikiContent";
 import Sheet from "../sheet/Sheet";
 
 import Editor from "../editor/Editor";
-import EditorOutlines from "../editor/EditorOutlines";
+import EditorOutline from "../editor/EditorOutline";
 import { Outline } from "../editor/EditorApi";
 
 export interface WikiDetailProps {
@@ -37,7 +35,7 @@ export default (props: WikiDetailProps) => {
   const topRef = useRef<any>(null);
   const [topHeight, setTopHeight] = useState<number>(0);
   const [bodyHeight, setBodyHeight] = useState<number>(0);
-  const [tocWidth, setTocWidth] = useState<number>(400);
+  const [outlineWidth, setOutlineWidth] = useState<number>(400);
 
   // __________ resize __________
 
@@ -88,8 +86,8 @@ export default (props: WikiDetailProps) => {
       setTitle(wiki.title || "");
       setUpdateTime(wiki.updated ? Time.formatDatetime(wiki.updated) : "");
 
-      const tocWidth = wiki.type == 'wiki' ? 400 : 0;
-      setTocWidth(tocWidth);
+      const outlineWidth = wiki.type == 'wiki' ? 400 : 0;
+      setOutlineWidth(outlineWidth);
       
       refreshBodySize();
     });
@@ -113,8 +111,8 @@ export default (props: WikiDetailProps) => {
     });
   }, [props.name, title]);
 
-  const tocOnClick = (event: any, toc: Toc) => {
-    contentRef?.current.focus(toc.index);
+  const onOutlineClick = (event: any, outline: Outline) => {
+    contentRef?.current.focus(outline.index);
   };
 
   // _________ ui _________
@@ -122,7 +120,7 @@ export default (props: WikiDetailProps) => {
   return (
     <div className="wiki">
       <div className="wiki-page">
-        <div className='wiki-top' ref={topRef} style={{marginLeft: tocWidth}}>
+        <div className='wiki-top' ref={topRef} style={{marginLeft: outlineWidth}}>
           <div className="wiki-head">
             <div className="wiki-title" onClick={onTitleClick}>{title}</div>
             <div className="com-ops">
@@ -131,13 +129,13 @@ export default (props: WikiDetailProps) => {
             </div>
           </div>
         </div>
-        <EditorOutlines
-            className="wiki-outlines"
-            width={tocWidth}
+        <EditorOutline
+            className="wiki-outline"
+            width={outlineWidth}
             top={topHeight}
             data={outlines} 
-            onClick={tocOnClick}/>
-        <div className="wiki-body" style={{height: bodyHeight, position: 'relative', marginLeft: tocWidth}}>
+            onClick={onOutlineClick}/>
+        <div className="wiki-body" style={{height: bodyHeight, position: 'relative', marginLeft: outlineWidth}}>
           {type == 'wiki' && <Editor
             ref={contentRef}
             name={props.name}

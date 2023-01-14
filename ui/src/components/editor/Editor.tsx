@@ -42,7 +42,7 @@ const Editor = forwardRef((props: EditorProps, ref: any) => {
 
       EditorApi.setContent(editor, wiki.content || EditorApi.initialContentRaw());
       
-      props.onOutlinesChange?.call(null, EditorApi.makeOutlines(editor));
+      props.onOutlinesChange?.call(null, EditorApi.makeOutline(editor));
     });
 
     return () => destroy();
@@ -53,7 +53,7 @@ const Editor = forwardRef((props: EditorProps, ref: any) => {
   const onEditorChange = useCallback((value: Descendant[]) => {
     if (!EditorApi.isAstChange(editor)) return;
 
-    props.onOutlinesChange?.call(null, EditorApi.makeOutlines(editor));
+    props.onOutlinesChange?.call(null, EditorApi.makeOutline(editor));
     
     EditorApi.onContentChange(props.name, editor, value, () => props.onChange?.call(null));
   }, [props.name]);

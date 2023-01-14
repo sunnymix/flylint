@@ -1,11 +1,11 @@
 
 /* _________ outlines _________ */
 
-.editor-outlines-body {
+.editor-outline-body {
   flex-grow: 1;
 }
 
-.editor-outline {
+.editor-outline-item {
   display: flex;
   align-items: stretch;
   line-height: 30px;
@@ -15,37 +15,37 @@
   border-radius: 0;
 }
 
-.editor-outline:hover {
+.editor-outline-item:hover {
   color: #333;
   background-color: #eee;
 }
 
-.editor-outline-lines {
+.editor-outline-item-lines {
   display: flex;
   align-items: stretch;
 }
 
-.editor-outline-line-body {
+.editor-outline-item-line-body {
   width: 20px;
   display: flex;
   align-items: stretch;
   justify-content: center;
 }
 
-.editor-outline-line {
+.editor-outline-item-line {
   width: 1px;
   background-color: #ddd;
 }
 
-.editor-outline-line-body.last .editor-outline-line {
+.editor-outline-item-line-body.last .editor-outline-item-line {
   background-color: transparent;
 }
 
-.editor-outline-text {
+.editor-outline-item-text {
   position: relative;
 }
 
-.editor-outline-indicator {
+.editor-outline-item-indicator {
   position: absolute;
   left: -10px;
   top: 0;
@@ -54,7 +54,7 @@
   align-items: flex-start;
 }
 
-.editor-outline-dot {
+.editor-outline-item-dot {
   margin-top: 14px;
   width: 2px;
   height: 2px;

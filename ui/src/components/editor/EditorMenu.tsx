@@ -1,25 +1,24 @@
-import Portal from "../common/Portal";
+import { forwardRef } from "react";
 import React, { useCallback, useEffect, useRef } from "react";
+import { useFocused, useSlate } from "slate-react";
 import { Button } from "antd";
 import { css, cx } from "@emotion/css";
-import { useFocused, useSlate } from "slate-react";
-import { Range, Editor } from "slate";
-import { EllipsisOutlined, FileImageFilled } from "@ant-design/icons";
 import Icons, { IconNames } from "../icon/AstroIcons";
-import WikiEditor from "./WikiEditor";
+import Portal from "../common/Portal";
+import EditorApi from "./EditorApi";
 
-export interface WikiToolbarProps {
+export interface EditorMenuProps {
   cmd?: string,
 };
 
-const WikiToolbar = (props: WikiToolbarProps) => {
-
-  const ref = useRef<HTMLDivElement | null>(null);
+const EditorMenu = forwardRef((props: EditorMenuProps, refx: any) => {
+  
+  const rootRef = useRef<HTMLDivElement | null>(null);
   const editor = useSlate();
   const inFocus = useFocused();
 
   const show = () => {
-    const el = ref.current;
+    const el = rootRef.current;
     if (!el) return;
 
     try {
@@ -47,7 +46,7 @@ const WikiToolbar = (props: WikiToolbarProps) => {
   };
 
   const hide = () => {
-    const el = ref.current;
+    const el = rootRef.current;
     if (!el) return;
     el.removeAttribute('style');
   };
@@ -57,12 +56,12 @@ const WikiToolbar = (props: WikiToolbarProps) => {
   }, [props.cmd]);
 
   const clickIcon = useCallback((name: IconNames) => {
-    WikiEditor.insertIcon(editor, name);
+    EditorApi.insertIcon(editor, name);
   }, []);
 
   return (
     <Portal>
-      <div ref={ref} onMouseDown={e => e.preventDefault()}
+      <div ref={rootRef} onMouseDown={e => e.preventDefault()}
         className={cx(css`
         position: absolute;
         z-index: 1000;
@@ -138,6 +137,6 @@ const WikiToolbar = (props: WikiToolbarProps) => {
       </div>
     </Portal>
   );
-};
+});
 
-export default WikiToolbar;
+export default EditorMenu;

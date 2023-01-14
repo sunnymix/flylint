@@ -159,7 +159,7 @@ export const typeLevel = (type: ElementType|null|undefined): number => {
   }
 };
 
-export default {
+const EditorElement = {
   H1, H2, H3, H4, H5,
   HeadingOne,
   HeadingTwo,
@@ -198,3 +198,5 @@ export default {
   },
 
 };
+
+export default EditorElement;

@@ -1,7 +1,7 @@
 
 /* _________ toc _________ */
 
-.wiki-toc {
+.wiki-outlines {
   position: fixed;
   z-index: 100;
   bottom: 0;
@@ -9,67 +9,6 @@
   display: flex;
   align-items: flex-start;
   padding: 10px 0;
-}
-
-.toc-content {
-  flex-grow: 1;
-}
-
-.toc-item {
-  display: flex;
-  align-items: stretch;
-  line-height: 30px;
-  min-height: 30px;
-  color: #555;
-  padding: 0 6px;
-  border-radius: 0;
-}
-
-.toc-item:hover {
-  color: #333;
-  background-color: #eee;
-}
-
-.toc-lines {
-  display: flex;
-  align-items: stretch;
-}
-
-.toc-line-body {
-  width: 20px;
-  display: flex;
-  align-items: stretch;
-  justify-content: center;
-}
-
-.toc-line {
-  width: 1px;
-  background-color: #ddd;
-}
-
-.toc-line-body.last .toc-line {
-  background-color: transparent;
-}
-
-.toc-text {
-  position: relative;
-}
-
-.toc-indicator {
-  position: absolute;
-  left: -10px;
-  top: 0;
-  bottom: 0;
-  display: flex;
-  align-items: flex-start;
-}
-
-.toc-dot {
-  margin-top: 14px;
-  width: 2px;
-  height: 2px;
-  border-radius: 4px;
-  background-color: #bbb;
 }
 
 /* __________ wiki-top __________ */

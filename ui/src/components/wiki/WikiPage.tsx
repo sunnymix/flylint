@@ -15,6 +15,10 @@ import Layout from "../common/Layout";
 import WikiContent from "./WikiContent";
 import Sheet from "../sheet/Sheet";
 
+import Editor from "../editor/Editor";
+import EditorOutlines from "../editor/EditorOutlines";
+import { Outline } from "../editor/EditorApi";
+
 export interface WikiDetailProps {
   name: string,
   mode: WikiMode,
@@ -29,7 +33,7 @@ export default (props: WikiDetailProps) => {
   const [path, setPath] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [updateTime, setUpdateTime] = useState<string>("");
-  const [tocData, setTocData] = useState<Toc[]>();
+  const [outlines, setOutlines] = useState<Outline[]>();
   const topRef = useRef<any>(null);
   const [topHeight, setTopHeight] = useState<number>(0);
   const [bodyHeight, setBodyHeight] = useState<number>(0);
@@ -127,18 +131,18 @@ export default (props: WikiDetailProps) => {
             </div>
           </div>
         </div>
-        <WikiToc
-            className="wiki-toc"
+        <EditorOutlines
+            className="wiki-outlines"
             width={tocWidth}
             top={topHeight}
-            tocData={tocData} 
+            data={outlines} 
             onClick={tocOnClick}/>
         <div className="wiki-body" style={{height: bodyHeight, position: 'relative', marginLeft: tocWidth}}>
-          {type == 'wiki' && <WikiContent
+          {type == 'wiki' && <Editor
             ref={contentRef}
             name={props.name}
             onChange={() => setUpdateTime(Time.nowDatetime3())}
-            onTocChange={(tocData: Toc[]) => setTocData(tocData)}
+            onOutlinesChange={(data: Outline[]) => setOutlines(data)}
             />}
           {type == 'sheet' && <Sheet />}
         </div>

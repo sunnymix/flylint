@@ -1,16 +1,22 @@
 import { Descendant, Editor, Transforms, Text, BaseEditor, Point, Node } from "slate";
 import { Element as SlateElement, Range, Location } from "slate";
 import { ReactEditor } from "slate-react";
-import { LinkData, ImageBlockData, IconData } from "./WikiElement";
+import { LinkData, ImageBlockData, IconData } from "./EditorElement";
 import isUrl from "is-url";
 import { isKeyHotkey } from "is-hotkey";
-import WikiApi from "./WikiApi";
+import WikiApi from "../wiki/WikiApi";
 import MediaApi from "../media/MediaApi";
-import { Toc } from "./WikiModel";
-import { typeLevel } from "./WikiElement";
+import { typeLevel } from "./EditorElement";
 import { IconNames } from "../icon/AstroIcons";
 
-const WikiEditor = {
+export interface Outline {
+  index: number,
+  type: string,
+  text: string,
+  level: number,
+};
+
+const EditorApi = {
 
   resetBlock(editor: any) {
     Transforms.setNodes(
@@ -29,7 +35,7 @@ const WikiEditor = {
   },
 
   toggleBoldMark(editor: BaseEditor & ReactEditor) {
-    const isActive = WikiEditor.isBoldMarkActive(editor);
+    const isActive = EditorApi.isBoldMarkActive(editor);
     Transforms.setNodes(
       editor,
       {bold: isActive ? null : true, children: []},
@@ -45,7 +51,7 @@ const WikiEditor = {
   },
 
   toggleCodeBlock(editor: BaseEditor & ReactEditor) {
-    const isActive = WikiEditor.isCodeBlockActive(editor);
+    const isActive = EditorApi.isCodeBlockActive(editor);
     Transforms.setNodes(
       editor,
       {type: isActive ? null : "code-block", children: []},
@@ -61,7 +67,7 @@ const WikiEditor = {
   },
   
   toggleHeading(editor: any, level: number) {
-    const isActive = WikiEditor.isHeadingActive(editor, level);
+    const isActive = EditorApi.isHeadingActive(editor, level);
     Transforms.setNodes(
       editor,
       {type: isActive ? null : `h${level}`, children: []},
@@ -77,7 +83,7 @@ const WikiEditor = {
   },
 
   toggleHeadingOneBlock(editor: any) {
-    const isActive = WikiEditor.isHeadingOneBlockActive(editor);
+    const isActive = EditorApi.isHeadingOneBlockActive(editor);
     Transforms.setNodes(
       editor,
       {type: isActive ? null : "heading-one", children: []},
@@ -93,7 +99,7 @@ const WikiEditor = {
   },
 
   toggleHeadingTwoBlock(editor: any) {
-    const isActive = WikiEditor.isHeadingTwoBlockActive(editor);
+    const isActive = EditorApi.isHeadingTwoBlockActive(editor);
     Transforms.setNodes(
       editor,
       {type: isActive ? null : "heading-two", children: []},
@@ -109,7 +115,7 @@ const WikiEditor = {
   },
 
   toggleHeadingThreeBlock(editor: any) {
-    const isActive = WikiEditor.isHeadingThreeBlockActive(editor);
+    const isActive = EditorApi.isHeadingThreeBlockActive(editor);
     Transforms.setNodes(
       editor,
       {type: isActive ? null : "heading-three", children: []},
@@ -129,8 +135,8 @@ const WikiEditor = {
   },
 
   wrapLink(editor: any, url: string) {
-    if (WikiEditor.isLinkActive(editor)) {
-      WikiEditor.unwrapLink(editor);
+    if (EditorApi.isLinkActive(editor)) {
+      EditorApi.unwrapLink(editor);
     }
     
     const { selection } = editor;
@@ -151,13 +157,13 @@ const WikiEditor = {
 
   unwrapLink(editor: any) {
     Transforms.unwrapNodes(editor, {
-      match: (ele: any) => ele.type === "link" && WikiEditor.isElement(editor, ele),
+      match: (ele: any) => ele.type === "link" && EditorApi.isElement(editor, ele),
     });
   },
 
   insertLink(editor: any, url: string) {
     if (editor.selection) {
-      WikiEditor.wrapLink(editor, url);
+      EditorApi.wrapLink(editor, url);
     }
   },
 
@@ -181,7 +187,7 @@ const WikiEditor = {
   
     editor.insertText = (text: any) => {
       if (text && isUrl(text)) {
-        WikiEditor.wrapLink(editor, text);
+        EditorApi.wrapLink(editor, text);
       } else {
         insertText(text);
       }
@@ -191,7 +197,7 @@ const WikiEditor = {
       const text = data.getData('text/plain');
   
       if (text && isUrl(text)) {
-        WikiEditor.wrapLink(editor, text)
+        EditorApi.wrapLink(editor, text)
       } else {
         insertData(data)
       }
@@ -220,13 +226,13 @@ const WikiEditor = {
     if (!!event.shiftKey && event.key === 'Enter') {
       event.preventDefault();
       event.stopPropagation();
-      WikiEditor.prependBlock(editor);
+      EditorApi.prependBlock(editor);
     }
 
     if (!!event.metaKey && event.key === 'Enter') {
       event.preventDefault();
       event.stopPropagation();
-      WikiEditor.appendBlock(editor);
+      EditorApi.appendBlock(editor);
       return;
     }
 
@@ -241,17 +247,17 @@ const WikiEditor = {
       case '5':
         event.preventDefault();
         const level = +event.key;
-        WikiEditor.toggleHeading(editor, level);
+        EditorApi.toggleHeading(editor, level);
         break;
 
       case "`":
         event.preventDefault();
-        WikiEditor.toggleCodeBlock(editor);
+        EditorApi.toggleCodeBlock(editor);
         break;
 
       case "b":
         event.preventDefault();
-        WikiEditor.toggleBoldMark(editor);
+        EditorApi.toggleBoldMark(editor);
         break;
 
       case "k":
@@ -260,43 +266,38 @@ const WikiEditor = {
         if (!url) {
           return;
         }
-        WikiEditor.insertLink(editor, url);
+        EditorApi.insertLink(editor, url);
         break;
 
       case 'q':
         event.preventDefault();
-        WikiEditor.resetBlock(editor);
+        EditorApi.resetBlock(editor);
         break;
       
       case 's':
         event.preventDefault();
         toolbar?.call(null, 'show:' + +(+ new Date()));
         break;
-
-      case "j":
-        event.preventDefault();
-        WikiEditor.makeToc(editor);
-        break;
     }
   },
 
-  makeToc(editor: any) {
+  makeOutlines(editor: any) {
     const eles = editor.children || [];
     if (!eles || !eles.length) return [];
-    const tocList: Toc[] = [];
+    const outlines: Outline[] = [];
     eles.forEach((ele: any, index: number) => {
       const level = typeLevel(ele.type);
       if (!level) return;
-      const toc: Toc = {
+      const outline: Outline = {
         index,
         type: ele.type,
         text: ele.children[0]?.text || '···',
         level,
       };
-      tocList.push(toc);
+      outlines.push(outline);
     });
 
-    return tocList;
+    return outlines;
   },
 
   onPaste(event: any, editor: any) {
@@ -307,7 +308,7 @@ const WikiEditor = {
         event.preventDefault();
         MediaApi.uploadImage(file, (imageUrl: string|null) => {
           if (!imageUrl) return;
-          WikiEditor.insertImageBlock(editor, imageUrl);
+          EditorApi.insertImageBlock(editor, imageUrl);
         });
       }
     }
@@ -315,12 +316,12 @@ const WikiEditor = {
 
   parseContent(content: string) {
     if (!content) {
-      return WikiEditor.initialContent();
+      return EditorApi.initialContent();
     }
     if (content.trim().length === 0) {
-      return WikiEditor.initialContent();
+      return EditorApi.initialContent();
     }
-    var json = WikiEditor.initialContent();
+    var json = EditorApi.initialContent();
     try {
       json = JSON.parse(content);
     } catch (error) {
@@ -330,11 +331,11 @@ const WikiEditor = {
   },
 
   initialContent() {
-    return [WikiEditor.emptyBlock()];
+    return [EditorApi.emptyBlock()];
   },
 
   initialContentRaw() {
-    return JSON.stringify(WikiEditor.initialContent());
+    return JSON.stringify(EditorApi.initialContent());
   },
 
   isAstChange(editor: any) {
@@ -342,7 +343,7 @@ const WikiEditor = {
   },
 
   onContentChange(name: string, editor: any, value: Descendant[], cb: () => void) {
-    if (!WikiEditor.isAstChange(editor)) return;
+    if (!EditorApi.isAstChange(editor)) return;
 
     const content = JSON.stringify(value);
     WikiApi.updateContent(name, content, (success: boolean) => {
@@ -352,7 +353,7 @@ const WikiEditor = {
   },
 
   setContent(editor: any, content: string) {
-    editor.children = WikiEditor.parseContent(content);
+    editor.children = EditorApi.parseContent(content);
     Transforms.collapse(editor, {
       edge: "start"
     });
@@ -384,19 +385,19 @@ const WikiEditor = {
   },
 
   appendBlock(editor: any) {
-    Transforms.insertNodes(editor, WikiEditor.emptyBlock());
+    Transforms.insertNodes(editor, EditorApi.emptyBlock());
   },
 
   prependBlock(editor: any) {
-    const point = WikiEditor.currentPoint(editor);
+    const point = EditorApi.currentPoint(editor);
     if (!point) return;
     const [row] = point.path;
     const previousPoint = {
       offset: 0,
       path: [row, 0],
     }
-    WikiEditor.insertBlock(editor, WikiEditor.emptyBlock(), previousPoint);
-    WikiEditor.focusIndex(editor, row);
+    EditorApi.insertBlock(editor, EditorApi.emptyBlock(), previousPoint);
+    EditorApi.focusIndex(editor, row);
   },
 
   insertIcon(editor: any, name: IconNames) {
@@ -410,4 +411,4 @@ const WikiEditor = {
 
 };
 
-export default WikiEditor;
+export default EditorApi;

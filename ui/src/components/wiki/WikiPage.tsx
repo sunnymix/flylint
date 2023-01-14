@@ -3,8 +3,6 @@ import WikiApi from "./WikiApi";
 import { DetailWiki, WikiType } from "./WikiModel";
 import Time from "@/components/common/Time";
 import WikiOps from "./WikiOps";
-import WikiEditor from "./WikiEditor";
-const { withInlines } = WikiEditor;
 import { WikiMode } from "./WikiModel";
 import { history } from "umi";
 import LocalStore from "@/components/common/LocalStore";
@@ -64,7 +62,6 @@ export default (props: WikiDetailProps) => {
   const destroy = useCallback(() => {
     window.removeEventListener("resize", onWindowResize);
     contentRef?.current?.deselect();
-    setType(null);
   }, []);
 
   useEffect(() => {
@@ -81,8 +78,6 @@ export default (props: WikiDetailProps) => {
         history.push(`/wiki`);
         return;
       }
-
-      console.log('wiki page: wiki.type=', wiki.type);
 
       setType(wiki.type || 'wiki');
       setPath(wiki.path || "");

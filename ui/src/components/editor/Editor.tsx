@@ -1,6 +1,6 @@
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from "react";
 import WikiApi from "../wiki/WikiApi";
-import { DetailWiki, Toc, WikiType } from "../wiki/WikiModel";
+import { DetailWiki, WikiType } from "../wiki/WikiModel";
 import { createEditor, Descendant, Transforms } from "slate";
 import { Slate, Editable, withReact } from "slate-react";
 import { withHistory } from "slate-history";
@@ -36,11 +36,9 @@ const Editor = forwardRef((props: EditorProps, ref: any) => {
 
   useEffect(() => {
     init();
-    console.log('eidtor: load wiki name=', props.name, ',type=', props.type);
 
     WikiApi.detail(props.name, (wiki: DetailWiki) => {
-      if (!wiki) return;
-      console.log('eidtor: api wiki name=', props.name, ',type=', props.type);
+      if (!wiki || wiki.type !== 'wiki') return;
       EditorApi.setContent(editor, wiki.content || EditorApi.initialContentRaw());
       props.onChange?.call(null, true, false, wiki.content);
     });

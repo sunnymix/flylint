@@ -1,7 +1,7 @@
-
 import axios from "axios";
 import Constant from "@/components/common/Constant";
 import { BasicWiki, DetailWiki, WikiType } from "./WikiModel";
+import Time from "../common/Time";
 
 const create = (type: WikiType, cb: (name: string) => void) => {
   axios.post(`${Constant.API_BASE}/wiki/create`, { type })
@@ -65,7 +65,6 @@ const detail = (name: string, cb: (wiki: DetailWiki) => void) => {
   axios.get(`${Constant.API_BASE}/wiki/${name}`)
     .then(res => {
       const wiki = res.data?.data as DetailWiki || null;
-      console.log('wikiapi: detail, wiki=', wiki);
       cb(wiki);
     });
 };

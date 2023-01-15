@@ -4,6 +4,7 @@
 package com.sunnymix.flylint.dao.jooq;
 
 
+import com.sunnymix.flylint.dao.jooq.tables.Cell;
 import com.sunnymix.flylint.dao.jooq.tables.Media;
 import com.sunnymix.flylint.dao.jooq.tables.Wiki;
 
@@ -27,6 +28,11 @@ public class Flylint extends SchemaImpl {
      * The reference instance of <code>flylint</code>
      */
     public static final Flylint FLYLINT = new Flylint();
+
+    /**
+     * The table <code>flylint.cell</code>.
+     */
+    public final Cell CELL = Cell.CELL;
 
     /**
      * The table <code>flylint.media</code>.
@@ -54,6 +60,7 @@ public class Flylint extends SchemaImpl {
     @Override
     public final List<Table<?>> getTables() {
         return Arrays.asList(
+            Cell.CELL,
             Media.MEDIA,
             Wiki.WIKI
         );

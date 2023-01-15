@@ -4,6 +4,7 @@
 package com.sunnymix.flylint.dao.jooq;
 
 
+import com.sunnymix.flylint.dao.jooq.tables.Cell;
 import com.sunnymix.flylint.dao.jooq.tables.Wiki;
 
 import org.jooq.Index;
@@ -24,4 +25,5 @@ public class Indexes {
 
     public static final Index WIKI_IDX_PATH = Internal.createIndex(DSL.name("idx_path"), Wiki.WIKI, new OrderField[] { Wiki.WIKI.PATH }, false);
     public static final Index WIKI_IDX_TITLE = Internal.createIndex(DSL.name("idx_title"), Wiki.WIKI, new OrderField[] { Wiki.WIKI.TITLE }, false);
+    public static final Index CELL_UK_CELL = Internal.createIndex(DSL.name("uk_cell"), Cell.CELL, new OrderField[] { Cell.CELL.SHEET, Cell.CELL.COL, Cell.CELL.ROW }, false);
 }

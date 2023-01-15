@@ -4,6 +4,7 @@
 package com.sunnymix.flylint.dao.jooq;
 
 
+import com.sunnymix.flylint.dao.jooq.tables.Cell;
 import com.sunnymix.flylint.dao.jooq.tables.Media;
 import com.sunnymix.flylint.dao.jooq.tables.Wiki;
 
@@ -13,6 +14,11 @@ import com.sunnymix.flylint.dao.jooq.tables.Wiki;
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tables {
+
+    /**
+     * The table <code>flylint.cell</code>.
+     */
+    public static final Cell CELL = Cell.CELL;
 
     /**
      * The table <code>flylint.media</code>.

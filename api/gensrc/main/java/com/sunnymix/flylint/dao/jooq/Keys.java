@@ -4,8 +4,10 @@
 package com.sunnymix.flylint.dao.jooq;
 
 
+import com.sunnymix.flylint.dao.jooq.tables.Cell;
 import com.sunnymix.flylint.dao.jooq.tables.Media;
 import com.sunnymix.flylint.dao.jooq.tables.Wiki;
+import com.sunnymix.flylint.dao.jooq.tables.records.CellRecord;
 import com.sunnymix.flylint.dao.jooq.tables.records.MediaRecord;
 import com.sunnymix.flylint.dao.jooq.tables.records.WikiRecord;
 
@@ -26,6 +28,7 @@ public class Keys {
     // UNIQUE and PRIMARY KEY definitions
     // -------------------------------------------------------------------------
 
+    public static final UniqueKey<CellRecord> KEY_CELL_PRIMARY = Internal.createUniqueKey(Cell.CELL, DSL.name("KEY_cell_PRIMARY"), new TableField[] { Cell.CELL.ID }, true);
     public static final UniqueKey<MediaRecord> KEY_MEDIA_PRIMARY = Internal.createUniqueKey(Media.MEDIA, DSL.name("KEY_media_PRIMARY"), new TableField[] { Media.MEDIA.ID }, true);
     public static final UniqueKey<WikiRecord> KEY_WIKI_PRIMARY = Internal.createUniqueKey(Wiki.WIKI, DSL.name("KEY_wiki_PRIMARY"), new TableField[] { Wiki.WIKI.ID }, true);
     public static final UniqueKey<WikiRecord> KEY_WIKI_UK_NAME = Internal.createUniqueKey(Wiki.WIKI, DSL.name("KEY_wiki_uk_name"), new TableField[] { Wiki.WIKI.NAME }, true);

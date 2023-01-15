@@ -1,6 +1,6 @@
 import { sheet } from "@emotion/css";
 export const peakWidth = 50;
-export const defaultWidth = 250;
+export const defaultWidth = 200;
 export const defaultHeight = 30;
 
 export interface Sheet {

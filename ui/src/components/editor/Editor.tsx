@@ -16,6 +16,8 @@ export interface EditorProps {
   className?: string,
   style?: React.CSSProperties,
   onChange?: (isInit: boolean, isAstChange: boolean, content: string) => void,
+  onFocus?: () => void,
+  onBlur?: () => void,
 };
 
 const Editor = forwardRef((props: EditorProps, ref: any) => {
@@ -90,7 +92,8 @@ const Editor = forwardRef((props: EditorProps, ref: any) => {
           onKeyDown={(event) => EditorApi.onKeyDown(event, editor, (cmd: string|any) => setMenuShowCmd(cmd))}
           onPaste={(event) => EditorApi.onPaste(event, editor)}
           onClick={(event) => setMenuShowCmd(null)}
-          onResize={(event) => console.log('Editor: on resize: event=', event)}
+          onFocus={(event) => props.onFocus?.call(null)}
+          onBlur={(event) => props.onBlur?.call(null)}
           />
       </Slate>
     </div>

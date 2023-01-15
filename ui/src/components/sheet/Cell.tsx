@@ -12,8 +12,11 @@ const Cell = forwardRef((props: CellProps, ref: any) => {
 
   const [left, setLeft] = useState<number>(0);
   const [top, setTop] = useState<number>(0);
+  const [isFoucs, setIsFocus] = useState<boolean>(false);
 
   // __________ effect __________
+
+  // __________ event __________
 
   // __________ api __________
   
@@ -21,7 +24,7 @@ const Cell = forwardRef((props: CellProps, ref: any) => {
 
   return (
     <div
-      className='sheet-cell'
+      className={`sheet-cell ${isFoucs ? 'active' : ''}`}
       style={{
         left: props.data.left,
         top: props.data.top,
@@ -32,15 +35,11 @@ const Cell = forwardRef((props: CellProps, ref: any) => {
           className='sheet-cell-editor'
           name={null}
           type='cell'
+          onFocus={() => setIsFocus(true)}
+          onBlur={() => setIsFocus(false)}
           style={{
-            zIndex: 100,
-            position: 'absolute',
-            left: 0,
-            top: 0,
-            right: 0,
             width: props.data.width,
             minHeight: props.data.height,
-            padding: 4
           }} />
     </div>
   );

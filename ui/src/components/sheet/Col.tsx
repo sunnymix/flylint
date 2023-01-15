@@ -22,7 +22,6 @@ const Col = forwardRef((props: ColProps, ref: any) => {
         style={{
           top: 0,
           left: 50 + props.data.left,
-          width: props.data.width,
           height: props.data.height,
         }}></div>
     </div>

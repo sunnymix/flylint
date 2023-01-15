@@ -32,6 +32,7 @@
 .sheet-row {
   position: absolute;
   border-top: 1px solid #ddd;
+  background-color: red;
 }
 
 /* __________ col __________ */
@@ -48,6 +49,7 @@
 .sheet-col {
   position: absolute;
   border-left: 1px solid #ddd;
+  background: red;
 }
 
 .sheet-col:first-child {
@@ -58,9 +60,9 @@
 
 .sheet-cell {
   position: absolute;
-  z-index: 100;
   display: flex;
   align-items: center;
+  background: #fff;
 }
 
 .sheet-cell-editor {
@@ -73,7 +75,7 @@
 }
 
 .sheet-cell.active {
-  z-index: 200;
+  z-index: 100;
 }
 
 .sheet-cell.active .sheet-cell-editor {

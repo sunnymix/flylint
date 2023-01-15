@@ -23,7 +23,6 @@ const Row = forwardRef((props: RowProps, ref: any) => {
           left: 0,
           top: props.data.top,
           width: props.data.width,
-          height: props.data.height,
         }}></div>
     </div>
   );

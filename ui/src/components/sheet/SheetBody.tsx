@@ -25,7 +25,7 @@ const SheetBody = forwardRef((props: SheetBodyProps, ref: any) => {
   // __________ life cycle __________
 
   useEffect(() => {
-    const sheet = { colSize: 5, rowSize: 5 } as SheetData;
+    const sheet = { colSize: 2, rowSize: 2 } as SheetData;
     const cells = SheetApi.makeCells(sheet);
     const rows = SheetApi.makeRows(sheet);
     const cols = SheetApi.makeCols(sheet);

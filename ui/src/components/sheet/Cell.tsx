@@ -24,8 +24,12 @@ const Cell = forwardRef((props: CellProps, ref: any) => {
     if (!props.sheet || !props.data.col || !props.data.row) return;
     
     SheetApi.getCellData(props.sheet, props.data.col, props.data.row, (data: CellData|null) => {
+      
       if (!data) return;
-      editorRef?.current?.setContent(data.content);
+      
+      setTimeout(() => {
+        editorRef?.current?.setContent(data.content);
+      }, 1);
     });
 
   }, [props.sheet, props.data.col, props.data.row]);

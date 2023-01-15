@@ -75,7 +75,11 @@ const Editor = forwardRef((props: EditorProps, ref: any) => {
     },
 
     setContent: (content: string) => {
-      EditorApi.setContent(editor, content);
+      if (content && content.length > 0) {
+        EditorApi.setContent(editor, content);
+        // FIXME
+        EditorApi.focusIndex(editor, 0);
+      }
     },
 
   }));

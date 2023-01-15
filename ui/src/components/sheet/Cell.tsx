@@ -34,16 +34,8 @@ const Cell = forwardRef((props: CellProps, ref: any) => {
 
   // __________ event __________
 
-  const onRootClick = (e: any) => {
-    if (!isFoucs) {
-      editorRef?.current?.focus(0);
-    }
-  };
-
   const onEditorFocus = () => {
-    setTimeout(() => {
-      setIsFocus(true);
-    }, 10);
+    setIsFocus(true);
   };
 
   const onEditorBlur = () => {
@@ -69,8 +61,7 @@ const Cell = forwardRef((props: CellProps, ref: any) => {
         top: props.data.top,
         width: props.data.width,
         height: props.data.height,
-      }}
-      onClick={onRootClick}>
+      }}>
       <Editor
         ref={editorRef}
         className='sheet-cell-editor'

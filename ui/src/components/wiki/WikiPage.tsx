@@ -96,12 +96,12 @@ export default (props: WikiDetailProps) => {
         setTimeout(() => {
           editorRef?.current?.setContent(wiki.content);
           setOutline(EditorApi.makeOutline(wiki.content));
-        }, 1);
+        }, 10);
       }
     });
 
     return () => destroy();
-  }, [props.name, editorRef]);
+  }, [props.name]);
 
   const onTitleUpdated = useCallback((data: WikiTitleUpdatedEventData) => {
     setTitle(data.title);

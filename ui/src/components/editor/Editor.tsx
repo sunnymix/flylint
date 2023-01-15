@@ -75,9 +75,8 @@ const Editor = forwardRef((props: EditorProps, ref: any) => {
     },
 
     setContent: (content: string) => {
-      if (content && content.length > 0) {
-        EditorApi.setContent(editor, content);
-      }
+      EditorApi.setContent(editor, content);
+      EditorApi.forceRender(editor);
     },
 
   }));

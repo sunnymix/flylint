@@ -358,6 +358,11 @@ const EditorApi = {
     }, 10);
   },
 
+  forceRender(editor: any) {
+    ReactEditor.focus(editor);
+    ReactEditor.blur(editor);
+  },
+
   currentPoint(editor: any) {
     if (!editor || !editor.selection || !editor.selection.anchor) return null;
     return editor.selection.anchor;

@@ -66,6 +66,14 @@ const Editor = forwardRef((props: EditorProps, ref: any) => {
 
   useImperativeHandle(ref, () => ({
 
+    isFocused: () => {
+      return EditorApi.isFocused(editor);
+    },
+
+    tryFocus: () => {
+      EditorApi.tryFocus(editor);
+    },
+
     focus: (index: number) => {
       EditorApi.focusIndex(editor, index);
     },

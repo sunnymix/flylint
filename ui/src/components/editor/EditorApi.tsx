@@ -346,6 +346,15 @@ const EditorApi = {
     editor.children = EditorApi.parseContent(content);
   },
 
+  isFocused(editor: any) {
+    return ReactEditor.isFocused(editor);
+  },
+
+  tryFocus(editor: any) {
+    ReactEditor.focus(editor);
+    Transforms.select(editor, {path: [0, 0], offset: 0});
+  },
+
   focusIndex(editor: any, index: number) {
     setTimeout(() => {
       ReactEditor.focus(editor);

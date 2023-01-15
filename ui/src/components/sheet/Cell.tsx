@@ -12,7 +12,7 @@ const Cell = forwardRef((props: CellProps, ref: any) => {
 
   // __________ state __________
 
-  const [isFoucs, setIsFocus] = useState<boolean>(false);
+  const [isFoucsed, setIsFocused] = useState<boolean>(false);
 
   // __________ ref __________
 
@@ -34,12 +34,19 @@ const Cell = forwardRef((props: CellProps, ref: any) => {
 
   // __________ event __________
 
+  const onRootClick = (e: any) => {
+    if (!isFoucsed) {
+      // editorRef?.current?.focus(0);
+    }
+  };
+
   const onEditorFocus = () => {
-    setIsFocus(true);
+    setIsFocused(true);
+    editorRef?.current?.tryFocus();
   };
 
   const onEditorBlur = () => {
-    setIsFocus(false);
+    setIsFocused(false);
   };
 
   const onEditorChange = (isInit: boolean, isAstChange: boolean, content: string) => {
@@ -55,13 +62,14 @@ const Cell = forwardRef((props: CellProps, ref: any) => {
 
   return (
     <div
-      className={`sheet-cell ${isFoucs ? 'active' : ''}`}
+      className={`sheet-cell ${isFoucsed ? 'active' : ''}`}
       style={{
         left: props.data.left,
         top: props.data.top,
         width: props.data.width,
         height: props.data.height,
-      }}>
+      }}
+      onClick={onRootClick}>
       <Editor
         ref={editorRef}
         className='sheet-cell-editor'

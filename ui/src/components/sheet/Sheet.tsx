@@ -2,8 +2,9 @@ import { forwardRef, useImperativeHandle } from "react";
 import SheetBody from "./SheetBody";
 import './SheetStyle.css';
 
-
-export interface SheetProps {};
+export interface SheetProps {
+  sheet: string,
+};
 
 const Sheet = forwardRef((props: SheetProps, ref) => {
 
@@ -20,7 +21,7 @@ const Sheet = forwardRef((props: SheetProps, ref) => {
   return (
     <div className='sheet'>
       <div>
-        <SheetBody />
+        <SheetBody sheet={props.sheet} />
       </div>
     </div>
   );

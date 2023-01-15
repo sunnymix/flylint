@@ -2,6 +2,7 @@ import { forwardRef } from "react";
 import { Col as ColData } from "./SheetApi";
 
 export interface ColProps {
+  sheet: string,
   data: ColData,
 };
 

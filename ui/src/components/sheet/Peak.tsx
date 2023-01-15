@@ -1,6 +1,8 @@
 import { forwardRef } from "react";
 
-export interface PeakProps {};
+export interface PeakProps {
+  sheet: string,
+};
 
 const Peak = forwardRef((props: PeakProps, ref: any) => {
 

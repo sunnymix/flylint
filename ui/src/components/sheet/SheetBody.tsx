@@ -10,7 +10,9 @@ import Cols from "./Cols";
 import Rows from "./Rows";
 import Peak from "./Peak";
 
-export interface SheetBodyProps {};
+export interface SheetBodyProps {
+  sheet: string,
+};
 
 const SheetBody = forwardRef((props: SheetBodyProps, ref: any) => {
 
@@ -42,10 +44,10 @@ const SheetBody = forwardRef((props: SheetBodyProps, ref: any) => {
 
   return (
     <div>
-      <Peak />
-      <Cells data={cells} />
-      <Rows data={rows} />
-      <Cols data={cols} />
+      <Peak sheet={props.sheet} />
+      <Cells sheet={props.sheet} data={cells} />
+      <Cols sheet={props.sheet} data={cols} />
+      <Rows sheet={props.sheet} data={rows} />
     </div>
   );
 });

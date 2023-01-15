@@ -3,6 +3,7 @@ import { Cell as CellData } from "./SheetApi";
 import Editor from "../editor/Editor";
 
 export interface CellProps {
+  sheet: string,
   data: CellData,
 };
 
@@ -53,7 +54,7 @@ const Cell = forwardRef((props: CellProps, ref: any) => {
       <Editor
         ref={editorRef}
         className='sheet-cell-editor'
-        name={null}
+        name={props.sheet}
         type='cell'
         onFocus={onEditorFocus}
         onBlur={onEditorBlur}

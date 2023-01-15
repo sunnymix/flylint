@@ -1,4 +1,6 @@
-import { sheet } from "@emotion/css";
+import axios from "axios";
+import Constant from "@/components/common/Constant";
+
 export const peakWidth = 50;
 export const defaultWidth = 200;
 export const defaultHeight = 30;
@@ -37,6 +39,18 @@ export interface Cell {
 };
 
 const SheetApi = {
+
+  // __________ server __________
+
+  getCellData: (sheet: string, col: number, row: number, cb: (data: Cell|null) => void) => {
+    axios.get(`${Constant.API_BASE}/cell/${sheet}/${col}/${row}`)
+      .then(res => {
+        const data = res.data?.data as Cell || null;
+        cb(data);
+      });
+  },
+
+  // __________ ui __________
 
   makeRows: (sheet: Sheet) => {
     const rows: Row[] = [];

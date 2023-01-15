@@ -9,6 +9,7 @@ import EditorApi from "./EditorApi";
 const { withInlines } = EditorApi;
 import EditorMenu from "./EditorMenu";
 import './EditorStyle.css';
+import SheetApi from "../sheet/SheetApi";
 
 export interface EditorProps {
   name: string|null,
@@ -46,7 +47,6 @@ const Editor = forwardRef((props: EditorProps, ref: any) => {
   };
 
   const loadCell = () => {
-
   };
 
   useEffect(() => {

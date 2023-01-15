@@ -10,8 +10,6 @@ const Cell = forwardRef((props: CellProps, ref: any) => {
 
   // __________ state __________
 
-  const [left, setLeft] = useState<number>(0);
-  const [top, setTop] = useState<number>(0);
   const [isFoucs, setIsFocus] = useState<boolean>(false);
 
   // __________ ref __________

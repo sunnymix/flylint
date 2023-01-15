@@ -72,7 +72,6 @@ const SheetApi = {
       for (var c = 1; c <= sheet.colSize; c++) {
         const left = peakWidth + (c - 1) * defaultWidth;
         const top = defaultHeight + (r - 1) * defaultHeight;
-
         cells.push({
           key: `${c}-${r}`,
           col: c,

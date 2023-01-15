@@ -23,10 +23,8 @@ const Cell = forwardRef((props: CellProps, ref: any) => {
   useEffect(() => {
     if (!props.sheet || !props.data.col || !props.data.row) return;
     
-    SheetApi.getCellData(props.sheet, props.data.col, props.data.row, (data: CellData|null) => {
-      
+    SheetApi.getCell(props.sheet, props.data.col, props.data.row, (data: CellData|null) => {
       if (!data) return;
-      
       setTimeout(() => {
         editorRef?.current?.setContent(data.content);
       }, 1);
@@ -45,11 +43,18 @@ const Cell = forwardRef((props: CellProps, ref: any) => {
   const onEditorFocus = () => {
     setTimeout(() => {
       setIsFocus(true);
-    }, 1);
+    }, 10);
   };
 
   const onEditorBlur = () => {
     setIsFocus(false);
+  };
+
+  const onEditorChange = (isInit: boolean, isAstChange: boolean, content: string) => {
+    if (isInit || !isAstChange) return;
+    SheetApi.saveCellContent(props.sheet, props.data.col, props.data.row, content, (success: boolean) => {
+      if (!success) console.log(`ERROR: cannot save cell content (sheet=${props.sheet},col=${props.data.col},row=${props.data.row})`);
+    });
   };
 
   // __________ api __________
@@ -73,6 +78,7 @@ const Cell = forwardRef((props: CellProps, ref: any) => {
         type='cell'
         onFocus={onEditorFocus}
         onBlur={onEditorBlur}
+        onChange={onEditorChange}
         style={{
           width: props.data.width,
           minHeight: props.data.height,

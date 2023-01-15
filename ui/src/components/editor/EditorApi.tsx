@@ -344,9 +344,6 @@ const EditorApi = {
 
   setContent(editor: any, content: string) {
     editor.children = EditorApi.parseContent(content);
-    Transforms.collapse(editor, {
-      edge: "start"
-    });
   },
 
   focusIndex(editor: any, index: number) {
@@ -357,8 +354,8 @@ const EditorApi = {
       }
       setTimeout(() => {
         Transforms.select(editor, {path: [index, 0], offset: 0});
-      }, 1);
-    }, 1);
+      }, 10);
+    }, 10);
   },
 
   currentPoint(editor: any) {

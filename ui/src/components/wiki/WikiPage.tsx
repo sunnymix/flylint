@@ -22,9 +22,8 @@ export interface WikiDetailProps {
 
 export default (props: WikiDetailProps) => {
 
-  // _________ state __________
+  // __________ state __________
 
-  const contentRef = useRef<any>();
   const [type, setType] = useState<WikiType|null>(null);
   const [path, setPath] = useState<string>("");
   const [title, setTitle] = useState<string>("");
@@ -34,6 +33,10 @@ export default (props: WikiDetailProps) => {
   const [topHeight, setTopHeight] = useState<number>(0);
   const [bodyHeight, setBodyHeight] = useState<number>(0);
   const [outlineWidth, setOutlineWidth] = useState<number>(400);
+
+  // __________ ref __________
+
+  const editorRef = useRef<any>();
 
   // __________ resize __________
 
@@ -52,7 +55,7 @@ export default (props: WikiDetailProps) => {
     refreshBodySize();
   }, []);
 
-  // ___________ load _________
+  // __________ load __________
 
   const init = useCallback(() => {
     window.addEventListener("resize", onWindowResize);
@@ -61,7 +64,7 @@ export default (props: WikiDetailProps) => {
 
   const destroy = useCallback(() => {
     window.removeEventListener("resize", onWindowResize);
-    contentRef?.current?.deselect();
+    editorRef?.current?.deselect();
   }, []);
 
   useEffect(() => {
@@ -110,7 +113,7 @@ export default (props: WikiDetailProps) => {
   }, [props.name, title]);
 
   const onOutlineClick = (event: any, outline: Outline) => {
-    contentRef?.current.focus(outline.index);
+    editorRef?.current.focus(outline.index);
   };
 
   const onEditorChange = (isInit: boolean, isAstChange: boolean, content: string) => {
@@ -146,7 +149,7 @@ export default (props: WikiDetailProps) => {
             onClick={onOutlineClick}/>
         <div className="wiki-body" style={{height: bodyHeight, position: 'relative', marginLeft: outlineWidth}}>
           {type === 'wiki' && <Editor
-            ref={contentRef}
+            ref={editorRef}
             name={props.name}
             type={type}
             onChange={onEditorChange}

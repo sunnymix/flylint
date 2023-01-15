@@ -64,6 +64,21 @@ const Editor = forwardRef((props: EditorProps, ref: any) => {
     props.onChange?.call(null, false, EditorApi.isAstChange(editor), JSON.stringify(value));
   }, [props.name]);
 
+  // __________ editor event __________
+
+  const onEditorClick = (e: any) => {
+    setMenuShowCmd(null);
+  };
+
+  const onEditorFocus = (e: any) => {
+    props.onFocus?.call(null);
+  };
+
+  const onEditorBlur = (e: any) => {
+    props.onBlur?.call(null);
+    setMenuShowCmd(null);
+  };
+
   // __________ api __________
 
   useImperativeHandle(ref, () => ({
@@ -78,7 +93,10 @@ const Editor = forwardRef((props: EditorProps, ref: any) => {
   // __________ ui ___________
 
   return (
-    <div className={`editor ${props.className}`} style={{...props.style}}>
+    <div
+      className={`editor ${props.className}`}
+      style={{...props.style}}
+      >
       <Slate
         editor={editor}
         value={EditorApi.initialContent()}
@@ -89,11 +107,11 @@ const Editor = forwardRef((props: EditorProps, ref: any) => {
           placeholder=''
           renderElement={EditorElement.renderElement}
           renderLeaf={EditorElement.renderLeaf}
-          onKeyDown={(event) => EditorApi.onKeyDown(event, editor, (cmd: string|any) => setMenuShowCmd(cmd))}
-          onPaste={(event) => EditorApi.onPaste(event, editor)}
-          onClick={(event) => setMenuShowCmd(null)}
-          onFocus={(event) => props.onFocus?.call(null)}
-          onBlur={(event) => props.onBlur?.call(null)}
+          onKeyDown={(e) => EditorApi.onKeyDown(e, editor, (cmd: string|any) => setMenuShowCmd(cmd))}
+          onPaste={(e) => EditorApi.onPaste(e, editor)}
+          onClick={onEditorClick}
+          onFocus={onEditorFocus}
+          onBlur={onEditorBlur}
           />
       </Slate>
     </div>

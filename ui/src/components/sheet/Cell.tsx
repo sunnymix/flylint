@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useState } from "react";
+import React, { forwardRef, useEffect, useRef, useState } from "react";
 import { Cell as CellData } from "./SheetApi";
 import Editor from "../editor/Editor";
 
@@ -14,9 +14,29 @@ const Cell = forwardRef((props: CellProps, ref: any) => {
   const [top, setTop] = useState<number>(0);
   const [isFoucs, setIsFocus] = useState<boolean>(false);
 
+  // __________ ref __________
+
+  const editorRef = useRef<any>();
+
   // __________ effect __________
 
   // __________ event __________
+
+  const onRootClick = (e: any) => {
+    if (!isFoucs) {
+      editorRef?.current?.focus(0);
+    }
+  };
+
+  const onEditorFocus = () => {
+    setTimeout(() => {
+      setIsFocus(true);
+    }, 10);
+  };
+
+  const onEditorBlur = () => {
+    setIsFocus(false);
+  };
 
   // __________ api __________
   
@@ -30,17 +50,19 @@ const Cell = forwardRef((props: CellProps, ref: any) => {
         top: props.data.top,
         width: props.data.width,
         height: props.data.height,
-      }}>
+      }}
+      onClick={onRootClick}>
       <Editor
-          className='sheet-cell-editor'
-          name={null}
-          type='cell'
-          onFocus={() => setIsFocus(true)}
-          onBlur={() => setIsFocus(false)}
-          style={{
-            width: props.data.width,
-            minHeight: props.data.height,
-          }} />
+        ref={editorRef}
+        className='sheet-cell-editor'
+        name={null}
+        type='cell'
+        onFocus={onEditorFocus}
+        onBlur={onEditorBlur}
+        style={{
+          width: props.data.width,
+          minHeight: props.data.height,
+        }} />
     </div>
   );
 });

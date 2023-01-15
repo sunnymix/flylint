@@ -49,14 +49,14 @@ export default (props: CatalogTreeProps) => {
     if (!keys || !keys.length) return;
     setTimeout(() => {
       treeRef.current.scrollTo({key: keys[0]});
-    }, 10);
+    }, 1);
   }, []);
 
   const refreshBodySize = useCallback(() => {
     setTimeout(() => {
       const size = getRootRefSize();
       setBodyHeight(size?.height);
-    }, 10);
+    }, 1);
   }, []);
 
   const onWindowResize = useCallback((event: UIEvent) => {

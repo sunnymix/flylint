@@ -357,8 +357,8 @@ const EditorApi = {
       }
       setTimeout(() => {
         Transforms.select(editor, {path: [index, 0], offset: 0});
-      }, 10);
-    }, 10);
+      }, 1);
+    }, 1);
   },
 
   currentPoint(editor: any) {

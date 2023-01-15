@@ -1,6 +1,5 @@
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from "react";
-import WikiApi from "../wiki/WikiApi";
-import { DetailWiki, WikiType } from "../wiki/WikiModel";
+import { WikiType } from "../wiki/WikiModel";
 import { createEditor, Descendant, Transforms } from "slate";
 import { Slate, Editable, withReact } from "slate-react";
 import { withHistory } from "slate-history";
@@ -9,10 +8,9 @@ import EditorApi from "./EditorApi";
 const { withInlines } = EditorApi;
 import EditorMenu from "./EditorMenu";
 import './EditorStyle.css';
-import SheetApi from "../sheet/SheetApi";
 
 export interface EditorProps {
-  name: string|null,
+  id: string,
   type: WikiType,
   className?: string,
   style?: React.CSSProperties,
@@ -30,39 +28,24 @@ const Editor = forwardRef((props: EditorProps, ref: any) => {
 
   // __________ effect __________
 
-  const init = useCallback(() => {
-  }, []);
-
-  const destroy = useCallback(() => {
-    Transforms.deselect(editor);
-  }, []);
-
-  const loadWiki = () => {
-    if (!props.name) return;
-    WikiApi.detail(props.name, (wiki: DetailWiki) => {
-      if (!wiki || wiki.type !== 'wiki') return;
-      EditorApi.setContent(editor, wiki.content || EditorApi.initialContentRaw());
-      props.onChange?.call(null, true, false, wiki.content);
-    });
+  const init = () => {
   };
 
-  const loadCell = () => {
+  const destroy = () => {
+    Transforms.deselect(editor);
   };
 
   useEffect(() => {
     init();
 
-    if (props.type === 'wiki') loadWiki();
-    if (props.type === 'cell') loadCell();
-
     return () => destroy();
-  }, [props.name]);
+  }, [props.id]);
 
   // __________ editor __________
 
-  const onEditorChange = useCallback((value: Descendant[]) => {
+  const onEditorChange = (value: Descendant[]) => {
     props.onChange?.call(null, false, EditorApi.isAstChange(editor), JSON.stringify(value));
-  }, [props.name]);
+  };
 
   // __________ editor event __________
 
@@ -82,12 +65,19 @@ const Editor = forwardRef((props: EditorProps, ref: any) => {
   // __________ api __________
 
   useImperativeHandle(ref, () => ({
+
     focus: (index: number) => {
       EditorApi.focusIndex(editor, index);
     },
+
     deselect: () => {
       Transforms.deselect(editor);
     },
+
+    setContent: (content: string) => {
+      EditorApi.setContent(editor, content);
+    },
+
   }));
 
   // __________ ui ___________

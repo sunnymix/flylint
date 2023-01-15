@@ -30,7 +30,7 @@ const Cell = forwardRef((props: CellProps, ref: any) => {
   const onEditorFocus = () => {
     setTimeout(() => {
       setIsFocus(true);
-    }, 10);
+    }, 1);
   };
 
   const onEditorBlur = () => {
@@ -54,7 +54,7 @@ const Cell = forwardRef((props: CellProps, ref: any) => {
       <Editor
         ref={editorRef}
         className='sheet-cell-editor'
-        name={props.sheet}
+        id={`${props.sheet}-${props.data.col}-${props.data.row}`}
         type='cell'
         onFocus={onEditorFocus}
         onBlur={onEditorBlur}

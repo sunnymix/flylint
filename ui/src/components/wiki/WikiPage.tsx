@@ -48,7 +48,7 @@ export default (props: WikiDetailProps) => {
       const bodyHeight = winSize.height - topHeight;
       setTopHeight(topHeight);
       setBodyHeight(bodyHeight);
-    }, 10);
+    }, 1);
   }, []);
 
   const onWindowResize = useCallback((event: UIEvent) => {
@@ -91,10 +91,17 @@ export default (props: WikiDetailProps) => {
       setOutlineWidth(outlineWidth);
       
       refreshBodySize();
+
+      if (wiki.type === 'wiki') {
+        setTimeout(() => {
+          editorRef?.current?.setContent(wiki.content);
+          setOutline(EditorApi.makeOutline(wiki.content));
+        }, 1);
+      }
     });
 
     return () => destroy();
-  }, [props.name]);
+  }, [props.name, editorRef]);
 
   const onTitleUpdated = useCallback((data: WikiTitleUpdatedEventData) => {
     setTitle(data.title);
@@ -150,11 +157,11 @@ export default (props: WikiDetailProps) => {
         <div className="wiki-body" style={{height: bodyHeight, position: 'relative', marginLeft: outlineWidth}}>
           {type === 'wiki' && <Editor
             ref={editorRef}
-            name={props.name}
+            id={props.name}
             type={type}
             onChange={onEditorChange}
             />}
-          {type === 'sheet' && <Sheet />}
+          {type === 'sheet' && <Sheet sheet={props.name} />}
         </div>
       </div>
     </div>

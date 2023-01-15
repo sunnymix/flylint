@@ -1,6 +1,7 @@
 import React, { forwardRef, useEffect, useRef, useState } from "react";
 import { Cell as CellData } from "./SheetApi";
 import Editor from "../editor/Editor";
+import SheetApi from "./SheetApi";
 
 export interface CellProps {
   sheet: string,
@@ -18,6 +19,16 @@ const Cell = forwardRef((props: CellProps, ref: any) => {
   const editorRef = useRef<any>();
 
   // __________ effect __________
+
+  useEffect(() => {
+    if (!props.sheet || !props.data.col || !props.data.row) return;
+    
+    SheetApi.getCellData(props.sheet, props.data.col, props.data.row, (data: CellData|null) => {
+      if (!data) return;
+      editorRef?.current?.setContent(data.content);
+    });
+
+  }, [props.sheet, props.data.col, props.data.row]);
 
   // __________ event __________
 

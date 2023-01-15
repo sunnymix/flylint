@@ -36,6 +36,7 @@ export interface Cell {
   top: number,
   width: number,
   height: number,
+  content?: string,
 };
 
 const SheetApi = {

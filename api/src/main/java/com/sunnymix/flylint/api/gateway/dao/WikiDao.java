@@ -192,6 +192,23 @@ public class WikiDao {
             .fetchOptionalInto(DetailWiki.class);
     }
 
+    public Optional<BasicWiki> basic(String name) {
+        return dsl
+            .select(
+                WIKI.ID,
+                WIKI.TYPE,
+                WIKI.NAME,
+                WIKI.PATH,
+                WIKI.PATH_INDEX,
+                WIKI.TITLE,
+                WIKI.CREATED,
+                WIKI.UPDATED)
+            .from(WIKI)
+            .where(WIKI.NAME.eq(name))
+            .limit(1)
+            .fetchOptionalInto(BasicWiki.class);
+    }
+
     public Boolean exist(String name) {
         return detail(name).isPresent();
     }

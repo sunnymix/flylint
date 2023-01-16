@@ -69,6 +69,14 @@ const detail = (name: string, cb: (wiki: DetailWiki) => void) => {
     });
 };
 
+const basic = (name: string, cb: (wiki: BasicWiki) => void) => {
+  axios.get(`${Constant.API_BASE}/wiki/${name}/basic`)
+    .then(res => {
+      const wiki = res.data?.data as BasicWiki || null;
+      cb(wiki);
+    });
+};
+
 export default {
   create,
   createByCatalogName,
@@ -78,4 +86,5 @@ export default {
   remove,
   query,
   detail,
+  basic,
 };

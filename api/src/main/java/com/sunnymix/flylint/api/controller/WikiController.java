@@ -73,4 +73,10 @@ public class WikiController {
         return Out.ok(wiki);
     }
 
+    @GetMapping("/{name}/basic")
+    public Out<DetailWiki> basic(@PathVariable String name) {
+        var wiki = wikiDao.detail(name);
+        return Out.ok(wiki);
+    }
+
 }

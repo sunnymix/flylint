@@ -15,12 +15,12 @@ import Editor from "../editor/Editor";
 import EditorOutline from "../editor/EditorOutline";
 import EditorApi, { Outline } from "../editor/EditorApi";
 
-export interface WikiDetailProps {
+export interface WikiPageProps {
   name: string,
   mode: WikiMode,
 };
 
-export default (props: WikiDetailProps) => {
+const WikiPage = (props: WikiPageProps) => {
 
   // __________ state __________
 
@@ -135,7 +135,7 @@ export default (props: WikiDetailProps) => {
           <div className="wiki-head">
             <div className="wiki-title" onClick={onTitleClick}>{title}</div>
             <div className="com-ops">
-              <div className='com-op wiki-time'>{`最近修改: ${updateTime}`}</div>
+              <div className='com-op wiki-time'>{`${updateTime}`}</div>
               <WikiOps mode={props.mode} className="com_op" name={props.name} title={title} onTitleUpdated={onTitleUpdated} />
             </div>
           </div>
@@ -159,3 +159,5 @@ export default (props: WikiDetailProps) => {
     </div>
   );
 };
+
+export default WikiPage;

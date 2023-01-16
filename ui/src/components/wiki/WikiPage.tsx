@@ -25,17 +25,16 @@ export default (props: WikiDetailProps) => {
   // __________ state __________
 
   const [type, setType] = useState<WikiType|null>(null);
-  const [path, setPath] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [updateTime, setUpdateTime] = useState<string>("");
   const [outline, setOutline] = useState<Outline[]>();
-  const topRef = useRef<any>(null);
   const [topHeight, setTopHeight] = useState<number>(0);
   const [bodyHeight, setBodyHeight] = useState<number>(0);
   const [outlineWidth, setOutlineWidth] = useState<number>(400);
 
   // __________ ref __________
 
+  const topRef = useRef<any>(null);
   const editorRef = useRef<any>();
 
   // __________ resize __________
@@ -83,7 +82,6 @@ export default (props: WikiDetailProps) => {
       }
 
       setType(wiki.type || 'wiki');
-      setPath(wiki.path || "");
       setTitle(wiki.title || "");
       setUpdateTime(wiki.updated ? Time.formatDatetime(wiki.updated) : "");
 
@@ -106,12 +104,6 @@ export default (props: WikiDetailProps) => {
   const onTitleUpdated = useCallback((data: WikiTitleUpdatedEventData) => {
     setTitle(data.title);
   }, []);
-
-  const onNameClick = useCallback(() => {
-    onUpdateName(props.mode, props.name, (data: WikiNameUpdatedEventData) => {
-      history.push(`/wiki/${data.name}`);
-    });
-  }, [props.name]);
 
   const onTitleClick = useCallback(() => {
     onUpdateTitle(props.mode, props.name, title, (data: WikiTitleUpdatedEventData) => {

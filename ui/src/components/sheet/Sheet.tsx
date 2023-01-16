@@ -8,6 +8,8 @@ export interface SheetProps {
 
 const Sheet = forwardRef((props: SheetProps, ref) => {
 
+  console.log('Sheet render');
+
   // __________ state __________
 
   // __________ api __________

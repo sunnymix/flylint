@@ -1,5 +1,5 @@
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from "react";
-import { WikiType } from "../wiki/WikiModel";
+import { BasicWiki, WikiType } from "../wiki/WikiModel";
 import { createEditor, Descendant, Transforms } from "slate";
 import { Slate, Editable, withReact } from "slate-react";
 import { withHistory } from "slate-history";
@@ -10,8 +10,7 @@ import EditorMenu from "./EditorMenu";
 import './EditorStyle.css';
 
 export interface EditorProps {
-  id: string,
-  type: WikiType,
+  wiki: BasicWiki,
   className?: string,
   style?: React.CSSProperties,
   onChange?: (isInit: boolean, isAstChange: boolean, content: string) => void,
@@ -20,6 +19,8 @@ export interface EditorProps {
 };
 
 const Editor = forwardRef((props: EditorProps, ref: any) => {
+
+  console.log(`Editor: render: ${props.wiki.type}: (id=${props.wiki.id},name=${props.wiki.name})`);
 
   // __________ state __________
 
@@ -39,7 +40,7 @@ const Editor = forwardRef((props: EditorProps, ref: any) => {
     init();
 
     return () => destroy();
-  }, [props.id]);
+  }, [props.wiki]);
 
   // __________ editor __________
 

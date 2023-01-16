@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState, useRef } from "react";
 import WikiApi from "./WikiApi";
-import { DetailWiki, WikiType } from "./WikiModel";
+import { BasicWiki, WikiType } from "./WikiModel";
 import Time from "@/components/common/Time";
 import WikiOps from "./WikiOps";
 import { WikiMode } from "./WikiModel";
@@ -24,13 +24,12 @@ const WikiPage = (props: WikiPageProps) => {
 
   // __________ state __________
 
-  const [type, setType] = useState<WikiType|null>(null);
-  const [title, setTitle] = useState<string>("");
-  const [updateTime, setUpdateTime] = useState<string>("");
+  const [wiki, setWiki] = useState<BasicWiki|null>(null);
   const [outline, setOutline] = useState<Outline[]>();
-  const [topHeight, setTopHeight] = useState<number>(0);
-  const [bodyHeight, setBodyHeight] = useState<number>(0);
-  const [outlineWidth, setOutlineWidth] = useState<number>(400);
+
+  // __________ calculate __________
+
+  const outlineWidth: number = (wiki != null && wiki.type == 'wiki') ? 400 : 0;
 
   // __________ ref __________
 
@@ -41,13 +40,15 @@ const WikiPage = (props: WikiPageProps) => {
 
   const refreshBodySize = useCallback(() => {
     setTimeout(() => {
+      Layout.setRefBackgroundColor(topRef, 'yellow');
+      Layout.setRefHeight(topRef, 200);
+
+      
       const winSize = Layout.winSize();
       const topSize = Layout.refSize(topRef);
       const topHeight = topSize.height;
       const bodyHeight = winSize.height - topHeight;
-      setTopHeight(topHeight);
-      setBodyHeight(bodyHeight);
-    }, 1);
+    }, 10);
   }, []);
 
   const onWindowResize = useCallback((event: UIEvent) => {
@@ -74,44 +75,26 @@ const WikiPage = (props: WikiPageProps) => {
       return;
     }
 
-    WikiApi.detail(props.name, (wiki: DetailWiki) => {
+    setWiki(null);
+
+    WikiApi.basic(props.name, (wiki: BasicWiki) => {
       if (!wiki) {
         LocalStore.removeCatalogSelectedKeys([props.name]);
         history.push(`/wiki`);
         return;
       }
-
-      setType(wiki.type || 'wiki');
-      setTitle(wiki.title || "");
-      setUpdateTime(wiki.updated ? Time.formatDatetime(wiki.updated) : "");
-
-      const outlineWidth = wiki.type == 'wiki' ? 400 : 0;
-      setOutlineWidth(outlineWidth);
-      
+      setWiki(wiki);
       refreshBodySize();
-
-      if (wiki.type === 'wiki') {
-        setTimeout(() => {
-          editorRef?.current?.setContent(wiki.content);
-          setOutline(EditorApi.makeOutline(wiki.content));
-        }, 10);
-      }
     });
 
     return () => destroy();
   }, [props.name]);
 
   const onTitleUpdated = useCallback((data: WikiTitleUpdatedEventData) => {
-    setTitle(data.title);
+    // TODO
   }, []);
 
-  const onTitleClick = useCallback(() => {
-    onUpdateTitle(props.mode, props.name, title, (data: WikiTitleUpdatedEventData) => {
-      setTitle(data.title);
-    });
-  }, [props.name, title]);
-
-  const onOutlineClick = (event: any, outline: Outline) => {
+  const onOutlineClick = (e: any, outline: Outline) => {
     editorRef?.current.focus(outline.index);
   };
 
@@ -122,38 +105,31 @@ const WikiPage = (props: WikiPageProps) => {
     const isSaveContent = !isInit && isAstChange;
     isSaveContent && WikiApi.updateContent(props.name, content, (success: boolean) => {
       if (!success) return console.log('ERROR');
-      return setUpdateTime(Time.nowDatetime());
     });
   };
 
   // _________ ui _________
+
+  if (!wiki) return <div>loading</div>
 
   return (
     <div className="wiki">
       <div className="wiki-page">
         <div className='wiki-top' ref={topRef} style={{marginLeft: outlineWidth}}>
           <div className="wiki-head">
-            <div className="wiki-title" onClick={onTitleClick}>{title}</div>
+            <div className="wiki-title">{wiki?.title}</div>
             <div className="com-ops">
-              <div className='com-op wiki-time'>{`${updateTime}`}</div>
-              <WikiOps mode={props.mode} className="com_op" name={props.name} title={title} onTitleUpdated={onTitleUpdated} />
+              <div className='com-op wiki-time'>{`${Time.formatDatetime(wiki.updated)}`}</div>
+              <WikiOps mode={props.mode} className="com_op" name={props.name} title={wiki.title} onTitleUpdated={onTitleUpdated} />
             </div>
           </div>
         </div>
-        <EditorOutline
-            className="wiki-outline"
-            width={outlineWidth}
-            top={topHeight}
-            data={outline}
-            onClick={onOutlineClick}/>
-        <div className="wiki-body" style={{height: bodyHeight, position: 'relative', marginLeft: outlineWidth}}>
-          {type === 'wiki' && <Editor
-            ref={editorRef}
-            id={props.name}
-            type={type}
-            onChange={onEditorChange}
-            />}
-          {type === 'sheet' && <Sheet sheet={props.name} />}
+        {/* TODO: top */}
+        <EditorOutline className='wiki-outline' width={outlineWidth} data={outline} onClick={onOutlineClick}/>
+        {/* TODO: height */}
+        <div className="wiki-body" style={{marginLeft: outlineWidth}}>
+          {wiki.type === 'wiki' && <Editor ref={editorRef} wiki={wiki} onChange={onEditorChange} />}
+          {wiki.type === 'sheet' && <Sheet sheet={props.name} />}
         </div>
       </div>
     </div>

@@ -29,6 +29,7 @@
 /* __________ wiki-body __________ */
 
 .wiki-body {
+  position: relative;
   overflow: auto;
   padding: 0 10px;
 }

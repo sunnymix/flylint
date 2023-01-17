@@ -37,7 +37,7 @@ const WikiPage = forwardRef((props: WikiPageProps, ref: any) => {
 
   // __________ resize __________
 
-  const refreshBodySize = useCallback((wiki: BasicWiki|null) => {
+  const refreshBodySize = () => {
     setTimeout(() => {
       const winHeight = Layout.winHeight();
       const topHeight = Layout.refHeight(topRef);
@@ -53,26 +53,16 @@ const WikiPage = forwardRef((props: WikiPageProps, ref: any) => {
       Layout.setRefMarginLeft(bodyRef, outlineWidth);
       Layout.setRefHeight(bodyRef, bodyHeight);
     }, 10);
-  }, [wiki]);
+  };
 
-  const onWindowResize = useCallback((e: UIEvent) => {
-    refreshBodySize(wiki);
-  }, [wiki]);
+  const onWinResize = (e: UIEvent) => {
+    refreshBodySize();
+  };
 
   // __________ load __________
 
-  const init = useCallback(() => {
-    window.addEventListener("resize", onWindowResize);
-  }, []);
-
-  const destroy = useCallback(() => {
-    window.removeEventListener("resize", onWindowResize);
-  }, []);
-
   useEffect(() => {
-    init();
     setWiki(null);
-
     WikiApi.basic(props.name, (wiki: BasicWiki) => {
       if (!wiki) {
         LocalStore.removeCatalogSelectedKeys([props.name]);
@@ -81,12 +71,14 @@ const WikiPage = forwardRef((props: WikiPageProps, ref: any) => {
       }
       setWiki(wiki);
     });
-
-    return () => destroy();
   }, [props.name]);
 
   useEffect(() => {
-    refreshBodySize(wiki);
+    window.addEventListener("resize", onWinResize);
+    refreshBodySize();
+    return () => {
+      window.removeEventListener("resize", onWinResize);
+    };
   }, [wiki]);
 
   const onTitleUpdated = useCallback((data: WikiTitleUpdatedEventData) => {

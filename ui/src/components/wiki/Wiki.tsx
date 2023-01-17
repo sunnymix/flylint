@@ -13,5 +13,5 @@ export default (props: WikiProps) => {
     LocalStore.setCatalogSelectedKeys([props.name]);
   }
   
-  return <Catalog defaultName={props.name} refreshSignal={'init'} />;
+  return <Catalog name={props.name} refresh={'init'} />;
 };

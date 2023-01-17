@@ -3,24 +3,49 @@ import "./CatalogStyle.css";
 import { useCallback, useEffect, useState } from "react";
 import WikiPage from "../wiki/WikiPage";
 import { history } from "umi";
-import EventBus, { WikiCreatedEventData, WikiDeletedEventData, WikiMovedEventData, WikiNameUpdatedEventData, WikiTitleUpdatedEventData } from "@/components/common/EventBus";
+import EventBus, { 
+  WikiCreatedEventData,
+  WikiDeletedEventData,
+  WikiMovedEventData,
+  WikiNameUpdatedEventData,
+  WikiTitleUpdatedEventData } from "@/components/common/EventBus";
 import { EventType } from "@/components/common/EventBus";
 import Time from "@/components/common/Time";
 import LocalStore from "../common/LocalStore";
+import { BasicWiki } from "../wiki/WikiModel";
+import WikiApi from "../wiki/WikiApi";
+import SheetPage from "../sheet/SheetPage";
 
 export interface CatalogProps {
-  defaultName?: string,
-  refreshSignal?: string,
+  refresh?: string,
+  name?: string,
 };
 
 export const Catalog = (props: CatalogProps) => {
 
-  const [refreshSignal, setRefreshSignal] = useState<string>(props.refreshSignal || 'init');
+  // __________ state __________
+
+  const [refreshCatalog, setRefreshCatalog] = useState<string>(props.refresh || 'init');
+  const [wiki, setWiki] = useState<BasicWiki|null>(null);
+
+  // __________ effect: refresh -> CatalogTree __________
 
   useEffect(() => {
-    if (!props.refreshSignal) return;
-    setRefreshSignal(props.refreshSignal);
-  }, [props.refreshSignal]);
+    if (!props.refresh) return;
+    setRefreshCatalog(props.refresh);
+  }, [props.refresh]);
+
+  // __________ effect: props.name -> wiki __________
+
+  useEffect(() => {
+    setWiki(null);
+    if (!props.name) return;
+    WikiApi.basic(props.name, (wiki: BasicWiki) => {
+      setWiki(wiki);
+    });
+  }, [props.name]);
+
+  // __________ event: wiki updates __________
 
   const onSelect = (names: string[]) => {
     history.push(`/wiki/${names[0]}`);
@@ -30,32 +55,32 @@ export const Catalog = (props: CatalogProps) => {
     const eventData = data as WikiNameUpdatedEventData;
     if (!eventData) return;
     LocalStore.setCatalogSelectedKeys([eventData.name]);
-    setRefreshSignal(Time.refreshSignal());
+    setRefreshCatalog(Time.refreshSignal());
   }, []);
 
   const onWikiTitleUpdated = useCallback((data: any) => {
     const eventData = data as WikiTitleUpdatedEventData;
     if (!eventData) return;
-    setRefreshSignal(Time.refreshSignal());
+    setRefreshCatalog(Time.refreshSignal());
   }, []);
 
   const onWikiCreated = useCallback((data: any) => {
     const eventData = data as WikiCreatedEventData;
     if (!eventData) return;
-    setRefreshSignal(Time.refreshSignal());
+    setRefreshCatalog(Time.refreshSignal());
   }, []);
 
   const onWikiDeleted = useCallback((data: any) => {
     const eventData = data as WikiDeletedEventData;
     if (!eventData) return;
     LocalStore.removeCatalogSelectedKeys([eventData.name]);
-    setRefreshSignal(Time.refreshSignal());
+    setRefreshCatalog(Time.refreshSignal());
   }, []);
 
   const onWikiMoved = useCallback((data: any) => {
     const eventData = data as WikiMovedEventData;
     if (!eventData) return;
-    setRefreshSignal(Time.refreshSignal());
+    setRefreshCatalog(Time.refreshSignal());
   }, []);
 
   useEffect(() => {
@@ -74,11 +99,17 @@ export const Catalog = (props: CatalogProps) => {
     };
   }, []);
 
+  // __________ ui __________
+
   return (
     <div>
-      <CatalogTree className="catalog-side" width={400} onSelect={onSelect} refreshSignal={refreshSignal} />
+      <CatalogTree className="catalog-side" width={400} onSelect={onSelect} refreshSignal={refreshCatalog} />
       <div className="catalog-wiki" style={{marginLeft: 400}}>
-        {props.defaultName && <WikiPage name={props.defaultName} mode="wiki" />}
+        {wiki && (
+          wiki.type == 'wiki' ? <WikiPage data={wiki} /> :
+          (wiki.type == 'sheet' ? <SheetPage data={wiki} /> :
+          (<div>cannot render ${wiki.type}</div>))
+        )}
       </div>
     </div>
   );

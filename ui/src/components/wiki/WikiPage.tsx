@@ -14,6 +14,7 @@ import Sheet from "../sheet/Sheet";
 import Editor from "../editor/Editor";
 import EditorOutline from "../editor/EditorOutline";
 import EditorApi, { Outline } from "../editor/EditorApi";
+import { LoadingOutlined } from '@ant-design/icons';
 
 export interface WikiPageProps {
   name: string,
@@ -110,7 +111,7 @@ const WikiPage = (props: WikiPageProps) => {
 
   // _________ ui _________
 
-  if (!wiki) return <div>loading</div>
+  if (!wiki) return <div><LoadingOutlined /></div>
 
   return (
     <div className="wiki">

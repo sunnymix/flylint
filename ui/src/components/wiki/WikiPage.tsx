@@ -11,7 +11,7 @@ import { onUpdateName, onUpdateTitle } from "./WikiOps";
 import Layout from "../common/Layout";
 import Sheet from "../sheet/Sheet";
 
-import Editor from "../editor/Editor";
+import WikiEditor from "../editor/WikiEditor";
 import EditorOutline from "../editor/EditorOutline";
 import EditorApi, { Outline } from "../editor/EditorApi";
 import { LoadingOutlined } from '@ant-design/icons';
@@ -64,6 +64,7 @@ const WikiPage = forwardRef((props: WikiPageProps, ref: any) => {
 
   useEffect(() => {
     setWiki(null);
+    setOutline([]);
     WikiApi.basic(props.name, (wiki: BasicWiki) => {
       setWiki(wiki);
       setTitle(wiki.title);
@@ -114,8 +115,8 @@ const WikiPage = forwardRef((props: WikiPageProps, ref: any) => {
         </div>
         <EditorOutline className='wiki-outline' ref={outlineRef} data={outline} onClick={onOutlineClick}/>
         <div className="wiki-body" ref={bodyRef}>
-          {wiki.type === 'wiki' && <Editor ref={editorRef} wiki={wiki} onChange={onEditorChange} />}
-          {/* {wiki.type === 'sheet' && <Sheet sheet={props.name} />} */}
+          {wiki.type === 'wiki' && <WikiEditor ref={editorRef} wiki={wiki} onChange={onEditorChange} />}
+          {wiki.type === 'sheet' && <Sheet data={wiki} />}
         </div>
       </div>
     </div>

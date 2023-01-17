@@ -9,9 +9,10 @@ import SheetApi from "./SheetApi";
 import Cols from "./Cols";
 import Rows from "./Rows";
 import Peak from "./Peak";
+import { BasicWiki } from "../wiki/WikiModel";
 
 export interface SheetBodyProps {
-  sheet: string,
+  data: SheetData,
 };
 
 const SheetBody = forwardRef((props: SheetBodyProps, ref: any) => {
@@ -44,10 +45,10 @@ const SheetBody = forwardRef((props: SheetBodyProps, ref: any) => {
 
   return (
     <div>
-      <Peak sheet={props.sheet} />
-      <Cells sheet={props.sheet} data={cells} />
-      <Cols sheet={props.sheet} data={cols} />
-      <Rows sheet={props.sheet} data={rows} />
+      <Peak data={props.data} />
+      <Cells data={props.data} />
+      <Cols data={props.data} />
+      <Rows data={props.data} />
     </div>
   );
 });

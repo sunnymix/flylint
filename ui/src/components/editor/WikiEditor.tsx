@@ -10,7 +10,7 @@ const { withInlines } = EditorApi;
 import EditorMenu from "./EditorMenu";
 import './EditorStyle.css';
 
-export interface EditorProps {
+export interface WikiEditorProps {
   wiki: BasicWiki,
   className?: string,
   style?: React.CSSProperties,
@@ -19,9 +19,9 @@ export interface EditorProps {
   onBlur?: () => void,
 };
 
-const Editor = forwardRef((props: EditorProps, ref: any) => {
+const WikiEditor = forwardRef((props: WikiEditorProps, ref: any) => {
 
-  // console.log(`Editor: render: ${props.wiki.id},${props.wiki.name},${props.wiki.title}`);
+  // console.log(`WikiEditor: render: ${props.wiki.id},${props.wiki.name},${props.wiki.title}`);
 
   // __________ state __________
 
@@ -124,4 +124,4 @@ const Editor = forwardRef((props: EditorProps, ref: any) => {
   );
 });
 
-export default Editor;
+export default WikiEditor;

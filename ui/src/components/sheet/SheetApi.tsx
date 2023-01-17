@@ -6,11 +6,13 @@ export const defaultWidth = 200;
 export const defaultHeight = 30;
 
 export interface Sheet {
+  sheet: string,
   colSize: number,
   rowSize: number,
 };
 
 export interface Col {
+  sheet: string,
   key: string,
   index: number,
   left: number,
@@ -19,6 +21,7 @@ export interface Col {
 };
 
 export interface Row {
+  sheet: string,
   key: string,
   index: number,
   top: number,
@@ -26,7 +29,11 @@ export interface Row {
   width: number,
 }
 
+export type CellType = 'cell';
+
 export interface Cell {
+  sheet: string,
+  type: CellType,
   key: string,
   col: number,
   row: number,
@@ -96,6 +103,8 @@ const SheetApi = {
         const left = peakWidth + (c - 1) * defaultWidth;
         const top = defaultHeight + (r - 1) * defaultHeight;
         cells.push({
+          sheet: sheet.sheet,
+          type: 'cell',
           key: `${c}-${r}`,
           col: c,
           row: r,

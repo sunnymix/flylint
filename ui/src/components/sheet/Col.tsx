@@ -2,14 +2,13 @@ import { forwardRef } from "react";
 import { Col as ColData } from "./SheetApi";
 
 export interface ColProps {
-  sheet: string,
   data: ColData,
 };
 
 const Col = forwardRef((props: ColProps, ref: any) => {
 
   return (
-    <div>
+    <div ref={ref}>
       <div
         className='sheet-col-header'
         style={{

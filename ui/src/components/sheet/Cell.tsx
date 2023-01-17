@@ -1,10 +1,9 @@
 import React, { forwardRef, useEffect, useRef, useState } from "react";
 import { Cell as CellData } from "./SheetApi";
-import Editor from "../editor/Editor";
+import CellEditor from "../editor/CellEditor";
 import SheetApi from "./SheetApi";
 
 export interface CellProps {
-  sheet: string,
   data: CellData,
 };
 
@@ -19,18 +18,6 @@ const Cell = forwardRef((props: CellProps, ref: any) => {
   const editorRef = useRef<any>();
 
   // __________ effect __________
-
-  useEffect(() => {
-    if (!props.sheet || !props.data.col || !props.data.row) return;
-    
-    SheetApi.getCell(props.sheet, props.data.col, props.data.row, (data: CellData|null) => {
-      if (!data) return;
-      setTimeout(() => {
-        editorRef?.current?.setContent(data.content);
-      }, 1);
-    });
-
-  }, [props.sheet, props.data.col, props.data.row]);
 
   // __________ event __________
 
@@ -51,8 +38,8 @@ const Cell = forwardRef((props: CellProps, ref: any) => {
 
   const onEditorChange = (isInit: boolean, isAstChange: boolean, content: string) => {
     if (isInit || !isAstChange) return;
-    SheetApi.saveCellContent(props.sheet, props.data.col, props.data.row, content, (success: boolean) => {
-      if (!success) console.log(`ERROR: cannot save cell content (sheet=${props.sheet},col=${props.data.col},row=${props.data.row})`);
+    SheetApi.saveCellContent(props.data.sheet, props.data.col, props.data.row, content, (success: boolean) => {
+      if (!success) console.log(`ERROR: cannot save cell content (sheet=${props.data.sheet},col=${props.data.col},row=${props.data.row})`);
     });
   };
 
@@ -70,11 +57,10 @@ const Cell = forwardRef((props: CellProps, ref: any) => {
         height: props.data.height,
       }}
       onClick={onRootClick}>
-      <Editor
-        ref={editorRef}
+      <CellEditor
         className='sheet-cell-editor'
-        id={`${props.sheet}-${props.data.col}-${props.data.row}`}
-        type='cell'
+        ref={editorRef}
+        data={props.data}
         onFocus={onEditorFocus}
         onBlur={onEditorBlur}
         onChange={onEditorChange}

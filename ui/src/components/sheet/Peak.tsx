@@ -1,13 +1,15 @@
-import { forwardRef } from "react";
+import { forwardRef, useState } from "react";
+
+import { Sheet as SheetData } from "./SheetApi";
 
 export interface PeakProps {
-  sheet: string,
+  data: SheetData,
 };
 
 const Peak = forwardRef((props: PeakProps, ref: any) => {
 
   return (
-    <div className='sheet-peak'>
+    <div className='sheet-peak' ref={ref}>
     </div>
   );
 });

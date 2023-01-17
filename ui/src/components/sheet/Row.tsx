@@ -2,14 +2,13 @@ import { forwardRef } from "react";
 import { Row as RowData } from "./SheetApi";
 
 export interface RowProps {
-  sheet: string,
   data: RowData,
 };
 
 const Row = forwardRef((props: RowProps, ref: any) => {
   
   return (
-    <div>
+    <div ref={ref}>
       <div
         className='sheet-row-header'
         style={{

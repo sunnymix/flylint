@@ -1,16 +1,24 @@
-import { forwardRef, useImperativeHandle } from "react";
+import { forwardRef, useImperativeHandle, useState } from "react";
 import SheetBody from "./SheetBody";
 import './SheetStyle.css';
+import { BasicWiki } from "../wiki/WikiModel";
+import { Sheet as SheetData } from "./SheetApi";
 
 export interface SheetProps {
-  sheet: string,
+  data: BasicWiki,
 };
 
-const Sheet = forwardRef((props: SheetProps, ref) => {
+const Sheet = forwardRef((props: SheetProps, ref: any) => {
 
-  console.log('Sheet render');
+  // console.log(`Sheet: render: ${props.data.id},${props.data.name},${props.data.title}`);
 
   // __________ state __________
+
+  const data: SheetData = {
+    sheet: props.data.name,
+    colSize: 6,
+    rowSize: 6,
+  };
 
   // __________ api __________
 
@@ -21,9 +29,9 @@ const Sheet = forwardRef((props: SheetProps, ref) => {
   // __________ ui __________
 
   return (
-    <div className='sheet'>
+    <div className='sheet' ref={ref}>
       <div>
-        <SheetBody sheet={props.sheet} />
+        <SheetBody data={data} />
       </div>
     </div>
   );

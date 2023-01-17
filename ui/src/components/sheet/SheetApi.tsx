@@ -46,6 +46,14 @@ export interface Cell {
   content?: string,
 };
 
+export interface SelectedCells {
+  sheet: string,
+  col: number,
+  row: number,
+  colSize: number,
+  rowSize: number,
+}
+
 const SheetApi = {
 
   // __________ server __________

@@ -13,11 +13,11 @@ export interface SheetPageProps {
 
 const SheetPage = forwardRef((props: SheetPageProps, ref: any) => {
 
-  console.log(`SheetPage: render: data(${props.data.id},${props.data.name},${props.data.title})`);
-
   // __________ state __________
 
   const [title, setTitle] = useState<string>(props.data.title);
+
+  console.log(`SheetPage: render: data(${props.data.id},${props.data.name},${props.data.title})`);
 
   // __________ ref __________
 
@@ -72,6 +72,9 @@ const SheetPage = forwardRef((props: SheetPageProps, ref: any) => {
               <div className='com-op wiki-time'>{`${Time.formatDatetime(props.data.updated)}`}</div>
               <WikiOps className="com_op" mode={'wiki'} name={props.data.name} title={title} onTitleUpdated={onTitleUpdated} />
             </div>
+          </div>
+          <div className='sheet-ops'>
+            <div className='sheet-ops-row'></div>
           </div>
         </div>
         <div className="wiki-body" ref={bodyRef}>

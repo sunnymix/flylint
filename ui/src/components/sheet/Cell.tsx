@@ -1,7 +1,8 @@
 import React, { forwardRef, useEffect, useRef, useState } from "react";
-import { Cell as CellData } from "./SheetApi";
+import { Cell as CellData, SelectedCells } from "./SheetApi";
 import CellEditor from "../editor/CellEditor";
 import SheetApi from "./SheetApi";
+import LocalStore from "../common/LocalStore";
 
 export interface CellProps {
   data: CellData,
@@ -11,7 +12,10 @@ const Cell = forwardRef((props: CellProps, ref: any) => {
 
   // __________ state __________
 
-  const [isFoucsed, setIsFocused] = useState<boolean>(false);
+  const selectedCells: SelectedCells = LocalStore.getSheetSelectedCells(props.data.sheet);
+  const isSelected = selectedCells && selectedCells.col == props.data.col && selectedCells.row == props.data.row;
+
+  const [isFoucsed, setIsFocused] = useState<boolean>(isSelected);
 
   // __________ ref __________
 
@@ -22,9 +26,14 @@ const Cell = forwardRef((props: CellProps, ref: any) => {
   // __________ event __________
 
   const onRootClick = (e: any) => {
-    if (!isFoucsed) {
-      // editorRef?.current?.focus(0);
-    }
+    // FIXME: use focus event
+    LocalStore.setSheetSelectedCells({
+      sheet: props.data.sheet,
+      col: props.data.col,
+      row: props.data.row,
+      colSize: 1,
+      rowSize: 1,
+    });
   };
 
   const onEditorFocus = () => {

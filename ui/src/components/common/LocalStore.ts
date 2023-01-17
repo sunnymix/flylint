@@ -1,4 +1,4 @@
-
+import { SelectedCells } from "../sheet/SheetApi";
 import Arr from "./Arr";
 
 // TODO: 
@@ -12,8 +12,24 @@ const LocalStore = {
     window.localStorage.setItem(key, data);
   },
 
+  setObj(key: string, data: any) {
+    LocalStore.set(key, JSON.stringify(data));
+  },
+
   get(key: string) {
     return window.localStorage.getItem(key);
+  },
+
+  getObj(key: string) {
+    const str = LocalStore.get(key);
+    if (typeof str != 'string') return null;
+    if (str.length < 1) return null;
+    if (str[0] != '{' && str[0] != '[') return null;
+    var obj = null;
+    try {
+      obj = JSON.parse(str);
+    } catch (error) {}
+    return obj;
   },
 
   setArray(key: string, data: any[]|null) {
@@ -75,6 +91,18 @@ const LocalStore = {
     }
 
     LocalStore.remove(LocalStore.CATALOG_SELECTED_KEYS);
+  },
+
+  // __________ sheet: selectedCells __________
+
+  SHEET_SELECTED_CELLS: 'sheet.selected.cells.',
+
+  setSheetSelectedCells(cells: SelectedCells) {
+    LocalStore.set(LocalStore.SHEET_SELECTED_CELLS + cells.sheet, JSON.stringify(cells));
+  },
+
+  getSheetSelectedCells(sheet: string) {
+    return LocalStore.getObj(LocalStore.SHEET_SELECTED_CELLS + sheet) as SelectedCells;
   },
 
 };

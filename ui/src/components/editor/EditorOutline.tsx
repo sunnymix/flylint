@@ -6,10 +6,6 @@ import './EditorStyle.css';
 
 export interface EditorOutlineProps {
   className?: string,
-  height?: number,
-  left?: number,
-  width?: number,
-  top?: number,
   data?: Outline[],
   onClick?: (event: any, outline: Outline) => void,
 };
@@ -23,7 +19,7 @@ const EditorOutline = forwardRef((props: EditorOutlineProps, ref: any) => {
   }, []);
   
   return (
-    <div className={`editor-outline ${props.className}`} style={{ width: props.width || 0, top: props.top || 0}}>
+    <div className={`editor-outline ${props.className}`} ref={ref}>
       <Scrollbars className='editor-outline-body' autoHide>
         {props.data && props.data.map((outline: Outline) => (                                                                                                                                                                                                                                                                                                                                                                                                                                 
           <div key={outline.index}>

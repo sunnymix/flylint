@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, useRef } from "react";
+import { useCallback, useEffect, useState, useRef, forwardRef } from "react";
 import WikiApi from "./WikiApi";
 import { BasicWiki, WikiType } from "./WikiModel";
 import Time from "@/components/common/Time";
@@ -21,7 +21,7 @@ export interface WikiPageProps {
   mode: WikiMode,
 };
 
-const WikiPage = (props: WikiPageProps) => {
+const WikiPage = forwardRef((props: WikiPageProps, ref: any) => {
 
   // __________ state __________
 
@@ -32,8 +32,8 @@ const WikiPage = (props: WikiPageProps) => {
 
   const topRef = useRef<any>();
   const editorRef = useRef<any>();
-  const outlineRef = useRef<any>();
   const bodyRef = useRef<any>();
+  const outlineRef = useRef<any>();
 
   // __________ resize __________
 
@@ -43,13 +43,12 @@ const WikiPage = (props: WikiPageProps) => {
       const topHeight = Layout.refHeight(topRef);
       const bodyHeight = winHeight - topHeight;
 
-      const outlineWidth = (wiki != null && wiki.type == 'wiki') ? 400 : 0;
+      const outlineWidth = (wiki && wiki.type == 'wiki') ? 400 : 0;
 
       Layout.setRefMarginLeft(topRef, outlineWidth);
       
       Layout.setRefWidth(outlineRef, outlineWidth);
       Layout.setRefTop(outlineRef, topHeight);
-      Layout.setRefMarginLeft(outlineRef, outlineWidth);
 
       Layout.setRefMarginLeft(bodyRef, outlineWidth);
       Layout.setRefHeight(bodyRef, bodyHeight);
@@ -68,7 +67,6 @@ const WikiPage = (props: WikiPageProps) => {
 
   const destroy = useCallback(() => {
     window.removeEventListener("resize", onWindowResize);
-    // FIXME: editorRef?.current?.deselect();
   }, []);
 
   useEffect(() => {
@@ -114,7 +112,7 @@ const WikiPage = (props: WikiPageProps) => {
   if (!wiki) return <div><LoadingOutlined /></div>
 
   return (
-    <div className="wiki">
+    <div className="wiki" ref={ref}>
       <div className="wiki-page">
         <div className='wiki-top' ref={topRef}>
           <div className="wiki-head">
@@ -133,6 +131,6 @@ const WikiPage = (props: WikiPageProps) => {
       </div>
     </div>
   );
-};
+});
 
 export default WikiPage;

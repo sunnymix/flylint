@@ -11,7 +11,7 @@ export interface EditorMenuProps {
   cmd?: string,
 };
 
-const EditorMenu = forwardRef((props: EditorMenuProps, refx: any) => {
+const EditorMenu = forwardRef((props: EditorMenuProps, ref: any) => {
   
   const rootRef = useRef<HTMLDivElement | null>(null);
   const editor = useSlate();

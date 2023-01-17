@@ -1,5 +1,6 @@
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from "react";
-import { BasicWiki, WikiType } from "../wiki/WikiModel";
+import { BasicWiki, DetailWiki, WikiType } from "../wiki/WikiModel";
+import WikiApi from "../wiki/WikiApi";
 import { createEditor, Descendant, Transforms } from "slate";
 import { Slate, Editable, withReact } from "slate-react";
 import { withHistory } from "slate-history";
@@ -20,8 +21,6 @@ export interface EditorProps {
 
 const Editor = forwardRef((props: EditorProps, ref: any) => {
 
-  // console.log(`Editor: render: ${props.wiki.type}: (id=${props.wiki.id},name=${props.wiki.name})`);
-
   // __________ state __________
 
   const [editor] = useState(withReact(withInlines(withHistory(createEditor()))));
@@ -39,29 +38,37 @@ const Editor = forwardRef((props: EditorProps, ref: any) => {
   useEffect(() => {
     init();
 
+    if (!props.wiki || props.wiki.type != 'wiki') return;
+
+    WikiApi.detail(props.wiki.name, (wiki: DetailWiki) => {
+      EditorApi.setContent(editor, wiki.content);
+      EditorApi.forceRender(editor);
+      props.onChange?.call(null, true, false, wiki.content);
+    });
+
     return () => destroy();
   }, [props.wiki]);
 
   // __________ editor __________
 
-  const onEditorChange = (value: Descendant[]) => {
+  const onEditorChange = useCallback((value: Descendant[]) => {
     props.onChange?.call(null, false, EditorApi.isAstChange(editor), JSON.stringify(value));
-  };
+  }, [editor]);
 
   // __________ editor event __________
 
-  const onEditorClick = (e: any) => {
+  const onEditorClick = useCallback((e: any) => {
     setMenuShowCmd(null);
-  };
+  }, []);
 
-  const onEditorFocus = (e: any) => {
+  const onEditorFocus = useCallback((e: any) => {
     props.onFocus?.call(null);
-  };
+  }, []);
 
-  const onEditorBlur = (e: any) => {
+  const onEditorBlur = useCallback((e: any) => {
     props.onBlur?.call(null);
     setMenuShowCmd(null);
-  };
+  }, []);
 
   // __________ api __________
 
@@ -93,10 +100,7 @@ const Editor = forwardRef((props: EditorProps, ref: any) => {
   // __________ ui ___________
 
   return (
-    <div
-      className={`editor ${props.className}`}
-      style={{...props.style}}
-      >
+    <div className={`editor ${props.className}`} ref={ref} style={{...props.style}}>
       <Slate
         editor={editor}
         value={EditorApi.initialContent()}

@@ -57,6 +57,11 @@ const Layout = {
     ref.current.style.height = height + 'px';
   },
 
+  setRefWidth(ref: any, width: number) {
+    if (!ref || !ref.current) return;
+    ref.current.style.width = width + 'px';
+  },
+
   setRefTop(ref: any, top: number) {
     if (!ref || !ref.current) return;
     ref.current.style.top = top + 'px';

@@ -27,54 +27,51 @@ const WikiPage = (props: WikiPageProps) => {
   const [wiki, setWiki] = useState<BasicWiki|null>(null);
   const [outline, setOutline] = useState<Outline[]>();
 
-  // __________ calculate __________
-
-  const outlineWidth: number = (wiki != null && wiki.type == 'wiki') ? 400 : 0;
-
   // __________ ref __________
 
-  const topRef = useRef<any>(null);
+  const topRef = useRef<any>();
   const editorRef = useRef<any>();
+  const outlineRef = useRef<any>();
+  const bodyRef = useRef<any>();
 
   // __________ resize __________
 
-  const refreshBodySize = useCallback(() => {
+  const refreshBodySize = useCallback((wiki: BasicWiki|null) => {
     setTimeout(() => {
-      Layout.setRefBackgroundColor(topRef, 'yellow');
-      Layout.setRefHeight(topRef, 200);
+      const winHeight = Layout.winHeight();
+      const topHeight = Layout.refHeight(topRef);
+      const bodyHeight = winHeight - topHeight;
 
+      const outlineWidth = (wiki != null && wiki.type == 'wiki') ? 400 : 0;
+
+      Layout.setRefMarginLeft(topRef, outlineWidth);
       
-      const winSize = Layout.winSize();
-      const topSize = Layout.refSize(topRef);
-      const topHeight = topSize.height;
-      const bodyHeight = winSize.height - topHeight;
-    }, 10);
-  }, []);
+      Layout.setRefWidth(outlineRef, outlineWidth);
+      Layout.setRefTop(outlineRef, topHeight);
+      Layout.setRefMarginLeft(outlineRef, outlineWidth);
 
-  const onWindowResize = useCallback((event: UIEvent) => {
-    refreshBodySize();
-  }, []);
+      Layout.setRefMarginLeft(bodyRef, outlineWidth);
+      Layout.setRefHeight(bodyRef, bodyHeight);
+    }, 10);
+  }, [wiki]);
+
+  const onWindowResize = useCallback((e: UIEvent) => {
+    refreshBodySize(wiki);
+  }, [wiki]);
 
   // __________ load __________
 
   const init = useCallback(() => {
     window.addEventListener("resize", onWindowResize);
-    refreshBodySize();
   }, []);
 
   const destroy = useCallback(() => {
     window.removeEventListener("resize", onWindowResize);
-    editorRef?.current?.deselect();
+    // FIXME: editorRef?.current?.deselect();
   }, []);
 
   useEffect(() => {
     init();
-
-    if (!props.name) {
-      history.push(`/wiki`);
-      return;
-    }
-
     setWiki(null);
 
     WikiApi.basic(props.name, (wiki: BasicWiki) => {
@@ -84,11 +81,14 @@ const WikiPage = (props: WikiPageProps) => {
         return;
       }
       setWiki(wiki);
-      refreshBodySize();
     });
 
     return () => destroy();
   }, [props.name]);
+
+  useEffect(() => {
+    refreshBodySize(wiki);
+  }, [wiki]);
 
   const onTitleUpdated = useCallback((data: WikiTitleUpdatedEventData) => {
     // TODO
@@ -115,21 +115,19 @@ const WikiPage = (props: WikiPageProps) => {
   return (
     <div className="wiki">
       <div className="wiki-page">
-        <div className='wiki-top' ref={topRef} style={{marginLeft: outlineWidth}}>
+        <div className='wiki-top' ref={topRef}>
           <div className="wiki-head">
             <div className="wiki-title">{wiki?.title}</div>
             <div className="com-ops">
               <div className='com-op wiki-time'>{`${Time.formatDatetime(wiki.updated)}`}</div>
-              <WikiOps mode={props.mode} className="com_op" name={props.name} title={wiki.title} onTitleUpdated={onTitleUpdated} />
+              <WikiOps className="com_op" mode={props.mode} name={props.name} title={wiki.title} onTitleUpdated={onTitleUpdated} />
             </div>
           </div>
         </div>
-        {/* TODO: top */}
-        <EditorOutline className='wiki-outline' width={outlineWidth} data={outline} onClick={onOutlineClick}/>
-        {/* TODO: height */}
-        <div className="wiki-body" style={{marginLeft: outlineWidth}}>
+        <EditorOutline className='wiki-outline' ref={outlineRef} data={outline} onClick={onOutlineClick}/>
+        <div className="wiki-body" ref={bodyRef}>
           {wiki.type === 'wiki' && <Editor ref={editorRef} wiki={wiki} onChange={onEditorChange} />}
-          {wiki.type === 'sheet' && <Sheet sheet={props.name} />}
+          {/* {wiki.type === 'sheet' && <Sheet sheet={props.name} />} */}
         </div>
       </div>
     </div>

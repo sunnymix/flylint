@@ -20,7 +20,7 @@ export interface EditorProps {
 
 const Editor = forwardRef((props: EditorProps, ref: any) => {
 
-  console.log(`Editor: render: ${props.wiki.type}: (id=${props.wiki.id},name=${props.wiki.name})`);
+  // console.log(`Editor: render: ${props.wiki.type}: (id=${props.wiki.id},name=${props.wiki.name})`);
 
   // __________ state __________
 

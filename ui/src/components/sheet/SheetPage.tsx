@@ -13,7 +13,7 @@ export interface SheetPageProps {
 
 const SheetPage = forwardRef((props: SheetPageProps, ref: any) => {
 
-  console.log(`SheetPage: render: ${props.data.id},${props.data.name},${props.data.title}`);
+  console.log(`SheetPage: render: data(${props.data.id},${props.data.name},${props.data.title})`);
 
   // __________ state __________
 

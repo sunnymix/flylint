@@ -27,6 +27,8 @@ const WikiPage = forwardRef((props: WikiPageProps, ref: any) => {
   const [outline, setOutline] = useState<Outline[]>();
   const [title, setTitle] = useState<string>(props.data?.title || '');
 
+  console.log(`WikiPage: render: props.data(${props.data.id},${props.data.name},${props.data.title})`);
+
   // __________ ref __________
 
   const topRef = useRef<any>();

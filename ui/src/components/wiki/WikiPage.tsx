@@ -27,6 +27,7 @@ const WikiPage = forwardRef((props: WikiPageProps, ref: any) => {
 
   const [wiki, setWiki] = useState<BasicWiki|null>(null);
   const [outline, setOutline] = useState<Outline[]>();
+  const [title, setTitle] = useState<string>('');
 
   // __________ ref __________
 
@@ -64,12 +65,8 @@ const WikiPage = forwardRef((props: WikiPageProps, ref: any) => {
   useEffect(() => {
     setWiki(null);
     WikiApi.basic(props.name, (wiki: BasicWiki) => {
-      if (!wiki) {
-        LocalStore.removeCatalogSelectedKeys([props.name]);
-        history.push(`/wiki`);
-        return;
-      }
       setWiki(wiki);
+      setTitle(wiki.title);
     });
   }, [props.name]);
 
@@ -79,10 +76,10 @@ const WikiPage = forwardRef((props: WikiPageProps, ref: any) => {
     return () => {
       window.removeEventListener("resize", onWinResize);
     };
-  }, [wiki]);
+  }, [wiki, title]);
 
   const onTitleUpdated = useCallback((data: WikiTitleUpdatedEventData) => {
-    // TODO
+    setTitle(data.title);
   }, []);
 
   const onOutlineClick = (e: any, outline: Outline) => {
@@ -108,10 +105,10 @@ const WikiPage = forwardRef((props: WikiPageProps, ref: any) => {
       <div className="wiki-page">
         <div className='wiki-top' ref={topRef}>
           <div className="wiki-head">
-            <div className="wiki-title">{wiki?.title}</div>
+            <div className="wiki-title">{title}</div>
             <div className="com-ops">
               <div className='com-op wiki-time'>{`${Time.formatDatetime(wiki.updated)}`}</div>
-              <WikiOps className="com_op" mode={props.mode} name={props.name} title={wiki.title} onTitleUpdated={onTitleUpdated} />
+              <WikiOps className="com_op" mode={props.mode} name={props.name} title={title} onTitleUpdated={onTitleUpdated} />
             </div>
           </div>
         </div>

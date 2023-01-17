@@ -21,6 +21,8 @@ export interface EditorProps {
 
 const Editor = forwardRef((props: EditorProps, ref: any) => {
 
+  // console.log(`Editor: render: ${props.wiki.id},${props.wiki.name},${props.wiki.title}`);
+
   // __________ state __________
 
   const [editor] = useState(withReact(withInlines(withHistory(createEditor()))));

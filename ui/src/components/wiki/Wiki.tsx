@@ -9,7 +9,9 @@ export interface WikiProps {
 
 export default (props: WikiProps) => {
 
-  LocalStore.setCatalogSelectedKeys([]);
+  if (props.name) {
+    LocalStore.setCatalogSelectedKeys([props.name]);
+  }
   
   return <Catalog defaultName={props.name} refreshSignal={'init'} />;
 };

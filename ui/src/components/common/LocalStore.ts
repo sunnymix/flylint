@@ -1,4 +1,4 @@
-import { SelectedCells } from "../sheet/SheetApi";
+import { SelectedCell } from "../sheet/SheetApi";
 import Arr from "./Arr";
 
 // TODO: 
@@ -95,14 +95,14 @@ const LocalStore = {
 
   // __________ sheet: selectedCells __________
 
-  SHEET_SELECTED_CELLS: 'sheet.selected.cells.',
+  SHEET_SELECTED_CELL: 'sheet.selected.cell.',
 
-  setSheetSelectedCells(cells: SelectedCells) {
-    LocalStore.set(LocalStore.SHEET_SELECTED_CELLS + cells.sheet, JSON.stringify(cells));
+  setSheetSelectedCell(cells: SelectedCell) {
+    LocalStore.set(LocalStore.SHEET_SELECTED_CELL + cells.sheet, JSON.stringify(cells));
   },
 
-  getSheetSelectedCells(sheet: string) {
-    return LocalStore.getObj(LocalStore.SHEET_SELECTED_CELLS + sheet) as SelectedCells;
+  getSheetSelectedCell(sheet: string) {
+    return LocalStore.getObj(LocalStore.SHEET_SELECTED_CELL + sheet) as SelectedCell;
   },
 
 };

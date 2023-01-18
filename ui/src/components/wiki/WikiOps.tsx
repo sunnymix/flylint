@@ -63,8 +63,8 @@ const WikiOps = (props: WikiMenuProps) => {
     });
   };
 
-  const clickUpdateTitle = (event: any) => {
-    event.stopPropagation();
+  const clickUpdateTitle = (e: any) => {
+    // e.stopPropagation();
     onUpdateTitle(props.mode, props.name, props.title, (data: WikiTitleUpdatedEventData) => {
       props.onTitleUpdated?.call(null, data);
     });
@@ -83,7 +83,7 @@ const WikiOps = (props: WikiMenuProps) => {
   };
 
   const menuItems = [
-    {key: "update-wiki-name", label: <a type="text" onClick={clickUpdateName}>Update Name</a>},
+    // {key: "update-wiki-name", label: <a type="text" onClick={clickUpdateName}>Update Name</a>},
     {key: "update-wiki-title", label: <a type="text" onClick={clickUpdateTitle}>Update Title</a>},
     {key: "delete-wiki", label: <Popconfirm onConfirm={clickDelete} title="Sure to delete this wiki?" okText="Confirm" icon="">
         <a type="text" onClick={(event: any) => event.stopPropagation()}>Delete</a></Popconfirm>},

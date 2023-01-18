@@ -1,6 +1,8 @@
 package com.sunnymix.flylint.api.service.sheet;
 
+import com.sunnymix.flylint.api.gateway.dao.sheet.SheetAggreDao;
 import com.sunnymix.flylint.api.model.sheet.Sheet;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -11,8 +13,12 @@ import java.util.Optional;
 @Service
 public class SheetGettingService {
 
+    @Autowired
+    private SheetAggreDao sheetAggreDao;
+
     public Optional<Sheet> get(String sheet) {
-        return Optional.empty();
+        var sheetRes = sheetAggreDao.get(sheet);
+        return sheetRes;
     }
 
 }

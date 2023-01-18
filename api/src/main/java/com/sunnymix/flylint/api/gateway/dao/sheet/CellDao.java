@@ -1,4 +1,4 @@
-package com.sunnymix.flylint.api.gateway.dao;
+package com.sunnymix.flylint.api.gateway.dao.sheet;
 
 import com.sunnymix.flylint.api.common.Strings;
 import com.sunnymix.flylint.api.model.sheet.cell.SaveCell;
@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static com.sunnymix.flylint.dao.jooq.Tables.CELL;
@@ -27,6 +28,27 @@ public class CellDao {
     @Autowired
     @Qualifier("dslContext")
     private DSLContext dsl;
+
+    public List<Cell> list(String sheet) {
+        var cells = dsl
+            .select(
+                CELL.ID,
+                CELL.TYPE,
+                CELL.SHEET,
+                CELL.COL,
+                CELL.ROW,
+                CELL.COL_SIZE,
+                CELL.ROW_SIZE,
+                CELL.WIDTH,
+                CELL.HEIGHT,
+                CELL.CREATED,
+                CELL.UPDATED)
+            .from(CELL)
+            .where(CELL.SHEET.eq(sheet))
+            .fetchStreamInto(Cell.class)
+            .toList();
+        return cells;
+    }
 
     public Boolean isCellValid(String sheet, Integer col, Integer row) {
         if (Strings.isEmpty(sheet)) return false;

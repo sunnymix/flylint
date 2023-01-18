@@ -1,4 +1,4 @@
-package com.sunnymix.flylint.api.gateway.dao;
+package com.sunnymix.flylint.api.gateway.dao.wiki;
 
 import com.sunnymix.flylint.api.model.wiki.*;
 import com.sunnymix.flylint.dao.jooq.tables.records.WikiRecord;

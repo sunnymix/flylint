@@ -1,6 +1,6 @@
 package com.sunnymix.flylint.api.service;
 
-import com.sunnymix.flylint.api.gateway.dao.CatalogDao;
+import com.sunnymix.flylint.api.gateway.dao.wiki.CatalogDao;
 import com.sunnymix.flylint.api.model.catalog.Catalog;
 import com.sunnymix.flylint.api.model.wiki.DescendantPath;
 import org.springframework.beans.factory.annotation.Autowired;

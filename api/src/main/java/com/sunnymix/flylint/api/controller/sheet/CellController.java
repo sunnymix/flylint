@@ -1,7 +1,7 @@
 package com.sunnymix.flylint.api.controller.sheet;
 
 import com.sunnymix.flylint.api.common.io.Out;
-import com.sunnymix.flylint.api.gateway.dao.CellDao;
+import com.sunnymix.flylint.api.gateway.dao.sheet.CellDao;
 import com.sunnymix.flylint.api.model.sheet.cell.SaveCell;
 import com.sunnymix.flylint.api.service.sheet.CellSavingService;
 import com.sunnymix.flylint.dao.jooq.tables.pojos.Cell;

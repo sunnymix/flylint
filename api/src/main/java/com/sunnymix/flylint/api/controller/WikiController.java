@@ -1,7 +1,7 @@
 package com.sunnymix.flylint.api.controller;
 
 import com.sunnymix.flylint.api.common.io.Out;
-import com.sunnymix.flylint.api.gateway.dao.WikiDao;
+import com.sunnymix.flylint.api.gateway.dao.wiki.WikiDao;
 import com.sunnymix.flylint.api.model.wiki.BasicWiki;
 import com.sunnymix.flylint.api.model.wiki.CreateWiki;
 import com.sunnymix.flylint.api.model.wiki.DetailWiki;

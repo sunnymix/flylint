@@ -1,4 +1,4 @@
-package com.sunnymix.flylint.api.gateway.dao;
+package com.sunnymix.flylint.api.gateway.dao.wiki;
 
 import com.sunnymix.flylint.api.model.catalog.Catalog;
 import com.sunnymix.flylint.api.model.wiki.CatalogTree;

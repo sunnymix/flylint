@@ -1,7 +1,7 @@
 package com.sunnymix.flylint.api.controller;
 
 import com.sunnymix.flylint.api.common.io.Out;
-import com.sunnymix.flylint.api.gateway.dao.CatalogDao;
+import com.sunnymix.flylint.api.gateway.dao.wiki.CatalogDao;
 import com.sunnymix.flylint.api.model.catalog.MoveCatalog;
 import com.sunnymix.flylint.api.model.wiki.CatalogTree;
 import com.sunnymix.flylint.api.service.CatalogMovingService;

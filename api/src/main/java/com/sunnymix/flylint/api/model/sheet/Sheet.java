@@ -21,6 +21,12 @@ import java.util.List;
 public class Sheet {
 
     @Builder.Default
+    private Integer colsSize = 0;
+
+    @Builder.Default
+    private Integer rowsSize = 0;
+
+    @Builder.Default
     private List<Col> cols = new ArrayList<>();
 
     @Builder.Default

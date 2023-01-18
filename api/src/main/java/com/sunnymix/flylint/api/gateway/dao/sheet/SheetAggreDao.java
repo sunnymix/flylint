@@ -33,8 +33,10 @@ public class SheetAggreDao {
         var sheetBuilder = Sheet.builder();
         var cols = colDao.list(sheet);
         sheetBuilder.cols(cols);
+        sheetBuilder.colsSize(cols.size());
         var rows = rowDao.list(sheet);
         sheetBuilder.rows(rows);
+        sheetBuilder.rowsSize(rows.size());
         var cells = cellDao.list(sheet);
         sheetBuilder.cells(cells);
         var _sheet = sheetBuilder.build();

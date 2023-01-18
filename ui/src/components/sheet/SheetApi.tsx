@@ -7,14 +7,16 @@ export const defaultHeight = 30;
 
 export interface Sheet {
   sheet: string,
-  colSize: number,
-  rowSize: number,
+  colsSize: number,
+  rowsSize: number,
+  cols: Col[],
+  rows: Row[],
+  cells: Cell[],
 };
 
 export interface Col {
   sheet: string,
-  key: string,
-  index: number,
+  col: number,
   left: number,
   width: number,
   height: number,
@@ -22,8 +24,7 @@ export interface Col {
 
 export interface Row {
   sheet: string,
-  key: string,
-  index: number,
+  row: number,
   top: number,
   height: number,
   width: number,
@@ -34,7 +35,6 @@ export type CellType = 'cell';
 export interface Cell {
   sheet: string,
   type: CellType,
-  key: string,
   col: number,
   row: number,
   colSize: number,
@@ -54,7 +54,15 @@ export interface SelectedCell {
 
 const SheetApi = {
 
-  // __________ server __________
+  // __________ api __________
+
+  getSheet: (sheet: string, cb: (sheet: Sheet|null) => void) => {
+    axios.get(`${Constant.API_BASE}/sheet/${sheet}`)
+      .then(res => {
+        const sheet = res.data?.data as Sheet || null;
+        cb(sheet);
+      });
+  },
 
   getCell: (sheet: string, col: number, row: number, cb: (data: Cell|null) => void) => {
     axios.get(`${Constant.API_BASE}/sheet/cell/${sheet}/${col}/${row}`)
@@ -74,44 +82,41 @@ const SheetApi = {
 
   // __________ ui __________
 
-  makeRows: (sheet: Sheet) => {
-    const rows: Row[] = [];
-    for (var r = 1; r <= sheet.rowSize; r++) {
-      rows.push({
-        key: r.toString(),
-        index: r,
-        top: r * defaultHeight,
-        height: defaultHeight,
-        width: peakWidth + sheet.colSize * defaultWidth,
-      } as Row);
-    }
-    return rows;
-  },
-
   makeCols: (sheet: Sheet) => {
     const cols: Col[] = [];
-    for (var c = 1; c <= sheet.colSize; c++) {
+    for (var c = 1; c <= sheet.colsSize; c++) {
       cols.push({
-        key: c.toString(),
-        index: c,
+        col: c,
         left: (c - 1) * defaultWidth,
         width: defaultWidth,
-        height: (sheet.rowSize + 1) * defaultHeight,
+        height: (sheet.rowsSize + 1) * defaultHeight,
       } as Col);
     }
     return cols;
   },
 
+  makeRows: (sheet: Sheet) => {
+    const rows: Row[] = [];
+    for (var r = 1; r <= sheet.rowsSize; r++) {
+      rows.push({
+        row: r,
+        top: r * defaultHeight,
+        height: defaultHeight,
+        width: peakWidth + sheet.colsSize * defaultWidth,
+      } as Row);
+    }
+    return rows;
+  },
+
   makeCells: (sheet: Sheet) => {
     const cells: Cell[] = [];
-    for (var r = 1; r <= sheet.rowSize; r++) {
-      for (var c = 1; c <= sheet.colSize; c++) {
+    for (var r = 1; r <= sheet.rowsSize; r++) {
+      for (var c = 1; c <= sheet.colsSize; c++) {
         const left = peakWidth + (c - 1) * defaultWidth;
         const top = defaultHeight + (r - 1) * defaultHeight;
         cells.push({
           sheet: sheet.sheet,
           type: 'cell',
-          key: `${c}-${r}`,
           col: c,
           row: r,
           colSize: 1,

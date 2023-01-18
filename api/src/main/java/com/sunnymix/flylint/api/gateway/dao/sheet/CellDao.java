@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.sunnymix.flylint.dao.jooq.Tables.CELL;
+import static org.jooq.impl.DSL.inline;
 
 /**
  * @author sunnymix
@@ -41,6 +42,7 @@ public class CellDao {
                 CELL.ROW_SIZE,
                 CELL.WIDTH,
                 CELL.HEIGHT,
+                inline("").as(CELL.CONTENT),
                 CELL.CREATED,
                 CELL.UPDATED)
             .from(CELL)

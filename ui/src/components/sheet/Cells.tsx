@@ -21,7 +21,7 @@ const Cells = forwardRef((props: CellsProps, ref: any) => {
   return (
     <div className='sheet-cells'>
       {data.map((data: CellData) => 
-        <Cell key={data.key} data={data} />)}
+        <Cell key={`${data.col}-${data.row}`} data={data} />)}
     </div>
   );
 });

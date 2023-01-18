@@ -1,8 +1,9 @@
-import { forwardRef, useImperativeHandle, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import SheetBody from "./SheetBody";
 import './SheetStyle.css';
 import { BasicWiki } from "../wiki/WikiModel";
-import { Sheet as SheetData } from "./SheetApi";
+import SheetApi, { Sheet as SheetData } from "./SheetApi";
+import { LoadingOutlined } from '@ant-design/icons';
 
 export interface SheetProps {
   data: BasicWiki,
@@ -14,11 +15,17 @@ const Sheet = forwardRef((props: SheetProps, ref: any) => {
 
   // __________ state __________
 
-  const data: SheetData = {
-    sheet: props.data.name,
-    colSize: 1,
-    rowSize: 1,
-  };
+  const [sheet, setSheet] = useState<SheetData|null>(null);
+
+  // __________ effect: data -> sheet __________
+
+  useEffect(() => {
+    setSheet(null);
+    SheetApi.getSheet(props.data.name, (sheet: SheetData|null) => {
+      if (!sheet) return;
+      setSheet(sheet);
+    });
+  }, [props.data])
 
   // __________ api __________
 
@@ -28,10 +35,12 @@ const Sheet = forwardRef((props: SheetProps, ref: any) => {
 
   // __________ ui __________
 
+  if (!sheet) return (<div><LoadingOutlined /></div>)
+
   return (
     <div className='sheet' ref={ref}>
       <div>
-        <SheetBody data={data} />
+        <SheetBody data={sheet} />
       </div>
     </div>
   );

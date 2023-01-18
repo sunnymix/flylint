@@ -21,7 +21,7 @@ const Rows = forwardRef((props: RowsProps, ref: any) => {
   return (
     <div className='sheet-rows' ref={ref}>
       {data.map((data: RowData) =>
-        <Row key={data.key} data={data} />)}
+        <Row key={`${data.row}`} data={data} />)}
     </div>
   );
 });

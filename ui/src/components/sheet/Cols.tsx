@@ -22,7 +22,7 @@ const Cols = forwardRef((props: ColsProps, ref: any) => {
   return (
     <div className='sheet-cols' ref={ref}>
       {data.map((data: ColData) => 
-        <Col key={data.key} data={data} />)}
+        <Col key={`${data.col}`} data={data} />)}
     </div>
   );
 });

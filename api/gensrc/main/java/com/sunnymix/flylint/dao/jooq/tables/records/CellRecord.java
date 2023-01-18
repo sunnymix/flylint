@@ -99,7 +99,7 @@ public class CellRecord extends UpdatableRecordImpl<CellRecord> implements Recor
     }
 
     /**
-     * Setter for <code>flylint.cell.col_size</code>. 跨列
+     * Setter for <code>flylint.cell.col_size</code>. 列数
      */
     public CellRecord setColSize(Integer value) {
         set(5, value);
@@ -107,14 +107,14 @@ public class CellRecord extends UpdatableRecordImpl<CellRecord> implements Recor
     }
 
     /**
-     * Getter for <code>flylint.cell.col_size</code>. 跨列
+     * Getter for <code>flylint.cell.col_size</code>. 列数
      */
     public Integer getColSize() {
         return (Integer) get(5);
     }
 
     /**
-     * Setter for <code>flylint.cell.row_size</code>. 跨行
+     * Setter for <code>flylint.cell.row_size</code>. 行数
      */
     public CellRecord setRowSize(Integer value) {
         set(6, value);
@@ -122,7 +122,7 @@ public class CellRecord extends UpdatableRecordImpl<CellRecord> implements Recor
     }
 
     /**
-     * Getter for <code>flylint.cell.row_size</code>. 跨行
+     * Getter for <code>flylint.cell.row_size</code>. 行数
      */
     public Integer getRowSize() {
         return (Integer) get(6);

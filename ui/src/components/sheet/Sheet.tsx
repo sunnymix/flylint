@@ -16,8 +16,8 @@ const Sheet = forwardRef((props: SheetProps, ref: any) => {
 
   const data: SheetData = {
     sheet: props.data.name,
-    colSize: 2,
-    rowSize: 2,
+    colSize: 1,
+    rowSize: 1,
   };
 
   // __________ api __________

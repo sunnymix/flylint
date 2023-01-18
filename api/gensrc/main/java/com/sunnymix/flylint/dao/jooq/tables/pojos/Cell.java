@@ -108,14 +108,14 @@ public class Cell implements Serializable {
     }
 
     /**
-     * Getter for <code>flylint.cell.col_size</code>. 跨列
+     * Getter for <code>flylint.cell.col_size</code>. 列数
      */
     public Integer getColSize() {
         return this.colSize;
     }
 
     /**
-     * Getter for <code>flylint.cell.row_size</code>. 跨行
+     * Getter for <code>flylint.cell.row_size</code>. 行数
      */
     public Integer getRowSize() {
         return this.rowSize;

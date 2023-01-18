@@ -5,7 +5,9 @@ package com.sunnymix.flylint.dao.jooq;
 
 
 import com.sunnymix.flylint.dao.jooq.tables.Cell;
+import com.sunnymix.flylint.dao.jooq.tables.Col;
 import com.sunnymix.flylint.dao.jooq.tables.Media;
+import com.sunnymix.flylint.dao.jooq.tables.Row;
 import com.sunnymix.flylint.dao.jooq.tables.Wiki;
 
 
@@ -21,9 +23,19 @@ public class Tables {
     public static final Cell CELL = Cell.CELL;
 
     /**
+     * The table <code>flylint.col</code>.
+     */
+    public static final Col COL = Col.COL;
+
+    /**
      * The table <code>flylint.media</code>.
      */
     public static final Media MEDIA = Media.MEDIA;
+
+    /**
+     * The table <code>flylint.row</code>.
+     */
+    public static final Row ROW = Row.ROW;
 
     /**
      * The table <code>flylint.wiki</code>.

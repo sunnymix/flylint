@@ -1,7 +1,7 @@
 package com.sunnymix.flylint.api.service;
 
 import com.sunnymix.flylint.api.gateway.dao.CellDao;
-import com.sunnymix.flylint.api.model.cell.SaveCell;
+import com.sunnymix.flylint.api.model.sheet.cell.SaveCell;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

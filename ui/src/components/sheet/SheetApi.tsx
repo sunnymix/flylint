@@ -57,7 +57,7 @@ const SheetApi = {
   // __________ server __________
 
   getCell: (sheet: string, col: number, row: number, cb: (data: Cell|null) => void) => {
-    axios.get(`${Constant.API_BASE}/cell/${sheet}/${col}/${row}`)
+    axios.get(`${Constant.API_BASE}/sheet/cell/${sheet}/${col}/${row}`)
       .then(res => {
         const data = res.data?.data as Cell || null;
         cb(data);
@@ -65,7 +65,7 @@ const SheetApi = {
   },
 
   saveCellContent: (sheet: string, col: number, row: number, content: string, cb: (success: boolean) => void) => {
-    axios.post(`${Constant.API_BASE}/cell/${sheet}/${col}/${row}`, {content})
+    axios.post(`${Constant.API_BASE}/sheet/cell/${sheet}/${col}/${row}`, {content})
       .then(res => {
         const success = res.data?.success || false;
         cb(success);

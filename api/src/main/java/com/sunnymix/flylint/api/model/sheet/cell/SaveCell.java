@@ -1,4 +1,4 @@
-package com.sunnymix.flylint.api.model.cell;
+package com.sunnymix.flylint.api.model.sheet.cell;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

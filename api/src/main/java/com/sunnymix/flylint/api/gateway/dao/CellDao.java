@@ -1,7 +1,7 @@
 package com.sunnymix.flylint.api.gateway.dao;
 
 import com.sunnymix.flylint.api.common.Strings;
-import com.sunnymix.flylint.api.model.cell.SaveCell;
+import com.sunnymix.flylint.api.model.sheet.cell.SaveCell;
 import com.sunnymix.flylint.dao.jooq.tables.pojos.Cell;
 import com.sunnymix.flylint.dao.jooq.tables.records.CellRecord;
 import lombok.Getter;

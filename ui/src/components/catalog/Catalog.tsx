@@ -15,6 +15,7 @@ import LocalStore from "../common/LocalStore";
 import { BasicWiki } from "../wiki/WikiModel";
 import WikiApi from "../wiki/WikiApi";
 import SheetPage from "../sheet/SheetPage";
+import Loc from "../common/Loc";
 
 export interface CatalogProps {
   refresh?: string,
@@ -51,7 +52,10 @@ export const Catalog = (props: CatalogProps) => {
   // __________ event: wiki updates __________
 
   const onSelect = (names: string[]) => {
-    history.push(`/wiki/${names[0]}`);
+    const pathWikiName = Loc.getWikiName();
+    const selectWikiName = names[0];
+    if (pathWikiName == selectWikiName) return;
+    history.push(`/wiki/${selectWikiName}`);
   };
 
   const onWikiNameUpdated = useCallback((data: any) => {

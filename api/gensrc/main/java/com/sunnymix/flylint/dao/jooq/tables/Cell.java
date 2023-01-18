@@ -64,7 +64,7 @@ public class Cell extends TableImpl<CellRecord> {
     /**
      * The column <code>flylint.cell.type</code>. 类型
      */
-    public final TableField<CellRecord, String> TYPE = createField(DSL.name("type"), SQLDataType.VARCHAR(50).nullable(false).defaultValue(DSL.inline("wiki", SQLDataType.VARCHAR)), this, "类型");
+    public final TableField<CellRecord, String> TYPE = createField(DSL.name("type"), SQLDataType.VARCHAR(50).nullable(false).defaultValue(DSL.inline("cell", SQLDataType.VARCHAR)), this, "类型");
 
     /**
      * The column <code>flylint.cell.sheet</code>. 表格
@@ -82,14 +82,14 @@ public class Cell extends TableImpl<CellRecord> {
     public final TableField<CellRecord, Integer> ROW = createField(DSL.name("row"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "行");
 
     /**
-     * The column <code>flylint.cell.col_size</code>. 跨列
+     * The column <code>flylint.cell.col_size</code>. 列数
      */
-    public final TableField<CellRecord, Integer> COL_SIZE = createField(DSL.name("col_size"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("1", SQLDataType.INTEGER)), this, "跨列");
+    public final TableField<CellRecord, Integer> COL_SIZE = createField(DSL.name("col_size"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("1", SQLDataType.INTEGER)), this, "列数");
 
     /**
-     * The column <code>flylint.cell.row_size</code>. 跨行
+     * The column <code>flylint.cell.row_size</code>. 行数
      */
-    public final TableField<CellRecord, Integer> ROW_SIZE = createField(DSL.name("row_size"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("1", SQLDataType.INTEGER)), this, "跨行");
+    public final TableField<CellRecord, Integer> ROW_SIZE = createField(DSL.name("row_size"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("1", SQLDataType.INTEGER)), this, "行数");
 
     /**
      * The column <code>flylint.cell.width</code>. 宽度

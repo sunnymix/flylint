@@ -1,4 +1,5 @@
 import { forwardRef, useState } from "react";
+import SheetPop from "./SheetPop";
 
 import { Sheet as SheetData } from "./SheetApi";
 
@@ -10,6 +11,7 @@ const Peak = forwardRef((props: PeakProps, ref: any) => {
 
   return (
     <div className='sheet-peak' ref={ref}>
+      <SheetPop />
     </div>
   );
 });

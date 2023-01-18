@@ -2,12 +2,19 @@ import { MovePlace } from "../catalog/CatalogModel";
 import { WikiMode, WikiType } from "../wiki/WikiModel";
 
 export type EventType = 
-  | "wiki.name.updated"
-  | "wiki.title.updated"
-  | "wiki.create"
-  | "wiki.deleted"
-  | "wiki.moved"
+  // __________ wiki __________
+  | 'wiki.name.updated'
+  | 'wiki.title.updated'
+  | 'wiki.create'
+  | 'wiki.deleted'
+  | 'wiki.moved'
+  // __________ sheet: cols __________
+  | 'sheet.cols.add' | 'sheet.cols.added'
+  | 'sheet.cols.delete' | 'sheet.cols.deleted'
+  | 'sheet.cols.move' | 'sheet.cols.moved'
 ;
+
+// __________ wiki __________
 
 export interface WikiNameUpdatedEventData {
   mode: WikiMode,
@@ -39,6 +46,10 @@ export interface WikiMovedEventData {
   toName: string,
   place: MovePlace,
 };
+
+// __________ sheet: cols __________
+
+// __________ event data union __________
 
 export type EventData = 
   | WikiNameUpdatedEventData

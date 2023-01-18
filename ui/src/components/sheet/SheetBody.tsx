@@ -19,21 +19,7 @@ const SheetBody = forwardRef((props: SheetBodyProps, ref: any) => {
 
   // __________ state __________
 
-  const [cells, setCells] = useState<CellData[]>([]);
-  const [rows, setRows] = useState<RowData[]>([]);
-  const [cols, setCols] = useState<ColData[]>([]);
-
   // __________ life cycle __________
-
-  useEffect(() => {
-    const sheet = { colSize: 6, rowSize: 6 } as SheetData;
-    const cells = SheetApi.makeCells(sheet);
-    const rows = SheetApi.makeRows(sheet);
-    const cols = SheetApi.makeCols(sheet);
-    setCells(cells);
-    setRows(rows);
-    setCols(cols);
-  }, []);
 
   // __________ api __________
 
@@ -44,7 +30,7 @@ const SheetBody = forwardRef((props: SheetBodyProps, ref: any) => {
   // __________ ui __________
 
   return (
-    <div>
+    <div ref={ref}>
       <Peak data={props.data} />
       <Cells data={props.data} />
       <Cols data={props.data} />

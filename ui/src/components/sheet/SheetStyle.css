@@ -9,6 +9,8 @@
   position: relative;
 }
 
+/* __________ peak __________ */
+
 .sheet-peak {
   position: absolute;
   top: 0;
@@ -17,6 +19,9 @@
   height: 30px;
   background-color: #f8f8f8;
   border-top: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 /* __________ row __________ */

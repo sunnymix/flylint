@@ -105,6 +105,28 @@ const LocalStore = {
     return LocalStore.getObj(LocalStore.SHEET_SELECTED_CELL + sheet) as SelectedCell;
   },
 
+  getSheetSelectedCol(sheet: string) {
+    const cell = LocalStore.getSheetSelectedCell(sheet);
+    if (!cell) return 0;
+    return cell.col;
+  },
+
+  getSheetSelectedRow(sheet: string) {
+    const cell = LocalStore.getSheetSelectedCell(sheet);
+    if (!cell) return 0;
+    return cell.row;
+  },
+
+  getSheetSelectedPos(sheet: string) {
+    const cell = LocalStore.getSheetSelectedCell(sheet);
+    if (!cell) return {col: 0, row: 0};
+    return {col: cell.col, row: cell.row};
+  },
+
+  removeSheetSelectedCell(sheet: string) {
+    LocalStore.remove(LocalStore.SHEET_SELECTED_CELL + sheet);
+  },
+
 };
 
 export default LocalStore;

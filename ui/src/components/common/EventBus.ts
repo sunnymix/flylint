@@ -8,10 +8,15 @@ export type EventType =
   | 'wiki.create'
   | 'wiki.deleted'
   | 'wiki.moved'
+  // __________ sheet __________
   // __________ sheet: cols __________
   | 'sheet.cols.add' | 'sheet.cols.added'
   | 'sheet.cols.delete' | 'sheet.cols.deleted'
-  | 'sheet.cols.move' | 'sheet.cols.moved'
+  | 'sheet.cols.width.update' | 'sheet.cols.width.updated'
+  // __________ sheet: cols __________
+  | 'sheet.rows.add' | 'sheet.rows.added'
+  | 'sheet.rows.delete' | 'sheet.rows.deleted'
+  | 'sheet.rows.height.update' | 'sheet.rows.height.updated'
 ;
 
 // __________ wiki __________
@@ -49,14 +54,44 @@ export interface WikiMovedEventData {
 
 // __________ sheet: cols __________
 
+export type SheetTarget = 'col' | 'row' | 'cell';
+
+export type SheetAt = 'self' | 'before' | 'after';
+
+interface SheetUpdate {
+  target: SheetTarget,
+  col?: number,
+  row?: number,
+  at?: SheetAt,
+  size?: number,
+  width?: number,
+  height?: number,
+};
+
+export interface SheetColsAdd extends SheetUpdate {};
+
+export interface SheetColsDelete extends SheetUpdate {};
+
+export interface SheetColsWidthUpdate extends SheetUpdate {};
+
+export interface SheetRowsAdd extends SheetUpdate {};
+
+export interface SheetRowsDelete extends SheetUpdate {};
+
+export interface SheetRowsHeightUpdate extends SheetUpdate {};
+
 // __________ event data union __________
 
 export type EventData = 
+  // __________ wiki __________
   | WikiNameUpdatedEventData
   | WikiTitleUpdatedEventData
   | WikiCreatedEventData
   | WikiDeletedEventData
   | WikiMovedEventData
+  // __________ sheet __________
+  | SheetColsAdd | SheetColsDelete | SheetColsWidthUpdate
+  | SheetRowsAdd | SheetRowsDelete | SheetRowsHeightUpdate
 ;
 
 const EventBus = {

@@ -16,7 +16,7 @@ const Row = forwardRef((props: RowProps, ref: any) => {
           top: props.data.top,
           width: 50,
           height: props.data.height,
-        }}>{props.data.index}</div>
+        }}>{props.data.row}</div>
       <div
         className='sheet-row'
         style={{

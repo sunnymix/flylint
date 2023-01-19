@@ -4,6 +4,7 @@ import './SheetStyle.css';
 import { BasicWiki } from "../wiki/WikiModel";
 import SheetApi, { Sheet as SheetData } from "./SheetApi";
 import { LoadingOutlined } from '@ant-design/icons';
+import LocalStore from "../common/LocalStore";
 
 export interface SheetProps {
   data: BasicWiki,
@@ -23,6 +24,7 @@ const Sheet = forwardRef((props: SheetProps, ref: any) => {
     setSheet(null);
     SheetApi.getSheet(props.data.name, (sheet: SheetData|null) => {
       if (!sheet) return;
+      LocalStore.removeSheetSelectedCell(props.data.name);
       setSheet(sheet);
     });
   }, [props.data])

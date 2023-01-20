@@ -20,6 +20,8 @@ import java.util.List;
 @AllArgsConstructor
 public class Sheet {
 
+    private String sheet;
+
     @Builder.Default
     private Integer colsSize = 0;
 

@@ -1,10 +1,6 @@
 import axios from "axios";
 import Constant from "@/components/common/Constant";
 
-export const peakWidth = 50;
-export const defaultWidth = 200;
-export const defaultHeight = 30;
-
 export interface Sheet {
   sheet: string,
   colsSize: number,
@@ -19,7 +15,6 @@ export interface Col {
   col: number,
   left: number,
   width: number,
-  height: number,
 };
 
 export interface Row {
@@ -27,7 +22,6 @@ export interface Row {
   row: number,
   top: number,
   height: number,
-  width: number,
 }
 
 export type CellType = 'cell';
@@ -53,6 +47,12 @@ export interface SelectedCell {
 }
 
 const SheetApi = {
+
+  peakWidth: 50,
+
+  defaultWidth: 200,
+
+  defaultHeight: 30,
 
   // __________ api __________
 
@@ -87,9 +87,8 @@ const SheetApi = {
     for (var c = 1; c <= sheet.colsSize; c++) {
       cols.push({
         col: c,
-        left: (c - 1) * defaultWidth,
-        width: defaultWidth,
-        height: (sheet.rowsSize + 1) * defaultHeight,
+        left: (c - 1) * SheetApi.defaultWidth,
+        width: SheetApi.defaultWidth,
       } as Col);
     }
     return cols;
@@ -100,9 +99,8 @@ const SheetApi = {
     for (var r = 1; r <= sheet.rowsSize; r++) {
       rows.push({
         row: r,
-        top: r * defaultHeight,
-        height: defaultHeight,
-        width: peakWidth + sheet.colsSize * defaultWidth,
+        top: r * SheetApi.defaultHeight,
+        height: SheetApi.defaultHeight,
       } as Row);
     }
     return rows;
@@ -112,8 +110,8 @@ const SheetApi = {
     const cells: Cell[] = [];
     for (var r = 1; r <= sheet.rowsSize; r++) {
       for (var c = 1; c <= sheet.colsSize; c++) {
-        const left = peakWidth + (c - 1) * defaultWidth;
-        const top = defaultHeight + (r - 1) * defaultHeight;
+        const left = SheetApi.peakWidth + (c - 1) * SheetApi.defaultWidth;
+        const top = SheetApi.defaultHeight + (r - 1) * SheetApi.defaultHeight;
         cells.push({
           sheet: sheet.sheet,
           type: 'cell',
@@ -123,8 +121,8 @@ const SheetApi = {
           rowSize: 1,
           left: left,
           top: top,
-          width: defaultWidth,
-          height: defaultHeight,
+          width: SheetApi.defaultWidth,
+          height: SheetApi.defaultHeight,
         });
       }
     }

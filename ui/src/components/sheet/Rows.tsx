@@ -5,23 +5,27 @@ import { Sheet as SheetData } from "./SheetApi";
 import SheetApi from "./SheetApi";
 
 export interface RowsProps {
-  data: SheetData,
+  sheet: SheetData,
 };
 
 const Rows = forwardRef((props: RowsProps, ref: any) => {
 
-  const [data, setData] = useState<RowData[]>([]);
+  const [rows, setRows] = useState<RowData[]>([]);
 
   useEffect(() => {
-    if (!props.data) return;
-    const data = SheetApi.makeRows(props.data);
-    setData(data);
-  }, [props.data]);
+    if (!props.sheet) return;
+    const rows = SheetApi.makeRows(props.sheet);
+    setRows(rows);
+  }, [props.sheet]);
 
   return (
-    <div className='sheet-rows' ref={ref}>
-      {data.map((data: RowData) =>
-        <Row key={`${data.row}`} data={data} />)}
+    <div
+      className='sheet-rows'
+      ref={ref}
+      style={{left: 0, top: SheetApi.defaultHeight, width: rows.length * SheetApi.defaultWidth}}
+      >
+      {rows.map((row: RowData) =>
+        <Row key={`${row.row}`} data={row} />)}
     </div>
   );
 });

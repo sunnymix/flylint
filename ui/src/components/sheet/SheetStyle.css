@@ -42,6 +42,11 @@
 
 /* __________ col __________ */
 
+.sheet-cols {
+  position: absolute;
+  top: 0;
+}
+
 .sheet-col-header {
   position: absolute;
   display: flex;

@@ -28,7 +28,7 @@ const Col = forwardRef((props: ColProps, ref: any) => {
         className='sheet-col-header'
         style={{
           top: 0,
-          left: 50 + props.data.left,
+          left: props.data.left,
           width: props.data.width,
           height: 30,
         }}>{props.data.col}</div>
@@ -36,8 +36,8 @@ const Col = forwardRef((props: ColProps, ref: any) => {
         className='sheet-col'
         style={{
           top: 0,
-          left: 50 + props.data.left,
-          height: props.data.height,
+          left: props.data.left,
+          bottom: 0,
         }}></div>
     </div>
   );

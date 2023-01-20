@@ -31,6 +31,7 @@ public class SheetAggreDao {
         var wiki = wikiOpt.get();
         if (!wiki.getType().equals("sheet")) return Optional.empty();
         var sheetBuilder = Sheet.builder();
+        sheetBuilder.sheet(sheet);
         var cols = colDao.list(sheet);
         sheetBuilder.cols(cols);
         sheetBuilder.colsSize(cols.size());

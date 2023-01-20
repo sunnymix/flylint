@@ -33,8 +33,8 @@ const SheetBody = forwardRef((props: SheetBodyProps, ref: any) => {
     <div ref={ref}>
       <Peak data={props.data} />
       <Cells data={props.data} />
-      <Cols data={props.data} />
-      <Rows data={props.data} />
+      <Cols sheet={props.data} />
+      <Rows sheet={props.data} />
     </div>
   );
 });

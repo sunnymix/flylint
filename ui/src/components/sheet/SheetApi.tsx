@@ -1,10 +1,14 @@
 import axios from "axios";
 import Constant from "@/components/common/Constant";
 
+// __________ property: __________
+
 export const defaultWidth = 200;
 export const defaultHeight = 30;
 export const peakWidth = 50;
 export const peakHeight = defaultHeight;
+
+// __________ interface: __________
 
 export interface Sheet {
   sheet: string,
@@ -77,13 +81,39 @@ export interface SheetRowsDelete extends SheetUpdate {};
 
 export interface SheetRowsHeightUpdate extends SheetUpdate {};
 
+// __________ api: __________
+
+export const getSheet = (sheet: string, cb: (sheet: Sheet|null) => void) => {
+  axios.get(`${Constant.API_BASE}/sheet/${sheet}`)
+    .then(res => {
+      const sheet = res.data?.data as Sheet || null;
+      cb(sheet);
+    });
+};
+
+export const getCell = (sheet: string, col: number, row: number, cb: (data: Cell|null) => void) => {
+  axios.get(`${Constant.API_BASE}/sheet/cell/${sheet}/${col}/${row}`)
+    .then(res => {
+      const data = res.data?.data as Cell || null;
+      cb(data);
+    });
+};
+
+export const saveCellContent = (sheet: string, col: number, row: number, content: string, cb: (success: boolean) => void) => {
+  axios.post(`${Constant.API_BASE}/sheet/cell/${sheet}/${col}/${row}`, {content})
+    .then(res => {
+      const success = res.data?.success || false;
+      cb(success);
+    });
+};
+
 // __________ addCols: __________
 
 export const addCols = (sheet: string, cols: Col[], e: SheetColsAdd) => {
   console.log(`SheetApi: addCols: ${JSON.stringify(e)}`);
   // by peak:
   if (!e.col && !e.row) return addColsByPeak(sheet, cols, e.at, e.size);
-  // todo
+  // by cols: todo
   return cols;
 };
 
@@ -131,44 +161,18 @@ export const addColsAfterAll = (sheet: string, cols: Col[], size: number) => {
 
 
 const SheetApi = {
-
+  // __________ property: __________
   defaultWidth,
   defaultHeight,
   peakWidth,
   peakHeight,
-
-  // __________ api __________
-
-  getSheet: (sheet: string, cb: (sheet: Sheet|null) => void) => {
-    axios.get(`${Constant.API_BASE}/sheet/${sheet}`)
-      .then(res => {
-        const sheet = res.data?.data as Sheet || null;
-        cb(sheet);
-      });
-  },
-
-  getCell: (sheet: string, col: number, row: number, cb: (data: Cell|null) => void) => {
-    axios.get(`${Constant.API_BASE}/sheet/cell/${sheet}/${col}/${row}`)
-      .then(res => {
-        const data = res.data?.data as Cell || null;
-        cb(data);
-      });
-  },
-
-  saveCellContent: (sheet: string, col: number, row: number, content: string, cb: (success: boolean) => void) => {
-    axios.post(`${Constant.API_BASE}/sheet/cell/${sheet}/${col}/${row}`, {content})
-      .then(res => {
-        const success = res.data?.success || false;
-        cb(success);
-      });
-  },
-
-  // __________ add cols __________
-
+  // __________ api: __________
+  getSheet,
+  getCell,
+  saveCellContent,
+  // __________ addCols: __________
   addCols,
-
-  // __________ ui __________
-
+  // __________ delete: todo __________
   makeCols: (sheet: Sheet) => {
     const cols: Col[] = [];
     for (var c = 1; c <= sheet.colsSize; c++) {

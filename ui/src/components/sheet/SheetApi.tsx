@@ -1,6 +1,11 @@
 import axios from "axios";
 import Constant from "@/components/common/Constant";
 
+export const defaultWidth = 200;
+export const defaultHeight = 30;
+export const peakWidth = 50;
+export const peakHeight = defaultHeight;
+
 export interface Sheet {
   sheet: string,
   colsSize: number,
@@ -44,15 +49,93 @@ export interface SelectedCell {
   sheet: string,
   col: number,
   row: number,
-}
+};
+
+export type SheetTarget = 'col' | 'row' | 'cell';
+
+export type SheetAt = 'self' | 'before' | 'after';
+
+export interface SheetUpdate {
+  target: SheetTarget,
+  col?: number,
+  row?: number,
+  at?: SheetAt,
+  size?: number,
+  width?: number,
+  height?: number,
+};
+
+export interface SheetColsAdd extends SheetUpdate {};
+
+export interface SheetColsDelete extends SheetUpdate {};
+
+export interface SheetColsWidthUpdate extends SheetUpdate {};
+
+export interface SheetRowsAdd extends SheetUpdate {};
+
+export interface SheetRowsDelete extends SheetUpdate {};
+
+export interface SheetRowsHeightUpdate extends SheetUpdate {};
+
+// __________ addCols: __________
+
+export const addCols = (sheet: string, cols: Col[], e: SheetColsAdd) => {
+  console.log(`SheetApi: addCols: ${JSON.stringify(e)}`);
+  // by peak:
+  if (!e.col && !e.row) return addColsByPeak(sheet, cols, e.at, e.size);
+  // todo
+  return cols;
+};
+
+export const addColsByPeak = (sheet: string, cols: Col[], at?: SheetAt, size?: number) => {
+  if (!at || (at != 'before' && at != 'after')) return cols;
+  if (!size || size < 1) return cols;
+  if (at == 'before') return addColsBeforeAll(sheet, cols, size);
+  if (at == 'after') return addColsAfterAll(sheet, cols, size);
+  return cols;
+};
+
+export const addColsBeforeAll = (sheet: string, cols: Col[], size: number) => {
+  const newCols: Col[] = [];
+  let col = 1;
+  let left = 0;
+  for (var i = 1; i <= size; i++) {
+    const width = defaultWidth;
+    const newCol = {sheet, col, left, width} as Col;
+    newCols.push(newCol);
+    left += width;
+    col++;
+  }
+  for (var i = 1; i <= cols.length; i++) {
+    const mutateCol = {...cols[i - 1], left, col};
+    newCols.push(mutateCol);
+    left += mutateCol.width;
+    col++;
+  }
+  return newCols;
+};
+
+export const addColsAfterAll = (sheet: string, cols: Col[], size: number) => {
+  const newCols: Col[] = [...cols];
+  let col = cols.length == 0 ? 1 : cols.length + 1;
+  let left = cols.length == 0 ? 0 : cols[cols.length - 1].left + cols[cols.length - 1].width;
+  for (var i = 1; i <= size; i++) {
+    const width = defaultWidth;
+    const newCol = {sheet, col, left, width} as Col;
+    newCols.push(newCol);
+    left += width;
+    col++;
+  }
+  return newCols;
+};
+
 
 const SheetApi = {
 
-  peakWidth: 50,
-
-  defaultWidth: 200,
-
-  defaultHeight: 30,
+  defaultWidth,
+  defaultHeight,
+  peakWidth,
+  peakHeight,
 
   // __________ api __________
 
@@ -79,6 +162,10 @@ const SheetApi = {
         cb(success);
       });
   },
+
+  // __________ add cols __________
+
+  addCols,
 
   // __________ ui __________
 

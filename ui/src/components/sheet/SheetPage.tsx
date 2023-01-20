@@ -5,6 +5,7 @@ import WikiOps from "../wiki/WikiOps";
 import { WikiNameUpdatedEventData, WikiTitleUpdatedEventData } from "@/components/common/EventBus";
 import Layout from "../common/Layout";
 import Sheet from "../sheet/Sheet";
+import SheetView from "./SheetView";
 import { LoadingOutlined } from '@ant-design/icons';
 
 export interface SheetPageProps {
@@ -78,7 +79,7 @@ const SheetPage = forwardRef((props: SheetPageProps, ref: any) => {
           </div>
         </div>
         <div className="wiki-body" ref={bodyRef}>
-          <Sheet data={props.data} />
+          <SheetView />
         </div>
       </div>
     </div>

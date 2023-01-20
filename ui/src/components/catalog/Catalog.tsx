@@ -2,7 +2,7 @@ import CatalogTree from "./CatalogTree";
 import "./CatalogStyle.css";
 import { useCallback, useEffect, useState } from "react";
 import WikiPage from "../wiki/WikiPage";
-import { history } from "umi";
+import { history, useModel } from "umi";
 import EventBus, { 
   WikiCreatedEventData,
   WikiDeletedEventData,
@@ -26,6 +26,10 @@ export const Catalog = (props: CatalogProps) => {
 
   console.log(`Catalog: render: name(${props.name}): refresh(${props.refresh})`);
 
+  // __________ model __________
+
+  const {selectSheet} = useModel('sheet', m => ({selectSheet: m.selectSheet}));
+
   // __________ state __________
 
   const [refreshCatalog, setRefreshCatalog] = useState<string>(props.refresh || 'init');
@@ -46,6 +50,7 @@ export const Catalog = (props: CatalogProps) => {
     if (!props.name) return;
     WikiApi.basic(props.name, (wiki: BasicWiki) => {
       setWiki(wiki);
+      selectSheet(wiki.type == 'sheet' ? wiki.name : null);
     });
   }, [props.name]);
 

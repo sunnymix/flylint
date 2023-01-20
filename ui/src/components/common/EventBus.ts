@@ -60,8 +60,8 @@ export type SheetAt = 'self' | 'before' | 'after';
 
 interface SheetUpdate {
   target: SheetTarget,
-  col: number,
-  row: number,
+  col?: number,
+  row?: number,
   at?: SheetAt,
   size?: number,
   width?: number,

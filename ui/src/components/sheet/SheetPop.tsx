@@ -1,36 +1,43 @@
 import React, { forwardRef, useCallback } from "react";
 import { Button, Dropdown, Popconfirm } from "antd";
 import { ArrowLeftOutlined, ArrowRightOutlined, ArrowUpOutlined, ArrowDownOutlined, EllipsisOutlined, CloseOutlined } from '@ant-design/icons';
-import EventBus, { EventData, SheetColsAdd, SheetColsDelete, SheetColsWidthUpdate } from "../common/EventBus";
+import EventBus, { SheetColsAdd, SheetColsDelete, SheetColsWidthUpdate } from './SheetApi';
 import LocalStore from "../common/LocalStore";
+import { useModel } from "umi";
 
-export interface SheetPopProps {
-  sheet: string,
-};
-
-const SheetPop = forwardRef((props: SheetPopProps, ref: any) => {
+const SheetPop = forwardRef((props: any, ref: any) => {
+  const {
+    sheet,
+    cols,
+    addCols,
+  } = useModel('sheet', m => ({
+    sheet: m.sheet,
+    cols: m.cols,
+    addCols: m.addCols}));
 
   const onColsAddBefore = useCallback((e: React.UIEvent) => {
-    const {col, row} = LocalStore.getSheetSelectedPos(props.sheet);
-    EventBus.dispatch('sheet.cols.add', {target: 'col', col, row, at: 'before', size: 1} as SheetColsAdd);
-  }, [props.sheet]);
+    if (!sheet) return;
+    addCols(sheet, cols, {target: 'col', at: 'before', size: 1} as SheetColsAdd);
+  }, [sheet, cols]);
 
   const onColsAddAfter = useCallback((e: React.UIEvent) => {
-    const {col, row} = LocalStore.getSheetSelectedPos(props.sheet);
-    EventBus.dispatch('sheet.cols.add', {target: 'col', col, row, at: 'after', size: 1} as SheetColsAdd);
-  }, [props.sheet]);
+    if (!sheet) return;
+    addCols(sheet, cols, {target: 'col', at: 'after', size: 1} as SheetColsAdd);
+  }, [sheet, cols]);
 
   const onColsWidthUpdate = useCallback((e: React.UIEvent) => {
-    const {col, row} = LocalStore.getSheetSelectedPos(props.sheet);
+    if (!sheet) return;
+    const {col, row} = LocalStore.getSheetSelectedPos(sheet);
     const width = window.prompt('width:');
     if (!width) return;
-    EventBus.dispatch('sheet.cols.width.update', {target: 'col', col, at: 'self', row, width: +width} as SheetColsWidthUpdate);
-  }, [props.sheet]);
+    // EventBus.dispatch('sheet.cols.width.update', {target: 'col', col, at: 'self', row, width: +width} as SheetColsWidthUpdate);
+  }, [sheet]);
 
   const onColsDelete = useCallback((e: React.MouseEvent) => {
-    const {col, row} = LocalStore.getSheetSelectedPos(props.sheet);
-    EventBus.dispatch('sheet.cols.delete', {target: 'col', col, row, at: 'self', size: 1} as SheetColsDelete);
-  }, [props.sheet]);
+    if (!sheet) return;
+    const {col, row} = LocalStore.getSheetSelectedPos(sheet);
+    // EventBus.dispatch('sheet.cols.delete', {target: 'col', col, row, at: 'self', size: 1} as SheetColsDelete);
+  }, [sheet]);
 
   const menuItems = [
     {key: 'divider1', type: 'divider'},

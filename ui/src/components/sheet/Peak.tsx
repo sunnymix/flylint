@@ -11,7 +11,7 @@ const Peak = forwardRef((props: PeakProps, ref: any) => {
 
   return (
     <div className='sheet-peak' ref={ref}>
-      <SheetPop sheet={props.data.sheet} />
+      <SheetPop col={0} row={0} />
     </div>
   );
 });

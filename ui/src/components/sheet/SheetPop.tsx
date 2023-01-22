@@ -5,7 +5,9 @@ import EventBus, { SheetColsAdd, SheetColsDelete, SheetColsWidthUpdate } from '.
 import LocalStore from "../common/LocalStore";
 import { useModel } from "umi";
 
-const SheetPop = forwardRef((props: any, ref: any) => {
+const SheetPop = forwardRef((props: {col: number, row: number}, ref: any) => {
+  const {col, row} = props;
+
   const {
     sheet,
     cols,
@@ -17,27 +19,19 @@ const SheetPop = forwardRef((props: any, ref: any) => {
 
   const onColsAddBefore = useCallback((e: React.UIEvent) => {
     if (!sheet) return;
-    addCols(sheet, cols, {target: 'col', at: 'before', size: 1} as SheetColsAdd);
-  }, [sheet, cols]);
+    addCols(sheet, cols, {target: 'col', col, row, at: 'before', size: 1} as SheetColsAdd);
+  }, [sheet, cols, col, row]);
 
   const onColsAddAfter = useCallback((e: React.UIEvent) => {
     if (!sheet) return;
-    addCols(sheet, cols, {target: 'col', at: 'after', size: 1} as SheetColsAdd);
-  }, [sheet, cols]);
+    addCols(sheet, cols, {target: 'col', col, row, at: 'after', size: 1} as SheetColsAdd);
+  }, [sheet, cols, col, row]);
 
   const onColsWidthUpdate = useCallback((e: React.UIEvent) => {
-    if (!sheet) return;
-    const {col, row} = LocalStore.getSheetSelectedPos(sheet);
-    const width = window.prompt('width:');
-    if (!width) return;
-    // EventBus.dispatch('sheet.cols.width.update', {target: 'col', col, at: 'self', row, width: +width} as SheetColsWidthUpdate);
-  }, [sheet]);
+  }, []);
 
   const onColsDelete = useCallback((e: React.MouseEvent) => {
-    if (!sheet) return;
-    const {col, row} = LocalStore.getSheetSelectedPos(sheet);
-    // EventBus.dispatch('sheet.cols.delete', {target: 'col', col, row, at: 'self', size: 1} as SheetColsDelete);
-  }, [sheet]);
+  }, []);
 
   const menuItems = [
     {key: 'divider1', type: 'divider'},

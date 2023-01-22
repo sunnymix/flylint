@@ -9,7 +9,7 @@ const Peak = () => {
   const {sheet} = useModel('sheet', m => ({sheet: m.sheet}));
   return (
     <div className='sheet-peak'>
-      <SheetPop sheet={sheet} />
+      <SheetPop col={0} row={0} />
     </div>
   );
 };
@@ -18,7 +18,10 @@ const Col = (props: {col: ColData}) => {
   const {col} = props;
   return (
     <div className='sheet-col'>
-      <div className='sheet-col-header' style={{left: col.left, width: col.width}}>{col.col}</div>
+      <div className='sheet-col-header' style={{left: col.left, width: col.width}}>
+        {col.col}
+        <SheetPop col={col.col} row={0} />
+      </div>
       <div className='sheet-col-line' style={{left: col.left}}></div>
     </div>
   );

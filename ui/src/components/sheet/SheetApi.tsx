@@ -113,9 +113,7 @@ export const addCols = (sheet: string, cols: Col[], e: SheetColsAdd) => {
   console.log(`SheetApi: addCols: ${JSON.stringify(e)}`);
   if (!e.at || (e.at != 'before' && e.at != 'after')) return cols;
   if (!e.size || e.size < 1) return cols;
-  // by peak:
   if (e.col == 0) return addColsByPeak(sheet, cols, e.at, e.size);
-  // by col: todo
   if (e.col && e.col > 0) return addColsByCol(sheet, cols, e.col, e.at, e.size);
   return cols;
 };
@@ -124,6 +122,30 @@ export const addColsByPeak = (sheet: string, cols: Col[], at: SheetAt, size: num
   if (at == 'before') return addColsBeforeAll(sheet, cols, size);
   if (at == 'after') return addColsAfterAll(sheet, cols, size);
   return cols;
+};
+
+export const addColsBeforeAll = (sheet: string, cols: Col[], size: number) => {
+  return addColsBeforeCol(sheet, cols, 0, size);
+};
+
+export const addColsAfterAll = (sheet: string, cols: Col[], size: number) => {
+  return addColsBeforeCol(sheet, cols, cols.length, size);
+};
+
+export const addColsByCol = (sheet: string, cols: Col[], byCol: number, at: SheetAt, size: number) => {
+  if (at == 'before') return addColsBeforeCol(sheet, cols, byCol, size);
+  if (at == 'after') return addColsAfterCol(sheet, cols, byCol, size);
+  return cols;
+};
+
+export const addColsBeforeCol = (sheet: string, cols: Col[], byCol: number, size: number) => {
+  const newCols: Col[] = [...cols.slice(0, byCol), ...buildCols(sheet, size), ...cols.slice(byCol)];
+  arrangeCols(newCols);
+  return newCols;
+};
+
+export const addColsAfterCol = (sheet: string, cols: Col[], byCol: number, size: number) => {
+  return addColsBeforeCol(sheet, cols, byCol + 1, size);
 };
 
 export const buildCols = (sheet: string, size: number) => {
@@ -143,27 +165,6 @@ export const arrangeCols = (cols: Col[]) => {
     left += item.width;
   }
 };
-
-export const addColsBeforeAll = (sheet: string, cols: Col[], size: number) => {
-  const frontCols = buildCols(sheet, size);
-  const newCols = [...frontCols, ...cols];
-  arrangeCols(newCols);
-  return newCols;
-};
-
-export const addColsAfterAll = (sheet: string, cols: Col[], size: number) => {
-  const backCols = buildCols(sheet, size);
-  const newCols = [...cols, ...backCols];
-  arrangeCols(newCols);
-  return newCols;
-};
-
-export const addColsByCol = (sheet: string, cols: Col[], byCol: number, at?: SheetAt, size?: number) => {
-  if (byCol < 1) return cols;
-  console.log(`SheetApi: addColsByCol: `);
-  return cols;
-};
-
 
 const SheetApi = {
   // __________ property: __________

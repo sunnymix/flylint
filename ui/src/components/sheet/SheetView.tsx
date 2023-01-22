@@ -4,6 +4,18 @@ import './SheetStyle.css';
 import SheetPop from "./SheetPop";
 import { Col as ColData } from "./SheetApi";
 
+// __________ sheet __________
+
+const SheetView = () => {
+  return (
+    <div className='sheet'>
+      <Peak />
+      <Cols />
+    </div>
+  );
+};
+
+// __________ peak __________
 
 const Peak = () => {
   const {sheet} = useModel('sheet', m => ({sheet: m.sheet}));
@@ -14,18 +26,7 @@ const Peak = () => {
   );
 };
 
-const Col = (props: {col: ColData}) => {
-  const {col} = props;
-  return (
-    <div className='sheet-col'>
-      <div className='sheet-col-header' style={{left: col.left, width: col.width}}>
-        {col.col}
-        <SheetPop col={col.col} row={0} />
-      </div>
-      <div className='sheet-col-line' style={{left: col.left}}></div>
-    </div>
-  );
-};
+// __________ cols __________
 
 const Cols = () => {
   const {cols, rows} = useModel('sheet', m => ({cols: m.cols, rows: m.rows}));
@@ -36,11 +37,17 @@ const Cols = () => {
   );
 };
 
-const SheetView = () => {
+// __________ col __________
+
+const Col = (props: {col: ColData}) => {
+  const {col} = props;
   return (
-    <div className='sheet'>
-      <Peak />
-      <Cols />
+    <div className='sheet-col'>
+      <div className='sheet-col-header' style={{left: col.left, width: col.width}}>
+        {col.col}
+        <SheetPop col={col.col} row={0} />
+      </div>
+      <div className='sheet-col-line' style={{left: col.left}}></div>
     </div>
   );
 };

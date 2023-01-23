@@ -15,8 +15,8 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 50px;
-  height: 30px;
+  /* width: props;
+  height: props; */
   background-color: #f8f8f8;
   border-top: 1px solid #ddd;
   display: flex;
@@ -29,7 +29,7 @@
 .sheet-cols {
   position: absolute;
   top: 0;
-  left: 50px;
+  /* left: props; */
 }
 
 /* __________ col __________ */
@@ -37,12 +37,14 @@
 .sheet-col-header {
   position: absolute;
   top: 0;
-  height: 30px;
+  /* height: props; */
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: #f8f8f8;
   border-top: 1px solid #ddd;
+  color: #888;
+  font-size: 0.8rem;
 }
 
 .sheet-col-line {
@@ -62,7 +64,7 @@
 .sheet-rows {
   position: absolute;
   left: 0;
-  top: 30px;
+  /* top: props; */
 }
 
 /* __________ row __________ */
@@ -70,11 +72,13 @@
 .sheet-row-header {
   position: absolute;
   left: 0;
-  width: 50px;
+  /* width: 50px; */
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: #f8f8f8;
+  color: #888;
+  font-size: 0.8rem;
 }
 
 .sheet-row-line {

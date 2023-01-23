@@ -35,12 +35,12 @@ const SheetPop = forwardRef((props: {col: number, row: number}, ref: any) => {
   const onRowsAddBefore = useCallback((e: React.UIEvent) => {
     if (!sheet) return;
     addRows(sheet, rows, {target: 'row', col, row, at: 'before', size: 1} as SheetRowsAdd);
-  }, [sheet, cols, col, row]);
+  }, [sheet, rows, col, row]);
 
   const onRowsAddAfter = useCallback((e: React.UIEvent) => {
     if (!sheet) return;
     addRows(sheet, rows, {target: 'row', col, row, at: 'after', size: 1} as SheetRowsAdd);
-  }, [sheet, cols, col, row]);
+  }, [sheet, rows, col, row]);
 
   const menuItems = [
     {key: 'divider1', type: 'divider'},

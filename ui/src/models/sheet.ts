@@ -6,6 +6,7 @@ import SheetApi, {
   Row as RowData,
   Cell as CellData,
   SelectedCell,
+  defaultWidth,
 } from "@/components/sheet/SheetApi";
 import { SheetColsAdd } from "@/components/common/EventBus";
 
@@ -29,7 +30,7 @@ const SheetModel = () => {
 
   useEffect(() => {
     if (!sheet) return;
-    SheetApi.getSheet(sheet, (newSheet: SheetData|null) => {
+    SheetApi.getServerSheet(sheet, (newSheet: SheetData|null) => {
       if (!newSheet) return;
       setCols(newSheet.cols);
       setRows(newSheet.rows);
@@ -42,8 +43,18 @@ const SheetModel = () => {
 
   const addCols = (sheet: string, cols: ColData[],e: SheetColsAdd) => {
     console.log(`SheetModel: addCols: cols: ${JSON.stringify(cols)}`);
-    const newCols = SheetApi.addCols(sheet, cols, e);
+    let afterCol = e.col || 0;
+    afterCol = (afterCol > 0 && e.at == 'before') ? (afterCol - 1) : afterCol;
+    const size = e.size || 0;
+    const width = defaultWidth;
+    const newCols = SheetApi.addCols(sheet, cols, afterCol, size, width);
     setCols(newCols);
+
+    // SheetApi.addServerCol(sheet, byCol, size, width, (success: boolean) => {
+    //   if (!success) return alert('ERROR');
+    //   const newCols = SheetApi.addCols(sheet, cols, e);
+    //   setCols(newCols);
+    // });
   };
 
   /* __________ api: rows: add __________ */

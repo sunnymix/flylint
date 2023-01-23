@@ -24,6 +24,7 @@ export interface Col {
   col: number,
   left: number,
   width: number,
+  isAdd?: boolean,
 };
 
 export interface Row {
@@ -81,9 +82,9 @@ export interface SheetRowsDelete extends SheetUpdate {};
 
 export interface SheetRowsHeightUpdate extends SheetUpdate {};
 
-// __________ api: __________
+// __________ server api: __________
 
-export const getSheet = (sheet: string, cb: (sheet: Sheet|null) => void) => {
+export const getServerSheet = (sheet: string, cb: (sheet: Sheet|null) => void) => {
   axios.get(`${Constant.API_BASE}/sheet/${sheet}`)
     .then(res => {
       const sheet = res.data?.data as Sheet || null;
@@ -91,7 +92,7 @@ export const getSheet = (sheet: string, cb: (sheet: Sheet|null) => void) => {
     });
 };
 
-export const getCell = (sheet: string, col: number, row: number, cb: (data: Cell|null) => void) => {
+export const getServerCell = (sheet: string, col: number, row: number, cb: (data: Cell|null) => void) => {
   axios.get(`${Constant.API_BASE}/sheet/cell/${sheet}/${col}/${row}`)
     .then(res => {
       const data = res.data?.data as Cell || null;
@@ -99,8 +100,17 @@ export const getCell = (sheet: string, col: number, row: number, cb: (data: Cell
     });
 };
 
-export const saveCellContent = (sheet: string, col: number, row: number, content: string, cb: (success: boolean) => void) => {
+export const saveServerCellContent = (sheet: string, col: number, row: number, content: string, cb: (success: boolean) => void) => {
   axios.post(`${Constant.API_BASE}/sheet/cell/${sheet}/${col}/${row}`, {content})
+    .then(res => {
+      const success = res.data?.success || false;
+      cb(success);
+    });
+};
+
+export const addServerCol = (sheet: string, byCol: number, size: number, width: number, cb: (success: boolean) => void) => {
+  const addColData = {byCol, size, width};
+  axios.post(`${Constant.API_BASE}/sheet/col/${sheet}`, addColData)
     .then(res => {
       const success = res.data?.success || false;
       cb(success);
@@ -109,34 +119,21 @@ export const saveCellContent = (sheet: string, col: number, row: number, content
 
 /* __________ addCols: __________ */
 
-export const addCols = (sheet: string, cols: Col[], e: SheetColsAdd) => {
-  console.log(`SheetApi: sheet: ${sheet}: addCols: ${JSON.stringify(e)}`);
-  if (!e.at || (e.at != 'before' && e.at != 'after')) return cols;
-  if (!e.size || e.size < 1) return cols;
-  return addColsByCol(sheet, cols, e.col || 0, e.at, e.size);
+export const addCols = (sheet: string, cols: Col[], afterCol: number, size: number, width: number) => {
+  if (afterCol < 0 || size < 1 || width < 0) return cols;
+  return addColsAfterCol(sheet, cols, afterCol, size, width);
 };
 
-export const addColsByCol = (sheet: string, cols: Col[], byCol: number, at: SheetAt, size: number) => {
-  if (at == 'before') return addColsBeforeCol(sheet, cols, byCol, size);
-  if (at == 'after') return addColsAfterCol(sheet, cols, byCol, size);
-  return cols;
-};
-
-export const addColsBeforeCol = (sheet: string, cols: Col[], byCol: number, size: number) => {
-  const newCols: Col[] = [...cols.slice(0, byCol), ...buildCols(sheet, size), ...cols.slice(byCol)];
+export const addColsAfterCol = (sheet: string, cols: Col[], afterCol: number, size: number, width: number) => {
+  const newCols: Col[] = [...cols.slice(0, afterCol), ...buildCols(sheet, size, width), ...cols.slice(afterCol)];
   arrangeCols(newCols);
   return newCols;
 };
 
-export const addColsAfterCol = (sheet: string, cols: Col[], byCol: number, size: number) => {
-  return addColsBeforeCol(sheet, cols, byCol + 1, size);
-};
-
 /* __________ addCols: helper: __________ */
 
-export const buildCols = (sheet: string, size: number) => {
+export const buildCols = (sheet: string, size: number, width: number) => {
   let col = -1, left = -1000;
-  const width = defaultWidth;
   return [...Array(size)].map((v, i) => { return {sheet, width, col, left} });
 };
 
@@ -205,15 +202,16 @@ const SheetApi = {
   defaultHeight,
   peakWidth,
   peakHeight,
-  // __________ api: __________
-  getSheet,
-  getCell,
-  saveCellContent,
+  // __________ server api: __________
+  getServerSheet,
+  getServerCell,
+  saveServerCellContent,
+  addServerCol,
   /* __________ addCols: __________ */
   addCols,
   /* __________ addRows: __________ */
   addRows,
-  // __________ delete: todo __________
+  /* __________ delete: todo __________ */
   makeCols: (sheet: Sheet) => {
     const cols: Col[] = [];
     for (var c = 1; c <= sheet.colsSize; c++) {

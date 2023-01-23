@@ -1,6 +1,6 @@
 import React, { forwardRef, useCallback } from "react";
 import { Button, Dropdown, Popconfirm } from "antd";
-import { ArrowLeftOutlined, ArrowRightOutlined, ArrowUpOutlined, ArrowDownOutlined, EllipsisOutlined, CloseOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, ArrowRightOutlined, ArrowUpOutlined, ArrowDownOutlined, EllipsisOutlined, DownOutlined } from '@ant-design/icons';
 import { SheetColsAdd, SheetRowsAdd } from './SheetApi';
 import LocalStore from "../common/LocalStore";
 import { useModel } from "umi";
@@ -59,7 +59,9 @@ const SheetPop = forwardRef((props: {col: number, row: number}, ref: any) => {
 
   return (
     <Dropdown className='sheet-pop' menu={{items: menuItems}}>
-      <Button size="small" type="text" onClick={(e: any) => e.stopPropagation()}><EllipsisOutlined /></Button>
+      <div className='sheet-pop-body'>
+        <Button className ='sheet-pop-btn' size='small' type='text'><DownOutlined /></Button>
+      </div>
     </Dropdown>
   );
 });

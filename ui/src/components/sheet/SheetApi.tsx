@@ -113,23 +113,7 @@ export const addCols = (sheet: string, cols: Col[], e: SheetColsAdd) => {
   console.log(`SheetApi: addCols: ${JSON.stringify(e)}`);
   if (!e.at || (e.at != 'before' && e.at != 'after')) return cols;
   if (!e.size || e.size < 1) return cols;
-  if (e.col == 0) return addColsByPeak(sheet, cols, e.at, e.size);
-  if (e.col && e.col > 0) return addColsByCol(sheet, cols, e.col, e.at, e.size);
-  return cols;
-};
-
-export const addColsByPeak = (sheet: string, cols: Col[], at: SheetAt, size: number) => {
-  if (at == 'before') return addColsBeforeAll(sheet, cols, size);
-  if (at == 'after') return addColsAfterAll(sheet, cols, size);
-  return cols;
-};
-
-export const addColsBeforeAll = (sheet: string, cols: Col[], size: number) => {
-  return addColsBeforeCol(sheet, cols, 0, size);
-};
-
-export const addColsAfterAll = (sheet: string, cols: Col[], size: number) => {
-  return addColsBeforeCol(sheet, cols, cols.length, size);
+  return addColsByCol(sheet, cols, e.col || 0, e.at, e.size);
 };
 
 export const addColsByCol = (sheet: string, cols: Col[], byCol: number, at: SheetAt, size: number) => {
@@ -147,6 +131,8 @@ export const addColsBeforeCol = (sheet: string, cols: Col[], byCol: number, size
 export const addColsAfterCol = (sheet: string, cols: Col[], byCol: number, size: number) => {
   return addColsBeforeCol(sheet, cols, byCol + 1, size);
 };
+
+/* __________ addCols: helper: __________ */
 
 export const buildCols = (sheet: string, size: number) => {
   let col = -1, left = -1000;

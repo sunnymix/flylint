@@ -43,7 +43,7 @@ const CellEditor = forwardRef((props: CellEditorProps, ref: any) => {
 
     if (!props.data || props.data.type != 'cell') return;
 
-    SheetApi.getCell(props.data.sheet, props.data.col, props.data.row, (data: CellData|null) => {
+    SheetApi.getServerCell(props.data.sheet, props.data.col, props.data.row, (data: CellData|null) => {
       if (!data) return;
       setData(data);
     });

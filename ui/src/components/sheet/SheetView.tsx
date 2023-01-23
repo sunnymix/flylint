@@ -12,15 +12,18 @@ import SheetApi, {
 
 /* __________ sheet __________ */
 
-const SheetView = () => {
+export const SheetView = () => {
   return (
     <div className='sheet'>
       <Peak />
       <Cols />
       <Rows />
+      <Cells />
     </div>
   );
 };
+
+export default SheetView;
 
 /* __________ peak __________ */
 
@@ -87,4 +90,19 @@ const Row = (props: {row: RowData}) => {
   );
 };
 
-export default SheetView;
+/* __________ cells __________ */
+
+const Cells = () => {
+  const {cells, cols, rows} = useModel('sheet', m => ({cells: m.cells, cols: m.cols, rows: m.rows}));
+  const cellsWidth = SheetApi.calcSheetWidth(cols, true);
+  const cellsHeight = SheetApi.calcSheetHeight(rows, true);
+  return (
+    <div className='sheet-cells' style={{left: peakWidth, top: peakHeight, width: cellsWidth, height: cellsHeight}}>cells</div>
+  );
+};
+
+const Cell = () => {
+  return (
+    <div>Cell</div>
+  );
+};

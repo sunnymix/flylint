@@ -45,7 +45,7 @@ const Cell = forwardRef((props: CellProps, ref: any) => {
 
   const onEditorChange = (isInit: boolean, isAstChange: boolean, content: string) => {
     if (isInit || !isAstChange) return;
-    SheetApi.saveCellContent(props.data.sheet, props.data.col, props.data.row, content, (success: boolean) => {
+    SheetApi.saveServerCellContent(props.data.sheet, props.data.col, props.data.row, content, (success: boolean) => {
       if (!success) console.log(`ERROR: cannot save cell content (sheet=${props.data.sheet},col=${props.data.col},row=${props.data.row})`);
     });
   };

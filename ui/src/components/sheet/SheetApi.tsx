@@ -130,12 +130,12 @@ export const addServerRow = (sheet: string, afterRow: number, size: number, heig
 
 /* __________ sheet: helper: __________ */
 
-export const calcSheetWidth = (cols: Col[]) => {
-  return peakWidth + cols.reduce((sum, item) => sum + item.width, 0);
+export const calcSheetWidth = (cols: Col[], excludePeak?: boolean) => {
+  return (excludePeak === true ? 0 : peakWidth) + cols.reduce((sum, item) => sum + item.width, 0);
 };
 
-export const calcSheetHeight = (rows: Row[]) => {
-  return peakHeight + rows.reduce((sum, item) => sum + item.height, 0);
+export const calcSheetHeight = (rows: Row[], excludePeak?: boolean) => {
+  return (excludePeak === true ? 0 : peakHeight) + rows.reduce((sum, item) => sum + item.height, 0);
 };
 
 /* __________ addCols: __________ */

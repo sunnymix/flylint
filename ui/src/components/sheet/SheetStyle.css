@@ -115,6 +115,12 @@
   background-color: red;
 }
 
+/* __________ cells __________ */
+
+.sheet-cells {
+  position: absolute;
+}
+
 /* __________ cell __________ */
 
 .sheet-cell {

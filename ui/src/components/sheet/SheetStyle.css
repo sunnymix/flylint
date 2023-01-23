@@ -44,6 +44,17 @@
   justify-content: center;
 }
 
+.sheet-peak::after {
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  content: ' ';
+  border-style: solid;
+  border-width: 6px;
+  border-color: #ccc transparent transparent #ccc;
+  border-radius: 2px;
+}
+
 /* __________ cols __________ */
 
 .sheet-cols {

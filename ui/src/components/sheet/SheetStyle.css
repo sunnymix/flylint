@@ -24,6 +24,14 @@
   justify-content: center;
 }
 
+/* __________ rows __________ */
+
+.sheet-rows {
+  position: absolute;
+  left: 0;
+  top: 30px;
+}
+
 /* __________ row __________ */
 
 .sheet-row-header {
@@ -34,19 +42,21 @@
   background-color: #f8f8f8;
 }
 
-.sheet-row {
+.sheet-row-line {
   position: absolute;
   border-top: 1px solid #ddd;
   background-color: red;
 }
 
-/* __________ col __________ */
+/* __________ cols __________ */
 
 .sheet-cols {
   position: absolute;
   top: 0;
   left: 50px;
 }
+
+/* __________ col __________ */
 
 .sheet-col-header {
   position: absolute;

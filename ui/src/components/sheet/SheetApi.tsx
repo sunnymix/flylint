@@ -107,7 +107,7 @@ export const saveCellContent = (sheet: string, col: number, row: number, content
     });
 };
 
-// __________ addCols: __________
+/* __________ addCols: __________ */
 
 export const addCols = (sheet: string, cols: Col[], e: SheetColsAdd) => {
   console.log(`SheetApi: addCols: ${JSON.stringify(e)}`);
@@ -166,6 +166,16 @@ export const arrangeCols = (cols: Col[]) => {
   }
 };
 
+/* __________ addRows: __________ */
+
+export const addRows = (sheet: string, rows: Row[], e: SheetRowsAdd) => {
+  console.log(`SheetApi: sheet: ${sheet} addRows: ${JSON.stringify(rows)}`);
+
+  return rows;
+};
+
+/* __________ export: __________ */
+
 const SheetApi = {
   // __________ property: __________
   defaultWidth,
@@ -176,8 +186,10 @@ const SheetApi = {
   getSheet,
   getCell,
   saveCellContent,
-  // __________ addCols: __________
+  /* __________ addCols: __________ */
   addCols,
+  /* __________ addRows: __________ */
+  addRows,
   // __________ delete: todo __________
   makeCols: (sheet: Sheet) => {
     const cols: Col[] = [];

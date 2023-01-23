@@ -11,7 +11,7 @@ import { SheetColsAdd } from "@/components/common/EventBus";
 
 const SheetModel = () => {
 
-  // __________ state __________
+  /* __________ state __________ */
   
   const [sheet, setSheet] = useState<string|null>(null);
   const [cols, setCols] = useState<ColData[]>([]);
@@ -19,21 +19,13 @@ const SheetModel = () => {
   const [cells, setCells] = useState<CellData[]>([]);
   const [cell, setCell] = useState<SelectedCell|null>(null);
 
-  // __________ api: sheet __________
+  /* __________ api: sheet: select __________ */
 
   const selectSheet = useCallback((sheet: string|null) => {
     setSheet(sheet);
   }, []);
 
-  // __________ api: cols: add __________
-
-  const addCols = (sheet: string, cols: ColData[],e: SheetColsAdd) => {
-    console.log(`SheetModel: addCols: cols: ${JSON.stringify(cols)}`);
-    const newCols = SheetApi.addCols(sheet, cols, e);
-    setCols(newCols);
-  };
-
-  // __________ effect: sheet __________
+  /* __________ effect: sheet: change __________ */
 
   useEffect(() => {
     if (!sheet) return;
@@ -46,13 +38,23 @@ const SheetModel = () => {
 
   }, [sheet]);
 
-  // __________ effect: cols __________
+  /* __________ api: cols: add __________ */
 
-  useEffect(() => {
-    console.log(`SheetModel: effect: cols*: ${JSON.stringify(cols)}`);
-  }, [cols]);
+  const addCols = (sheet: string, cols: ColData[],e: SheetColsAdd) => {
+    console.log(`SheetModel: addCols: cols: ${JSON.stringify(cols)}`);
+    const newCols = SheetApi.addCols(sheet, cols, e);
+    setCols(newCols);
+  };
 
-  // __________ export __________
+  /* __________ api: rows: add __________ */
+
+  const addRows = (sheet: string, rows: RowData[],e: SheetColsAdd) => {
+    console.log(`SheetModel: addRows: rows: ${JSON.stringify(rows)}`);
+    const newRows: RowData[] = SheetApi.addRows(sheet, rows, e);
+    setRows(newRows);
+  };
+
+  /* __________ export __________ */
 
   return {
     sheet,
@@ -60,6 +62,7 @@ const SheetModel = () => {
     cols,
     addCols,
     rows,
+    addRows,
     cells,
     cell,
   };

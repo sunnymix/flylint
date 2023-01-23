@@ -5,7 +5,7 @@ import Constant from "@/components/common/Constant";
 
 export const defaultWidth = 200;
 export const defaultHeight = 30;
-export const peakWidth = 60;
+export const peakWidth = 50;
 export const peakHeight = defaultHeight;
 
 // __________ interface: __________

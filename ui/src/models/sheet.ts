@@ -64,8 +64,12 @@ const SheetModel = () => {
     afterRow = (afterRow > 0 && e.at == 'before') ? (afterRow - 1) : afterRow;
     const size = e.size || 0;
     const height = defaultHeight;
-    const newRows: RowData[] = SheetApi.addRows(sheet, rows, afterRow, size, height);
-    setRows(newRows);
+
+    SheetApi.addServerRow(sheet, afterRow, size, height, (success: boolean) => {
+      if (!success) return alert('ERROR');
+      const newRows: RowData[] = SheetApi.addRows(sheet, rows, afterRow, size, height);
+      setRows(newRows);
+    });
   };
 
   /* __________ export __________ */

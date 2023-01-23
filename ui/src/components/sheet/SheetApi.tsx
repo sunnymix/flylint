@@ -89,6 +89,7 @@ export const getServerSheet = (sheet: string, cb: (sheet: Sheet|null) => void) =
     .then(res => {
       const sheet = res.data?.data as Sheet || null;
       arrangeCols(sheet.cols, true);
+      arrangeRows(sheet.rows, true);
       cb(sheet);
     });
 };
@@ -112,6 +113,15 @@ export const saveServerCellContent = (sheet: string, col: number, row: number, c
 export const addServerCol = (sheet: string, afterCol: number, size: number, width: number, cb: (success: boolean) => void) => {
   const addColData = {afterCol, size, width};
   axios.post(`${Constant.API_BASE}/sheet/col/${sheet}`, addColData)
+    .then(res => {
+      const success = res.data?.success || false;
+      cb(success);
+    });
+};
+
+export const addServerRow = (sheet: string, afterRow: number, size: number, height: number, cb: (success: boolean) => void) => {
+  const addRowData = {afterRow, size, height};
+  axios.post(`${Constant.API_BASE}/sheet/row/${sheet}`, addRowData)
     .then(res => {
       const success = res.data?.success || false;
       cb(success);
@@ -175,7 +185,8 @@ export const buildRows = (sheet: string, size: number, height: number) => {
   return [...Array(size)].map((v, i) => { return {sheet, height, row, top} });
 };
 
-export const arrangeRows = (rows: Row[]) => {
+export const arrangeRows = (oldRows: Row[], sortByRow?: boolean) => {
+  const rows: Row[] = sortByRow === true ? sortRows(oldRows) : oldRows;
   let row = 1;
   let top = 0;
   for (var i = 1; i <= rows.length; i++) {
@@ -187,19 +198,24 @@ export const arrangeRows = (rows: Row[]) => {
   }
 };
 
+export const sortRows = (rows: Row[]) => {
+  return rows.sort((a, b) => a.row - b.row);
+};
+
 /* __________ export: __________ */
 
 const SheetApi = {
-  // __________ property: __________
+  /* __________ property: __________ */
   defaultWidth,
   defaultHeight,
   peakWidth,
   peakHeight,
-  // __________ server api: __________
+  /* __________ server api: __________ */
   getServerSheet,
   getServerCell,
   saveServerCellContent,
   addServerCol,
+  addServerRow,
   /* __________ addCols: __________ */
   addCols,
   /* __________ addRows: __________ */

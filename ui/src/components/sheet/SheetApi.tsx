@@ -110,7 +110,7 @@ export const saveCellContent = (sheet: string, col: number, row: number, content
 /* __________ addCols: __________ */
 
 export const addCols = (sheet: string, cols: Col[], e: SheetColsAdd) => {
-  console.log(`SheetApi: addCols: ${JSON.stringify(e)}`);
+  console.log(`SheetApi: sheet: ${sheet}: addCols: ${JSON.stringify(e)}`);
   if (!e.at || (e.at != 'before' && e.at != 'after')) return cols;
   if (!e.size || e.size < 1) return cols;
   return addColsByCol(sheet, cols, e.col || 0, e.at, e.size);
@@ -155,9 +155,46 @@ export const arrangeCols = (cols: Col[]) => {
 /* __________ addRows: __________ */
 
 export const addRows = (sheet: string, rows: Row[], e: SheetRowsAdd) => {
-  console.log(`SheetApi: sheet: ${sheet} addRows: ${JSON.stringify(rows)}`);
+  console.log(`SheetApi: sheet: ${sheet}: addRows: ${JSON.stringify(rows)}`);
+  if (!e.at || (e.at != 'before' && e.at != 'after')) return rows;
+  if (!e.size || e.size < 1) return rows;
+  return addRowsByRow(sheet, rows, e.row || 0, e.at, e.size);
+};
 
+export const addRowsByRow = (sheet: string, rows: Row[], byRow: number, at: SheetAt, size: number) => {
+  if (at == 'before') return addRowsBeforeRow(sheet, rows, byRow, size);
+  if (at == 'after') return addRowsAfterRow(sheet, rows, byRow, size);
   return rows;
+};
+
+export const addRowsBeforeRow = (sheet: string, rows: Row[], byRow: number, size: number) => {
+  const newRows: Row[] = [...rows.slice(0, byRow), ...buildRows(sheet, size), ...rows.slice(byRow)];
+  arrangeRows(newRows);
+  return newRows;
+};
+
+export const addRowsAfterRow = (sheet: string, rows: Row[], byRow: number, size: number) => {
+  return addRowsBeforeRow(sheet, rows, byRow + 1, size);
+};
+
+/* __________ addRows: helper: __________ */
+
+export const buildRows = (sheet: string, size: number) => {
+  let row = -1, top = -1000;
+  const height = defaultHeight;
+  return [...Array(size)].map((v, i) => { return {sheet, height, row, top} });
+};
+
+export const arrangeRows = (rows: Row[]) => {
+  let row = 1;
+  let top = 0;
+  for (var i = 1; i <= rows.length; i++) {
+    const item = rows[i - 1];
+    item.row = row;
+    item.top = top;
+    row++;
+    top += item.height;
+  }
 };
 
 /* __________ export: __________ */

@@ -57,7 +57,7 @@ const Col = (props: {col: ColData}) => {
 /* __________ rows __________ */
 
 const Rows = () => {
-  const {rows, cols} = useModel('sheet', m => ({rows: m.rows, cols: m.rows}));
+  const {rows, cols} = useModel('sheet', m => ({rows: m.rows, cols: m.cols}));
   const sheetWidth = 50 + cols.length * 200; // FIXME: calculate with each col's true width
   return (
     <div className='sheet-rows' style={{width: sheetWidth}}>

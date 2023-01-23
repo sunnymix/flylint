@@ -24,30 +24,6 @@
   justify-content: center;
 }
 
-/* __________ rows __________ */
-
-.sheet-rows {
-  position: absolute;
-  left: 0;
-  top: 30px;
-}
-
-/* __________ row __________ */
-
-.sheet-row-header {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #f8f8f8;
-}
-
-.sheet-row-line {
-  position: absolute;
-  border-top: 1px solid #ddd;
-  background-color: red;
-}
-
 /* __________ cols __________ */
 
 .sheet-cols {
@@ -79,6 +55,34 @@
 
 .sheet-col-line:first-child {
   border-left-color: transparent;
+}
+
+/* __________ rows __________ */
+
+.sheet-rows {
+  position: absolute;
+  left: 0;
+  top: 30px;
+}
+
+/* __________ row __________ */
+
+.sheet-row-header {
+  position: absolute;
+  left: 0;
+  width: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f8f8;
+}
+
+.sheet-row-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-top: 1px solid #ddd;
+  background-color: red;
 }
 
 /* __________ cell __________ */

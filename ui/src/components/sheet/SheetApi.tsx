@@ -4,9 +4,9 @@ import Constant from "@/components/common/Constant";
 // __________ property: __________
 
 export const defaultWidth = 250;
-export const defaultHeight = 30;
+export const defaultHeight = 60;
 export const peakWidth = 50;
-export const peakHeight = defaultHeight;
+export const peakHeight = 30;
 
 // __________ interface: __________
 
@@ -128,6 +128,16 @@ export const addServerRow = (sheet: string, afterRow: number, size: number, heig
     });
 };
 
+/* __________ sheet: helper: __________ */
+
+export const calcSheetWidth = (cols: Col[]) => {
+  return peakWidth + cols.reduce((sum, item) => sum + item.width, 0);
+};
+
+export const calcSheetHeight = (rows: Row[]) => {
+  return peakHeight + rows.reduce((sum, item) => sum + item.height, 0);
+};
+
 /* __________ addCols: __________ */
 
 export const addCols = (sheet: string, cols: Col[], afterCol: number, size: number, width: number) => {
@@ -216,6 +226,9 @@ const SheetApi = {
   saveServerCellContent,
   addServerCol,
   addServerRow,
+  /* __________ sheet: helper __________ */
+  calcSheetWidth,
+  calcSheetHeight,
   /* __________ addCols: __________ */
   addCols,
   /* __________ addRows: __________ */

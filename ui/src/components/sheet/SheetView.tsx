@@ -37,7 +37,7 @@ const Peak = () => {
 
 const Cols = () => {
   const {cols, rows} = useModel('sheet', m => ({cols: m.cols, rows: m.rows}));
-  const sheetHeight = peakHeight + rows.length * defaultHeight; // FIXME: calculte with each row's true height
+  const sheetHeight = SheetApi.calcSheetHeight(rows);
   return (
     <div className='sheet-cols' style={{left: peakWidth, height: sheetHeight}}>
       {cols.map((col: ColData) => <Col key={`${col.col}`} col={col} />)}
@@ -64,7 +64,7 @@ const Col = (props: {col: ColData}) => {
 
 const Rows = () => {
   const {rows, cols} = useModel('sheet', m => ({rows: m.rows, cols: m.cols}));
-  const sheetWidth = peakWidth + cols.length * defaultWidth; // FIXME: calculate with each col's true width
+  const sheetWidth = SheetApi.calcSheetWidth(cols);
   return (
     <div className='sheet-rows' style={{top: peakHeight, width: sheetWidth}}>
       {rows.map((row: RowData) => <Row key={`${row.row}`} row={row} />)}

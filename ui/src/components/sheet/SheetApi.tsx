@@ -3,7 +3,7 @@ import Constant from "@/components/common/Constant";
 
 // __________ property: __________
 
-export const defaultWidth = 200;
+export const defaultWidth = 250;
 export const defaultHeight = 30;
 export const peakWidth = 50;
 export const peakHeight = defaultHeight;
@@ -88,6 +88,7 @@ export const getServerSheet = (sheet: string, cb: (sheet: Sheet|null) => void) =
   axios.get(`${Constant.API_BASE}/sheet/${sheet}`)
     .then(res => {
       const sheet = res.data?.data as Sheet || null;
+      arrangeCols(sheet.cols, true);
       cb(sheet);
     });
 };
@@ -108,8 +109,8 @@ export const saveServerCellContent = (sheet: string, col: number, row: number, c
     });
 };
 
-export const addServerCol = (sheet: string, byCol: number, size: number, width: number, cb: (success: boolean) => void) => {
-  const addColData = {byCol, size, width};
+export const addServerCol = (sheet: string, afterCol: number, size: number, width: number, cb: (success: boolean) => void) => {
+  const addColData = {afterCol, size, width};
   axios.post(`${Constant.API_BASE}/sheet/col/${sheet}`, addColData)
     .then(res => {
       const success = res.data?.success || false;
@@ -137,7 +138,8 @@ export const buildCols = (sheet: string, size: number, width: number) => {
   return [...Array(size)].map((v, i) => { return {sheet, width, col, left} });
 };
 
-export const arrangeCols = (cols: Col[]) => {
+export const arrangeCols = (oldCols: Col[], sortByCol?: boolean) => {
+  const cols: Col[] = sortByCol === true ? sortCols(oldCols) : oldCols;
   let col = 1;
   let left = 0;
   for (var i = 1; i <= cols.length; i++) {
@@ -147,6 +149,10 @@ export const arrangeCols = (cols: Col[]) => {
     col++;
     left += item.width;
   }
+};
+
+export const sortCols = (cols: Col[]) => {
+  return cols.sort((a, b) => a.col - b.col);
 };
 
 /* __________ addRows: __________ */

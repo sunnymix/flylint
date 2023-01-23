@@ -48,14 +48,12 @@ const SheetModel = () => {
     afterCol = (afterCol > 0 && e.at == 'before') ? (afterCol - 1) : afterCol;
     const size = e.size || 0;
     const width = defaultWidth;
-    const newCols = SheetApi.addCols(sheet, cols, afterCol, size, width);
-    setCols(newCols);
-
-    // SheetApi.addServerCol(sheet, byCol, size, width, (success: boolean) => {
-    //   if (!success) return alert('ERROR');
-    //   const newCols = SheetApi.addCols(sheet, cols, e);
-    //   setCols(newCols);
-    // });
+    
+    SheetApi.addServerCol(sheet, afterCol, size, width, (success: boolean) => {
+      if (!success) return alert('ERROR');
+      const newCols = SheetApi.addCols(sheet, cols, afterCol, size, width);
+      setCols(newCols);
+    });
   };
 
   /* __________ api: rows: add __________ */

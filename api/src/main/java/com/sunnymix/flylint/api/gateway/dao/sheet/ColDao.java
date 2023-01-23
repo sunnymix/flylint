@@ -38,12 +38,12 @@ public class ColDao {
 
     @Transactional
     public void add(String sheet, AddCol add) {
-        moveBackward(sheet, add.getByCol(), add.getSize());
-        createBatch(sheet, add.getByCol(), add.getSize(), add.getWidth());
+        moveBackward(sheet, add.getAfterCol(), add.getSize());
+        createBatch(sheet, add.getAfterCol(), add.getSize(), add.getWidth());
     }
 
-    public void moveBackward(String sheet, Integer byCol, Integer size) {
-        var startCol = byCol + 1;
+    public void moveBackward(String sheet, Integer afterCol, Integer size) {
+        var startCol = afterCol + 1;
         dsl
             .update(COL)
             .set(COL.COL_, COL.COL_.add(size))
@@ -51,8 +51,8 @@ public class ColDao {
             .execute();
     }
 
-    public void createBatch(String sheet, Integer byCol, Integer size, Integer width) {
-        var startCol = byCol + 1;
+    public void createBatch(String sheet, Integer afterCol, Integer size, Integer width) {
+        var startCol = afterCol + 1;
         var records = _buildRecordBatch(sheet, startCol, size, width);
         dsl.batchInsert(records).execute();
     }

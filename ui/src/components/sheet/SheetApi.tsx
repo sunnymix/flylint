@@ -151,34 +151,21 @@ export const arrangeCols = (cols: Col[]) => {
 
 /* __________ addRows: __________ */
 
-export const addRows = (sheet: string, rows: Row[], e: SheetRowsAdd) => {
-  console.log(`SheetApi: sheet: ${sheet}: addRows: ${JSON.stringify(rows)}`);
-  if (!e.at || (e.at != 'before' && e.at != 'after')) return rows;
-  if (!e.size || e.size < 1) return rows;
-  return addRowsByRow(sheet, rows, e.row || 0, e.at, e.size);
+export const addRows = (sheet: string, rows: Row[], afterRow: number, size: number, height: number) => {
+  if (afterRow < 0 || size < 1 || height < 0) return rows;
+  return addRowsAfterRow(sheet, rows, afterRow, size, height);
 };
 
-export const addRowsByRow = (sheet: string, rows: Row[], byRow: number, at: SheetAt, size: number) => {
-  if (at == 'before') return addRowsBeforeRow(sheet, rows, byRow, size);
-  if (at == 'after') return addRowsAfterRow(sheet, rows, byRow, size);
-  return rows;
-};
-
-export const addRowsBeforeRow = (sheet: string, rows: Row[], byRow: number, size: number) => {
-  const newRows: Row[] = [...rows.slice(0, byRow), ...buildRows(sheet, size), ...rows.slice(byRow)];
+export const addRowsAfterRow = (sheet: string, rows: Row[], afterRow: number, size: number, height: number) => {
+  const newRows: Row[] = [...rows.slice(0, afterRow), ...buildRows(sheet, size, height), ...rows.slice(afterRow)];
   arrangeRows(newRows);
   return newRows;
 };
 
-export const addRowsAfterRow = (sheet: string, rows: Row[], byRow: number, size: number) => {
-  return addRowsBeforeRow(sheet, rows, byRow + 1, size);
-};
-
 /* __________ addRows: helper: __________ */
 
-export const buildRows = (sheet: string, size: number) => {
+export const buildRows = (sheet: string, size: number, height: number) => {
   let row = -1, top = -1000;
-  const height = defaultHeight;
   return [...Array(size)].map((v, i) => { return {sheet, height, row, top} });
 };
 

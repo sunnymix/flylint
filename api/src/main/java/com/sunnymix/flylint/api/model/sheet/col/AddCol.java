@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AddCol {
 
-    private Integer byCol;
+    private Integer afterCol;
 
     private Integer size;
 

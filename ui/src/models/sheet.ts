@@ -7,8 +7,9 @@ import SheetApi, {
   Cell as CellData,
   SelectedCell,
   defaultWidth,
+  defaultHeight,
 } from "@/components/sheet/SheetApi";
-import { SheetColsAdd } from "@/components/common/EventBus";
+import { SheetColsAdd, SheetRowsAdd } from "@/components/common/EventBus";
 
 const SheetModel = () => {
 
@@ -59,9 +60,13 @@ const SheetModel = () => {
 
   /* __________ api: rows: add __________ */
 
-  const addRows = (sheet: string, rows: RowData[],e: SheetColsAdd) => {
+  const addRows = (sheet: string, rows: RowData[], e: SheetRowsAdd) => {
     console.log(`SheetModel: addRows: rows: ${JSON.stringify(rows)}`);
-    const newRows: RowData[] = SheetApi.addRows(sheet, rows, e);
+    let afterRow = e.row || 0;
+    afterRow = (afterRow > 0 && e.at == 'before') ? (afterRow - 1) : afterRow;
+    const size = e.size || 0;
+    const height = defaultHeight;
+    const newRows: RowData[] = SheetApi.addRows(sheet, rows, afterRow, size, height);
     setRows(newRows);
   };
 

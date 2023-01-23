@@ -21,12 +21,8 @@
 }
 
 .sheet-pop-btn {
-  padding: 0 2px;
+  padding: 0;
   color: #666;
-}
-
-.sheet-pop-btn .anticon {
-  transform: scale(0.6);
 }
 
 /* __________ peak __________ */

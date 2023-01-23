@@ -31,6 +31,7 @@ public class ColDao {
         var cols = dsl
             .selectFrom(COL)
             .where(COL.SHEET.eq(sheet))
+            .orderBy(COL.COL_)
             .fetchStreamInto(Col.class)
             .toList();
         return cols;

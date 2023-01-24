@@ -5,9 +5,10 @@ import SheetApi, {
   Col as ColData,
   Row as RowData,
   Cell as CellData,
-  SelectedCell,
   defaultWidth,
   defaultHeight,
+  CursorData,
+  CellLoc,
 } from "@/components/sheet/SheetApi";
 import { SheetColsAdd, SheetRowsAdd } from "@/components/common/EventBus";
 
@@ -19,7 +20,8 @@ const SheetModel = () => {
   const [cols, setCols] = useState<ColData[]>([]);
   const [rows, setRows] = useState<RowData[]>([]);
   const [cells, setCells] = useState<CellData[]>([]);
-  const [cell, setCell] = useState<SelectedCell|null>(null);
+  const [curCell, setCurCell] = useState<CellLoc|null>(null);
+  const [cursor, setCursor] = useState<CursorData>({left: 0, top: 0});
 
   /* __________ api: sheet: select __________ */
 
@@ -30,6 +32,7 @@ const SheetModel = () => {
   /* __________ effect: sheet: change __________ */
 
   useEffect(() => {
+    setCursor({left: 0, top: 0});
     if (!sheet) return;
     SheetApi.getServerSheet(sheet, (newSheet: SheetData|null) => {
       if (!newSheet) return;
@@ -37,7 +40,6 @@ const SheetModel = () => {
       setRows(newSheet.rows);
       setCells(newSheet.cells);
     });
-
   }, [sheet]);
 
   /* __________ api: cols: add __________ */
@@ -72,6 +74,26 @@ const SheetModel = () => {
     });
   };
 
+  /* __________ api: cursor & curCell: update __________ */
+
+  const updateCursorAndCurCell = (cursor: CursorData, cols: ColData[], rows: RowData[]) => {
+    setCursor(cursor);
+    const cellLoc = SheetApi.getCellLocByCursor(cursor, cols, rows);
+    setCurCell(cellLoc);
+  };
+
+  /* __________ effect: cursor: change __________ */
+
+  useEffect(() => {
+    console.log(`SheetModel: cursor change: cursor: ${JSON.stringify(cursor)}`);
+  }, [cursor]);
+
+  /* __________ effect: curCell: change __________ */
+
+  useEffect(() => {
+    console.log(`SheetModel: curCell change: curCell: ${JSON.stringify(curCell)}`);
+  }, [curCell]);
+
   /* __________ export __________ */
 
   return {
@@ -82,7 +104,9 @@ const SheetModel = () => {
     rows,
     addRows,
     cells,
-    cell,
+    curCell,
+    cursor,
+    updateCursorAndCurCell,
   };
 };
 

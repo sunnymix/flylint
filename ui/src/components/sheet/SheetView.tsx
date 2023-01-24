@@ -1,4 +1,4 @@
-import { forwardRef } from "react";
+import React, { forwardRef, useCallback } from "react";
 import { useModel } from "umi";
 import './SheetStyle.css';
 import SheetPop from "./SheetPop";
@@ -9,7 +9,9 @@ import SheetApi, {
   peakHeight,
   Col as ColData,
   Row as RowData,
-  Cell as CellData } from "./SheetApi";
+  Cell as CellData,
+  CursorData,
+} from "./SheetApi";
 
 /* __________ sheet __________ */
 
@@ -94,11 +96,17 @@ const Row = (props: {row: RowData}) => {
 /* __________ cells __________ */
 
 const Cells = () => {
-  const {cells, cols, rows} = useModel('sheet', m => ({cells: m.cells, cols: m.cols, rows: m.rows}));
+  const {cells, cols, rows, updateCursorAndCurCell } = useModel('sheet', m => ({cells: m.cells, cols: m.cols, rows: m.rows, updateCursorAndCurCell: m.updateCursorAndCurCell}));
   const cellsWidth = SheetApi.calcSheetWidth(cols, true);
   const cellsHeight = SheetApi.calcSheetHeight(rows, true);
+  const onClick = useCallback((e: React.MouseEvent) => {
+    const left = e.clientX, top = e.clientY;
+    if (left || top) return;
+    const cursor = {left, top} as CursorData;
+    updateCursorAndCurCell(cursor, cols, rows);
+  }, [cols, rows]);
   return (
-    <div className='sheet-cells' style={{left: peakWidth, top: peakHeight, width: cellsWidth, height: cellsHeight}}>
+    <div className='sheet-cells' onClick={onClick} style={{left: peakWidth, top: peakHeight, width: cellsWidth, height: cellsHeight}}>
       {cells.map((cell: CellData) => <Cell key={`${cell.col}-${cell.row}`} cell={cell} />)}
     </div>
   );

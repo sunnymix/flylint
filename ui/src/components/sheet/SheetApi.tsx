@@ -50,8 +50,16 @@ export interface Cell {
   content?: string,
 };
 
-export interface SelectedCell {
-  sheet: string,
+/* __________ interface: cursor __________ */
+
+export interface CursorData {
+  left: number,
+  top: number,
+}
+
+/* __________ interface: cell loc __________ */
+
+export interface CellLoc {
   col: number,
   row: number,
 };
@@ -228,6 +236,35 @@ export const sortRows = (rows: Row[]) => {
   return rows.sort((a, b) => a.row - b.row);
 };
 
+/* __________ calc: cursor: cur cell __________ */
+
+export const getCellLocByCursor = (cursor: CursorData, cols: Col[], rows: Row[]) => {
+  if (cursor.left < 0 || cursor.top < 0) return null;
+  if (!cols || !cols.length || !rows || !rows.length) return null;
+  const col = getColByLeft(cursor.left, cols);
+  if (!col) return null;
+  const row = getRowByTop(cursor.top, rows);
+  if (!row) return null;
+  return {col, row} as CellLoc;
+};
+
+export const getColByLeft = (left: number, cols: Col[]) => {
+  if (!cols || !cols.length) return null;
+  if (left < 0) return null;
+  const colInfo = cols.find((item: Col) => left >= item.left && left <= (item.left + item.width));
+  if (!colInfo) return null;
+  console.log(colInfo, left);
+  return colInfo.col;
+};
+
+export const getRowByTop = (top: number, rows: Row[]) => {
+  if (!rows || !rows.length) return null;
+  if (top < 0) return null;
+  const rowInfo = rows.find((item: Row) => top >= item.top && top <= (item.top + item.height));
+  if (!rowInfo) return null;
+  return rowInfo.row;
+};
+
 /* __________ export: __________ */
 
 const SheetApi = {
@@ -251,6 +288,8 @@ const SheetApi = {
   addCols,
   /* __________ addRows: __________ */
   addRows,
+  /* __________ CellLoc: __________ */
+  getCellLocByCursor,
   /* __________ delete: todo __________ */
   makeCols: (sheet: Sheet) => {
     const cols: Col[] = [];

@@ -26,14 +26,19 @@ export const Catalog = (props: CatalogProps) => {
 
   console.log(`Catalog: render: name(${props.name}): refresh(${props.refresh})`);
 
-  // __________ model __________
-
-  const {selectSheet} = useModel('sheet', m => ({selectSheet: m.selectSheet}));
-
   // __________ state __________
 
+  const [catalogWidth, setCatalogWidth] = useState<number>(400);
   const [refreshCatalog, setRefreshCatalog] = useState<string>(props.refresh || 'init');
   const [wiki, setWiki] = useState<BasicWiki|null>(null);
+
+  // __________ model __________
+
+  const {selectSheet, setLeftGap} = useModel('sheet', m => ({selectSheet: m.selectSheet, setLeftGap: m.setleftGap}));
+
+  useEffect(() => {
+    setLeftGap(catalogWidth);
+  }, [catalogWidth]);
 
   // __________ effect: refresh -> CatalogTree __________
 
@@ -115,8 +120,8 @@ export const Catalog = (props: CatalogProps) => {
 
   return (
     <div>
-      <CatalogTree className="catalog-side" width={400} onSelect={onSelect} refreshSignal={refreshCatalog} />
-      <div className="catalog-wiki" style={{marginLeft: 400}}>
+      <CatalogTree className="catalog-side" width={catalogWidth} onSelect={onSelect} refreshSignal={refreshCatalog} />
+      <div className="catalog-wiki" style={{marginLeft: catalogWidth}}>
         {wiki && (
           wiki.type == 'wiki' ? <WikiPage data={wiki} /> :
           (wiki.type == 'sheet' ? <SheetPage data={wiki} /> :

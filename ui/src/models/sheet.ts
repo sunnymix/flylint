@@ -16,6 +16,8 @@ const SheetModel = () => {
 
   /* __________ state __________ */
   
+  const [leftGap, setleftGap] = useState<number>(0);
+  const [topGap, setTopGap] = useState<number>(0);
   const [sheet, setSheet] = useState<string|null>(null);
   const [cols, setCols] = useState<ColData[]>([]);
   const [rows, setRows] = useState<RowData[]>([]);
@@ -77,6 +79,7 @@ const SheetModel = () => {
   /* __________ api: cursor & curCell: update __________ */
 
   const updateCursorAndCurCell = (cursor: CursorData, cols: ColData[], rows: RowData[]) => {
+    console.log(`SheetModel: updateCursorAndCurCell: cursor: ${JSON.stringify(cursor)}`);
     setCursor(cursor);
     const cellLoc = SheetApi.getCellLocByCursor(cursor, cols, rows);
     setCurCell(cellLoc);
@@ -97,16 +100,12 @@ const SheetModel = () => {
   /* __________ export __________ */
 
   return {
-    sheet,
-    selectSheet,
-    cols,
-    addCols,
-    rows,
-    addRows,
-    cells,
-    curCell,
-    cursor,
-    updateCursorAndCurCell,
+    leftGap, setleftGap, topGap, setTopGap,
+    sheet, selectSheet,
+    cols, addCols,
+    rows, addRows,
+    cells, 
+    cursor, curCell, updateCursorAndCurCell,
   };
 };
 

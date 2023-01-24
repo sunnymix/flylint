@@ -79,7 +79,6 @@ const SheetModel = () => {
   /* __________ api: cursor & curCell: update __________ */
 
   const updateCursorAndCurCell = (cursor: CursorData, cols: ColData[], rows: RowData[]) => {
-    console.log(`SheetModel: updateCursorAndCurCell: cursor: ${JSON.stringify(cursor)}`);
     setCursor(cursor);
     const cellLoc = SheetApi.getCellLocByCursor(cursor, cols, rows);
     setCurCell(cellLoc);

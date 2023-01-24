@@ -7,6 +7,7 @@ import Layout from "../common/Layout";
 import Sheet from "../sheet/Sheet";
 import SheetView from "./SheetView";
 import { LoadingOutlined } from '@ant-design/icons';
+import { useModel } from "umi";
 
 export interface SheetPageProps {
   data: BasicWiki,
@@ -19,6 +20,10 @@ const SheetPage = forwardRef((props: SheetPageProps, ref: any) => {
   const [title, setTitle] = useState<string>(props.data.title);
 
   console.log(`SheetPage: render: data(${props.data.id},${props.data.name},${props.data.title})`);
+
+  // __________ model __________
+
+  const {setTopGap} = useModel('sheet', m => ({setTopGap: m.setTopGap}));
 
   // __________ ref __________
 
@@ -36,6 +41,7 @@ const SheetPage = forwardRef((props: SheetPageProps, ref: any) => {
       const bodyHeight = winHeight - topHeight;
 
       Layout.setRefHeight(bodyRef, bodyHeight);
+      setTopGap(topHeight);
     }, 10);
   };
 

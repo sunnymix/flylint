@@ -101,12 +101,12 @@ const Cells = () => {
   const cellsWidth = SheetApi.calcSheetWidth(cols, true);
   const cellsHeight = SheetApi.calcSheetHeight(rows, true);
   const onClick = useCallback((e: React.MouseEvent) => {
-    const left = e.clientX - leftGap, top = e.clientY - topGap;
+    const left = e.clientX - leftGap - peakWidth;
+    const top = e.clientY - topGap - peakHeight;
     if (!left || !top) return;
     const cursor = {left, top} as CursorData;
-    console.log(leftGap, topGap, left, top);
     updateCursorAndCurCell(cursor, cols, rows);
-  }, [cols, rows, leftGap]);
+  }, [cols, rows, leftGap, topGap]);
   return (
     <div className='sheet-cells' onClick={onClick} style={{left: peakWidth, top: peakHeight, width: cellsWidth, height: cellsHeight}}>
       {cells.map((cell: CellData) => <Cell key={`${cell.col}-${cell.row}`} cell={cell} />)}

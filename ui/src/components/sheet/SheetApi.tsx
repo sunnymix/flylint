@@ -253,7 +253,6 @@ export const getColByLeft = (left: number, cols: Col[]) => {
   if (left < 0) return null;
   const colInfo = cols.find((item: Col) => left >= item.left && left <= (item.left + item.width));
   if (!colInfo) return null;
-  console.log(colInfo, left);
   return colInfo.col;
 };
 

@@ -8,7 +8,8 @@ import SheetApi, {
   peakWidth,
   peakHeight,
   Col as ColData,
-  Row as RowData, } from "./SheetApi";
+  Row as RowData,
+  Cell as CellData } from "./SheetApi";
 
 /* __________ sheet __________ */
 
@@ -97,12 +98,17 @@ const Cells = () => {
   const cellsWidth = SheetApi.calcSheetWidth(cols, true);
   const cellsHeight = SheetApi.calcSheetHeight(rows, true);
   return (
-    <div className='sheet-cells' style={{left: peakWidth, top: peakHeight, width: cellsWidth, height: cellsHeight}}>cells</div>
+    <div className='sheet-cells' style={{left: peakWidth, top: peakHeight, width: cellsWidth, height: cellsHeight}}>
+      {cells.map((cell: CellData) => <Cell key={`${cell.col}-${cell.row}`} cell={cell} />)}
+    </div>
   );
 };
 
-const Cell = () => {
+const Cell = (props: {cell: CellData}) => {
+  const {cell} = props;
+  const {cols, rows} = useModel('sheet', m => ({cols: m.cols, rows: m.rows}));
+  const {left, top, width, height} = SheetApi.calcCellRect(cell.col, cell.row, cols, rows);
   return (
-    <div>Cell</div>
+    <div className='sheet-cell' style={{left, top, width, height}}>Cell</div>
   );
 };

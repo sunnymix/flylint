@@ -28,6 +28,7 @@
 /* __________ peak __________ */
 
 .sheet-peak {
+  z-index: 100;
   position: absolute;
   top: 0;
   left: 0;
@@ -53,6 +54,7 @@
 /* __________ cols __________ */
 
 .sheet-cols {
+  z-index: 100;
   position: absolute;
   top: 0;
   /* left: props; */
@@ -88,6 +90,7 @@
 /* __________ rows __________ */
 
 .sheet-rows {
+  z-index: 100;
   position: absolute;
   left: 0;
   /* top: props; */
@@ -118,6 +121,7 @@
 /* __________ cells __________ */
 
 .sheet-cells {
+  z-index: 200;
   position: absolute;
 }
 
@@ -127,7 +131,17 @@
   position: absolute;
   display: flex;
   align-items: center;
+}
+
+.sheet-cell::after {
+  content: ' ';
+  position: absolute;
+  left: 0;
+  right: -1px;
+  top: 0;
+  bottom: -1px;
   background: #fff;
+  border: 1px solid #ddd;
 }
 
 .sheet-cell-editor {
@@ -136,11 +150,10 @@
   top: 0;
   right: 0;
   border: 1px solid transparent;
-  padding: 1px;
 }
 
 .sheet-cell.active {
-  z-index: 100;
+  z-index: 300;
 }
 
 .sheet-cell.active .sheet-cell-editor {

@@ -4,7 +4,7 @@ import Constant from "@/components/common/Constant";
 // __________ property: __________
 
 export const defaultWidth = 250;
-export const defaultHeight = 60;
+export const defaultHeight = 30;
 export const peakWidth = 50;
 export const peakHeight = 30;
 
@@ -138,6 +138,22 @@ export const calcSheetHeight = (rows: Row[], excludePeak?: boolean) => {
   return (excludePeak === true ? 0 : peakHeight) + rows.reduce((sum, item) => sum + item.height, 0);
 };
 
+/* __________ cell: helper: __________ */
+
+export const calcCellRect = (col: number, row: number, cols: Col[], rows: Row[]) => {
+  const zero = {left: 0, top: 0, width: 0, height: 0};
+  if (col < 1 || row < 1 || !cols.length || !rows.length) return zero;
+  const colInfo = cols.find((it) => it.col == col);
+  if (!colInfo) return zero;
+  const rowInfo = rows.find((it) => it.row == row);
+  if (!rowInfo) return zero;
+  const left = colInfo.left;
+  const top = rowInfo.top;
+  const width = colInfo.width;
+  const height = rowInfo.height;
+  return {left, top, width, height};
+};
+
 /* __________ addCols: __________ */
 
 export const addCols = (sheet: string, cols: Col[], afterCol: number, size: number, width: number) => {
@@ -229,6 +245,8 @@ const SheetApi = {
   /* __________ sheet: helper __________ */
   calcSheetWidth,
   calcSheetHeight,
+  /* cell: helper */
+  calcCellRect,
   /* __________ addCols: __________ */
   addCols,
   /* __________ addRows: __________ */

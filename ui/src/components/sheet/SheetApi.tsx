@@ -155,6 +155,15 @@ export const calcCellRect = (col: number, row: number, cols: Col[], rows: Row[])
   return {left, top, width, height};
 };
 
+export const isSameCell = (c1: Cell|null|undefined, c2: Cell|null|undefined) => {
+  if (!c1 && !c2) return true;
+  if (!c1 || !c2) return false;
+  return c1.col == c2.col &&
+    c1.row == c2.row &&
+    c1.colSize == c2.colSize &&
+    c1.rowSize == c2.rowSize;
+};
+
 /* __________ addCols: __________ */
 
 export const addCols = (sheet: string, cols: Col[], afterCol: number, size: number, width: number) => {
@@ -291,8 +300,9 @@ const SheetApi = {
   addCols,
   /* __________ addRows: __________ */
   addRows,
-  /* __________ CellLoc: __________ */
+  /* __________ cell: __________ */
   getCellByCursor,
+  isSameCell,
   /* __________ delete: todo __________ */
   makeCols: (sheet: Sheet) => {
     const cols: Col[] = [];

@@ -129,8 +129,8 @@ const Cells = () => {
     const top = e.clientY - topGap - peakHeight;
     if (!left || !top) return;
     const cursor = {left, top} as CursorData;
-    updateCursorAndCurCell(cursor, cols, rows);
-  }, [cols, rows, leftGap, topGap]);
+    updateCursorAndCurCell(cursor, cols, rows, curCell);
+  }, [cols, rows, leftGap, topGap, curCell]);
   return (
     <div className='sheet-cells' onClick={onClick} style={{left: peakWidth, top: peakHeight, width: cellsWidth, height: cellsHeight}}>
       <CurCell />

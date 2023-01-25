@@ -9,34 +9,27 @@
 
 /* __________ border __________ */
 
-.sheet-border-horizontal::before,
-.sheet-border-horizontal::after {
-  content: ' ';
+.border > * {
   position: absolute;
+  content: ' ';
+}
+.border-left {
   left: 0;
-  right: 0;
-  border-top: 1px solid #ddd;
-}
-.sheet-border-horizontal::before {
   top: 0;
+  width: 1px;
 }
-.sheet-border-horizontal::after {
-  bottom: -1px;
-}
-
-.sheet-border-vertical::before,
-.sheet-border-vertical::after {
-  content: ' ';
-  position: absolute;
+.border-right {
   top: 0;
-  bottom: 0;
-  border-left: 1px solid #ddd;
+  width: 1px;
 }
-.sheet-border-vertical::before {
-  left: 0; 
+.border-top {
+  left: 0;
+  top: 0;
+  height: 1px;
 }
-.sheet-border-vertical::after {
-  right: -1px;
+.border-bottom {
+  left: 0;
+  height: 1px;
 }
 
 /* __________ sheet-pop __________ */
@@ -151,36 +144,35 @@
 /* __________ cells __________ */
 
 .sheet-cells {
-  z-index: 200;
   position: absolute;
 }
 
 /* __________ cells: cur cell __________ */
 
 .sheet-cells-cur-cell {
-  z-index: 500;
+  z-index: 600;
   position: absolute;
-  border: 1px solid #1890ff;
 }
 
 /* __________ cell __________ */
 
 .sheet-cell {
+  z-index: 500;
   position: absolute;
   display: flex;
   align-items: center;
 }
 
-.sheet-cell::after {
+/* .sheet-cell::after {
   content: ' ';
   position: absolute;
   left: 0;
   right: -1px;
   top: 0;
   bottom: -1px;
-  background: #fff;
+  background: transparent;
   border: 1px solid #ddd;
-}
+} */
 
 .sheet-cell-editor {
   position: absolute;

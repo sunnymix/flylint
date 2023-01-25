@@ -21,7 +21,7 @@ export const SheetView = () => {
   const height = SheetApi.calcSheetHeight(rows);
   return (
     <div className='sheet' style={{width, height}}>
-      <Border />
+      <Border width={width} height={height} />
       <Peak />
       <Cols />
       <Rows />
@@ -34,11 +34,15 @@ export default SheetView;
 
 /* __________ border __________ */
 
-const Border = () => {
+const Border = (props: {width: number, height: number, color?: string}) => {
+  const {width, height, color} = props;
+  const backgroundColor = color || '#ddd';
   return (
-    <div className='sheet-border'>
-      <div className='sheet-border-horizontal'></div>
-      <div className='sheet-border-vertical'></div>
+    <div className='border'>
+      <div className='border-left' style={{height, backgroundColor}}></div>
+      <div className='border-right' style={{height, left: width, backgroundColor}}></div>
+      <div className='border-top' style={{width, backgroundColor}}></div>
+      <div className='border-bottom' style={{width, top: height, backgroundColor}}></div>
     </div>
   );
 };
@@ -140,12 +144,11 @@ const Cells = () => {
 const CurCell = () => {
   const {curCell} = useModel('sheet', m => ({curCell: m.curCell}));
   if (!curCell) return <></>;
-  const left = curCell.left;
-  const top = curCell.top;
-  const width = curCell.width + 1;
-  const height = curCell.height + 1;
+  const left = curCell.left, top = curCell.top, width = curCell.width, height = curCell.height;
   return (
-    <div className='sheet-cells-cur-cell' style={{left, top, width, height}}></div>
+    <div className='sheet-cells-cur-cell' style={{left, top}}>
+      <Border width={width} height={height} color='#1890ff' />
+    </div>
   );
 };
 
@@ -156,6 +159,8 @@ const Cell = (props: {cell: CellData}) => {
   const {cols, rows} = useModel('sheet', m => ({cols: m.cols, rows: m.rows}));
   const {left, top, width, height} = SheetApi.calcCellRect(cell.col, cell.row, cols, rows);
   return (
-    <div className='sheet-cell' style={{left, top, width, height}}>Cell</div>
+    <div className='sheet-cell' style={{left, top, width, height}}>
+      Cell
+    </div>
   );
 };

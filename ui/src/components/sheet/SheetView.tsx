@@ -16,8 +16,12 @@ import SheetApi, {
 /* __________ sheet __________ */
 
 export const SheetView = () => {
+  const {cols, rows} = useModel('sheet', m => ({cols: m.cols, rows: m.rows}));
+  const width = SheetApi.calcSheetWidth(cols);
+  const height = SheetApi.calcSheetHeight(rows);
   return (
-    <div className='sheet'>
+    <div className='sheet' style={{width, height}}>
+      <Border />
       <Peak />
       <Cols />
       <Rows />
@@ -27,6 +31,17 @@ export const SheetView = () => {
 };
 
 export default SheetView;
+
+/* __________ border __________ */
+
+const Border = () => {
+  return (
+    <div className='sheet-border'>
+      <div className='sheet-border-horizontal'></div>
+      <div className='sheet-border-vertical'></div>
+    </div>
+  );
+};
 
 /* __________ peak __________ */
 

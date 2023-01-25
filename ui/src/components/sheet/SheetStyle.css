@@ -1,12 +1,42 @@
 
+/* __________ sheet __________ */
+
 .sheet {
-  padding: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 
-/* __________ content __________ */
+/* __________ border __________ */
 
-.sheet-body {
-  position: relative;
+.sheet-border-horizontal::before,
+.sheet-border-horizontal::after {
+  content: ' ';
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-top: 1px solid #ddd;
+}
+.sheet-border-horizontal::before {
+  top: 0;
+}
+.sheet-border-horizontal::after {
+  bottom: -1px;
+}
+
+.sheet-border-vertical::before,
+.sheet-border-vertical::after {
+  content: ' ';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-left: 1px solid #ddd;
+}
+.sheet-border-vertical::before {
+  left: 0; 
+}
+.sheet-border-vertical::after {
+  right: -1px;
 }
 
 /* __________ sheet-pop __________ */
@@ -128,7 +158,7 @@
 /* __________ cells: cur cell __________ */
 
 .sheet-cells-cur-cell {
-  z-index: 210;
+  z-index: 500;
   position: absolute;
   border: 1px solid #1890ff;
 }

@@ -125,6 +125,14 @@
   position: absolute;
 }
 
+/* __________ cells: cur cell __________ */
+
+.sheet-cells-cur-cell {
+  z-index: 210;
+  position: absolute;
+  border: 1px solid #1890ff;
+}
+
 /* __________ cell __________ */
 
 .sheet-cell {

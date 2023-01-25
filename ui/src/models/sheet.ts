@@ -54,6 +54,7 @@ const SheetModel = () => {
     
     SheetApi.addServerCol(sheet, afterCol, size, width, (success: boolean) => {
       if (!success) return alert('ERROR');
+      setCurCell(null);
       const newCols = SheetApi.addCols(sheet, cols, afterCol, size, width);
       setCols(newCols);
     });
@@ -70,6 +71,7 @@ const SheetModel = () => {
 
     SheetApi.addServerRow(sheet, afterRow, size, height, (success: boolean) => {
       if (!success) return alert('ERROR');
+      setCurCell(null);
       const newRows: RowData[] = SheetApi.addRows(sheet, rows, afterRow, size, height);
       setRows(newRows);
     });

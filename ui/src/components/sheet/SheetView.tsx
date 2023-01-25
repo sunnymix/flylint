@@ -114,11 +114,27 @@ const Cells = () => {
   }, [cols, rows, leftGap, topGap]);
   return (
     <div className='sheet-cells' onClick={onClick} style={{left: peakWidth, top: peakHeight, width: cellsWidth, height: cellsHeight}}>
-      <div className='sheet-cells-cur-cell'></div>
+      <CurCell />
       {cells.map((cell: CellData) => <Cell key={`${cell.col}-${cell.row}`} cell={cell} />)}
     </div>
   );
 };
+
+/* __________ cur cell __________ */
+
+const CurCell = () => {
+  const {curCell} = useModel('sheet', m => ({curCell: m.curCell}));
+  if (!curCell) return <></>;
+  const left = curCell.left;
+  const top = curCell.top;
+  const width = curCell.width + 1;
+  const height = curCell.height + 1;
+  return (
+    <div className='sheet-cells-cur-cell' style={{left, top, width, height}}></div>
+  );
+};
+
+/* __________ cell __________ */
 
 const Cell = (props: {cell: CellData}) => {
   const {cell} = props;

@@ -3,7 +3,7 @@ import Constant from "@/components/common/Constant";
 
 // __________ property: __________
 
-export const defaultWidth = 250;
+export const defaultWidth = 200;
 export const defaultHeight = 30;
 export const peakWidth = 50;
 export const peakHeight = 30;

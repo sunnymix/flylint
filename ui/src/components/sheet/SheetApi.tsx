@@ -57,13 +57,6 @@ export interface CursorData {
   top: number,
 }
 
-/* __________ interface: cell loc __________ */
-
-export interface CellLoc {
-  col: number,
-  row: number,
-};
-
 export type SheetTarget = 'col' | 'row' | 'cell';
 
 export type SheetAt = 'self' | 'before' | 'after';
@@ -238,14 +231,25 @@ export const sortRows = (rows: Row[]) => {
 
 /* __________ calc: cursor: cur cell __________ */
 
-export const getCellLocByCursor = (cursor: CursorData, cols: Col[], rows: Row[]) => {
+export const getCellByCursor = (cursor: CursorData, cols: Col[], rows: Row[]) => {
   if (cursor.left < 0 || cursor.top < 0) return null;
   if (!cols || !cols.length || !rows || !rows.length) return null;
-  const col = getColByLeft(cursor.left, cols);
-  if (!col) return null;
-  const row = getRowByTop(cursor.top, rows);
-  if (!row) return null;
-  return {col, row} as CellLoc;
+  const colInfo = getColByLeft(cursor.left, cols);
+  if (!colInfo) return null;
+  const rowInfo = getRowByTop(cursor.top, rows);
+  if (!rowInfo) return null;
+  return {
+    sheet: colInfo.sheet,
+    type: 'cell',
+    col: colInfo.col,
+    row: rowInfo.row,
+    colSize: 1,
+    rowSize: 1,
+    left: colInfo.left,
+    top: rowInfo.top,
+    width: colInfo.width,
+    height: rowInfo.height,
+  } as Cell;
 };
 
 export const getColByLeft = (left: number, cols: Col[]) => {
@@ -253,7 +257,7 @@ export const getColByLeft = (left: number, cols: Col[]) => {
   if (left < 0) return null;
   const colInfo = cols.find((item: Col) => left >= item.left && left <= (item.left + item.width));
   if (!colInfo) return null;
-  return colInfo.col;
+  return colInfo;
 };
 
 export const getRowByTop = (top: number, rows: Row[]) => {
@@ -261,7 +265,7 @@ export const getRowByTop = (top: number, rows: Row[]) => {
   if (top < 0) return null;
   const rowInfo = rows.find((item: Row) => top >= item.top && top <= (item.top + item.height));
   if (!rowInfo) return null;
-  return rowInfo.row;
+  return rowInfo;
 };
 
 /* __________ export: __________ */
@@ -288,7 +292,7 @@ const SheetApi = {
   /* __________ addRows: __________ */
   addRows,
   /* __________ CellLoc: __________ */
-  getCellLocByCursor,
+  getCellByCursor,
   /* __________ delete: todo __________ */
   makeCols: (sheet: Sheet) => {
     const cols: Col[] = [];

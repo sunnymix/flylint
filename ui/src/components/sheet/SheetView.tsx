@@ -96,8 +96,13 @@ const Row = (props: {row: RowData}) => {
 /* __________ cells __________ */
 
 const Cells = () => {
-  const {cells, cols, rows, updateCursorAndCurCell, leftGap, topGap } = useModel('sheet', m => ({
-    cells: m.cells, cols: m.cols, rows: m.rows, updateCursorAndCurCell: m.updateCursorAndCurCell, leftGap: m.leftGap, topGap: m.topGap}));
+  const {
+    cells, cols, rows, curCell,
+    leftGap, topGap, updateCursorAndCurCell 
+  } = useModel('sheet', m => ({
+    cells: m.cells, cols: m.cols, rows: m.rows, curCell: m.curCell,
+    leftGap: m.leftGap, topGap: m.topGap, updateCursorAndCurCell: m.updateCursorAndCurCell
+  }));
   const cellsWidth = SheetApi.calcSheetWidth(cols, true);
   const cellsHeight = SheetApi.calcSheetHeight(rows, true);
   const onClick = useCallback((e: React.MouseEvent) => {
@@ -109,6 +114,7 @@ const Cells = () => {
   }, [cols, rows, leftGap, topGap]);
   return (
     <div className='sheet-cells' onClick={onClick} style={{left: peakWidth, top: peakHeight, width: cellsWidth, height: cellsHeight}}>
+      <div className='sheet-cells-cur-cell'></div>
       {cells.map((cell: CellData) => <Cell key={`${cell.col}-${cell.row}`} cell={cell} />)}
     </div>
   );

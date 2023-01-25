@@ -8,7 +8,6 @@ import SheetApi, {
   defaultWidth,
   defaultHeight,
   CursorData,
-  CellLoc,
 } from "@/components/sheet/SheetApi";
 import { SheetColsAdd, SheetRowsAdd } from "@/components/common/EventBus";
 
@@ -22,7 +21,7 @@ const SheetModel = () => {
   const [cols, setCols] = useState<ColData[]>([]);
   const [rows, setRows] = useState<RowData[]>([]);
   const [cells, setCells] = useState<CellData[]>([]);
-  const [curCell, setCurCell] = useState<CellLoc|null>(null);
+  const [curCell, setCurCell] = useState<CellData|null>(null);
   const [cursor, setCursor] = useState<CursorData>({left: 0, top: 0});
 
   /* __________ api: sheet: select __________ */
@@ -80,8 +79,8 @@ const SheetModel = () => {
 
   const updateCursorAndCurCell = (cursor: CursorData, cols: ColData[], rows: RowData[]) => {
     setCursor(cursor);
-    const cellLoc = SheetApi.getCellLocByCursor(cursor, cols, rows);
-    setCurCell(cellLoc);
+    const cell = SheetApi.getCellByCursor(cursor, cols, rows);
+    setCurCell(cell);
   };
 
   /* __________ effect: cursor: change __________ */

@@ -1,4 +1,4 @@
-import Ts, { isArr, isArrNotEmpty, isEmpty, isNotEmpty } from "../common/Ts";
+import Ts, { isArr, isArrNotEmpty, isEmpty, isNotEmpty, randomKey } from "../common/Ts";
 import Icons from "../icon/AstroIcons";
 
 /* __________ ele __________ */
@@ -66,25 +66,19 @@ export const isBlock = (type?: EleType) => type && !isInline(type);
 
 /* __________ render __________ */
 
-export const render = (eles: Ele[]) => {
-  const elesUI = eles.map((ele: Ele, i: number) => <div className='ele' key={Math.random()}>{renderItem(ele)}</div>);
-  return (<>{elesUI}</>);
+export const render = (eles?: Ele[]) => {
+  if (!eles) return <></>;
+  const elesUI = eles.map((ele: Ele, i: number) => renderEle(ele));
+  return <>{elesUI}</>;
 };
 
 /* __________ render ele __________ */
 
-export const renderItem = (ele: Ele) => {
-  if (isEmpty(ele)) return <div className='empty'></div>;
-  if (isEmpty(ele.children)) return renderEle(ele, null);
-  const childrenUI: any = isArr(ele.children) ? render(ele.children || []) : null;
-  return (<>{renderEle(ele, childrenUI)}</>);
-};
-
-/* __________ render block __________ */
-
-export const renderEle = (ele: Ele, childrenUI: any) => {
+export const renderEle = (ele: Ele) => {
+  if (!ele) return <></>;
+  const key = randomKey();
   ele.type = defaultType(ele);
-  const props = {ele, children: childrenUI, key: Math.random()};
+  const props = {key, ele, children: render(ele.children)};
   switch (ele.type) {
     case 'h1': return <H1 {...props} />;
     case 'h2': return <H2 {...props} />;

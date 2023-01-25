@@ -18,6 +18,8 @@ export const isEmpty = (o: any) => isUndef(o) || isNull(o);
 
 export const isNotEmpty = (o: any) => !isEmpty(o);
 
+export const randomKey = () => `${Math.floor(Math.random()*100000000)}`;
+
 export const Ts = {
   isArr, isArrEmpty, isArrNotEmpty,
   isStr,
@@ -26,5 +28,6 @@ export const Ts = {
   isNull,
   isNotNull,
   isEmpty, isNotEmpty,
+  randomKey,
 };
 export default Ts;

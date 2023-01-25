@@ -5,6 +5,6 @@ import { render } from "./TextCore";
 const Text = (props: {content?: string}) => {
   const {content} = props;
   const contentUI = render(JSON.parse(content || '[]'))
-  return <div>{contentUI}</div>;
+  return <>{contentUI}</>;
 };
 export default Text;

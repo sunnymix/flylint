@@ -162,6 +162,12 @@
   overflow: hidden;
 }
 
+/* __________ block __________ */
+
+.block {
+  line-height: 30px;
+}
+
 /* __________ old __________ */
 
 .sheet-cell-editor {

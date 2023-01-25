@@ -115,6 +115,7 @@ const Row = (props: {row: RowData}) => {
 /* __________ cells __________ */
 
 const Cells = () => {
+  console.log(`Cells: render`);
   const {
     cells, cols, rows, curCell,
     leftGap, topGap, updateCursorAndCurCell 
@@ -155,15 +156,16 @@ const CurCell = () => {
 /* __________ cell __________ */
 
 const Cell = (props: {cell: CellData}) => {
+  console.log(`Cell: render`);
   const {cell} = props;
   const {cols, rows} = useModel('sheet', m => ({cols: m.cols, rows: m.rows}));
   const {left, top, width, height} = SheetApi.calcCellRect(cell.col, cell.row, cols, rows);
-  const onClick = useCallback(() => {
+  const onClick = useCallback((e: React.MouseEvent) => {
     console.log(`Cell: onClick: cell.content: `, JSON.parse(cell.content || '[]'));
   }, [cell]);
   return (
     <div className='sheet-cell' onClick={onClick} style={{left, top, width, height}}>
-      <div><Text content={cell.content} /></div>
+      <Text content={cell.content} />
     </div>
   );
 };

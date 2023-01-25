@@ -160,7 +160,7 @@ const Cell = (props: {cell: CellData}) => {
   const {left, top, width, height} = SheetApi.calcCellRect(cell.col, cell.row, cols, rows);
   return (
     <div className='sheet-cell' style={{left, top, width, height}}>
-      Cell
+      <div>{cell.content}</div>
     </div>
   );
 };

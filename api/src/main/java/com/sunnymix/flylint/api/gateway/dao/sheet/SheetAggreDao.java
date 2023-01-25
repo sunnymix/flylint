@@ -30,17 +30,17 @@ public class SheetAggreDao {
         if (wikiOpt.isEmpty()) return Optional.empty();
         var wiki = wikiOpt.get();
         if (!wiki.getType().equals("sheet")) return Optional.empty();
-        var sheetBuilder = Sheet.builder();
-        sheetBuilder.sheet(sheet);
+        var s = Sheet.builder();
+        s.sheet(sheet);
         var cols = colDao.list(sheet);
-        sheetBuilder.cols(cols);
-        sheetBuilder.colsSize(cols.size());
+        s.cols(cols);
+        s.colsSize(cols.size());
         var rows = rowDao.list(sheet);
-        sheetBuilder.rows(rows);
-        sheetBuilder.rowsSize(rows.size());
+        s.rows(rows);
+        s.rowsSize(rows.size());
         var cells = cellDao.list(sheet);
-        sheetBuilder.cells(cells);
-        var _sheet = sheetBuilder.build();
+        s.cells(cells);
+        var _sheet = s.build();
         return Optional.of(_sheet);
     }
 

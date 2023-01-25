@@ -159,20 +159,10 @@
 .sheet-cell {
   z-index: 500;
   position: absolute;
-  display: flex;
-  align-items: center;
+  overflow: hidden;
 }
 
-/* .sheet-cell::after {
-  content: ' ';
-  position: absolute;
-  left: 0;
-  right: -1px;
-  top: 0;
-  bottom: -1px;
-  background: transparent;
-  border: 1px solid #ddd;
-} */
+/* __________ old __________ */
 
 .sheet-cell-editor {
   position: absolute;

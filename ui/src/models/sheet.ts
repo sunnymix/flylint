@@ -89,7 +89,7 @@ const SheetModel = () => {
   /* __________ effect: cursor: change __________ */
 
   useEffect(() => {
-    console.log(`SheetModel: cursor change: cursor: ${JSON.stringify(cursor)}`);
+    // console.log(`SheetModel: cursor change: cursor: ${JSON.stringify(cursor)}`);
   }, [cursor]);
 
   /* __________ effect: curCell: change __________ */

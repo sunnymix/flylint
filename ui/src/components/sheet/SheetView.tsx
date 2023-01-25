@@ -12,6 +12,7 @@ import SheetApi, {
   Cell as CellData,
   CursorData,
 } from "./SheetApi";
+import Text from "../text/Text";
 
 /* __________ sheet __________ */
 
@@ -29,7 +30,6 @@ export const SheetView = () => {
     </div>
   );
 };
-
 export default SheetView;
 
 /* __________ border __________ */
@@ -158,9 +158,12 @@ const Cell = (props: {cell: CellData}) => {
   const {cell} = props;
   const {cols, rows} = useModel('sheet', m => ({cols: m.cols, rows: m.rows}));
   const {left, top, width, height} = SheetApi.calcCellRect(cell.col, cell.row, cols, rows);
+  const onClick = useCallback(() => {
+    console.log(`Cell: onClick: cell.content: `, JSON.parse(cell.content || '[]'));
+  }, [cell]);
   return (
-    <div className='sheet-cell' style={{left, top, width, height}}>
-      <div>{cell.content}</div>
+    <div className='sheet-cell' onClick={onClick} style={{left, top, width, height}}>
+      <div><Text content={cell.content} /></div>
     </div>
   );
 };

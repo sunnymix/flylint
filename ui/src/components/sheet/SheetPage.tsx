@@ -4,7 +4,6 @@ import Time from "@/components/common/Time";
 import WikiOps from "../wiki/WikiOps";
 import { WikiNameUpdatedEventData, WikiTitleUpdatedEventData } from "@/components/common/EventBus";
 import Layout from "../common/Layout";
-import Sheet from "../sheet/Sheet";
 import SheetView from "./SheetView";
 import { LoadingOutlined } from '@ant-design/icons';
 import { useModel } from "umi";

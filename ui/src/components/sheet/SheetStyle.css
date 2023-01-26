@@ -54,6 +54,10 @@
   color: #666;
 }
 
+.sheet-pop-btn svg {
+  transform: scale(0.6);
+}
+
 /* __________ peak __________ */
 
 .sheet-peak {
@@ -72,8 +76,8 @@
 
 .sheet-peak::after {
   position: absolute;
-  left: 2px;
-  top: 2px;
+  left: 1px;
+  top: 1px;
   content: ' ';
   border-style: solid;
   border-width: 6px;

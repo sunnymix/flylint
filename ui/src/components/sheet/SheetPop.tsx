@@ -60,7 +60,7 @@ const SheetPop = forwardRef((props: {col: number, row: number}, ref: any) => {
   return (
     <Dropdown className='sheet-pop' menu={{items: menuItems}}>
       <div className='sheet-pop-body'>
-        <Button className ='sheet-pop-btn' size='small' type='text'><MoreOutlined /></Button>
+        <Button className ='sheet-pop-btn' size='small' type='text'><DownOutlined /></Button>
       </div>
     </Dropdown>
   );

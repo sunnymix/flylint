@@ -1,5 +1,6 @@
 import axios from "axios";
 import Constant from "@/components/common/Constant";
+import { isArrEmpty } from "../common/Ts";
 
 // __________ property: __________
 
@@ -12,8 +13,6 @@ export const peakHeight = 30;
 
 export interface Sheet {
   sheet: string,
-  colsSize: number,
-  rowsSize: number,
   cols: Col[],
   rows: Row[],
   cells: Cell[],
@@ -88,10 +87,15 @@ export interface SheetRowsHeightUpdate extends SheetUpdate {};
 export const getServerSheet = (sheet: string, cb: (sheet: Sheet|null) => void) => {
   axios.get(`${Constant.API_BASE}/sheet/${sheet}`)
     .then(res => {
-      const sheet = res.data?.data as Sheet || null;
-      arrangeCols(sheet.cols, true);
-      arrangeRows(sheet.rows, true);
-      cb(sheet);
+      const serverSheet = res.data?.data as Sheet || null;
+      if (!serverSheet) cb(null);
+      const sheet = serverSheet.sheet;
+      const cols = arrangeCols(serverSheet.cols, true);
+      const rows = arrangeRows(serverSheet.rows, true);
+      const cells = arrangeCells(sheet, cols, rows, serverSheet.cells);
+      const newSheet = {sheet, cols, rows, cells};
+      console.log(`SheetApi: getServerSheet: sheet: `, newSheet);
+      cb(newSheet);
     });
 };
 
@@ -164,6 +168,49 @@ export const isSameCell = (c1: Cell|null|undefined, c2: Cell|null|undefined) => 
     c1.rowSize == c2.rowSize;
 };
 
+export const arrangeCells = (sheet: string, cols: Col[], rows: Row[], cells: Cell[]): Cell[] => {
+  const newCells: Cell[] = [];
+  if (!cols || !rows) return newCells;
+  if (isArrEmpty(cols) || isArrEmpty(rows)) return newCells;
+  cols.forEach((col: Col) => {
+    rows.forEach((row: Row) => {
+      const serverCell = findCell(col.col, row.row, cells);
+      const cell = serverCell ? fillCell(col, row, serverCell) : buildCell(sheet, col, row);
+      newCells.push(cell);
+    })
+  });
+  return newCells;
+};
+
+export const findCell = (col: number, row: number, cells: Cell[]): Cell|null => {
+  if (col < 1 || row < 1 || isArrEmpty(cells)) return null;
+  return cells.find((cell: Cell) => cell.col == col && cell.row == row) || null;
+};
+
+export const fillCell = (col: Col, row: Row, cell: Cell): Cell => {
+  const newCell = {
+    ...cell,
+    left: col.left,
+    width: col.width,
+    top: row.top,
+    height: row.height,
+  } as Cell;
+  return newCell;
+};
+
+export const buildCell = (sheet: string, col: Col, row: Row): Cell => {
+  const newCell = {
+    sheet,
+    col: col.col,
+    row: row.row,
+    left: col.left,
+    width: col.width,
+    top: row.top,
+    height: row.height,
+  } as Cell;
+  return newCell;
+};
+
 /* __________ addCols: __________ */
 
 export const addCols = (sheet: string, cols: Col[], afterCol: number, size: number, width: number) => {
@@ -173,8 +220,7 @@ export const addCols = (sheet: string, cols: Col[], afterCol: number, size: numb
 
 export const addColsAfterCol = (sheet: string, cols: Col[], afterCol: number, size: number, width: number) => {
   const newCols: Col[] = [...cols.slice(0, afterCol), ...buildCols(sheet, size, width), ...cols.slice(afterCol)];
-  arrangeCols(newCols);
-  return newCols;
+  return arrangeCols(newCols);
 };
 
 /* __________ addCols: helper: __________ */
@@ -195,6 +241,7 @@ export const arrangeCols = (oldCols: Col[], sortByCol?: boolean) => {
     col++;
     left += item.width;
   }
+  return cols;
 };
 
 export const sortCols = (cols: Col[]) => {
@@ -210,8 +257,7 @@ export const addRows = (sheet: string, rows: Row[], afterRow: number, size: numb
 
 export const addRowsAfterRow = (sheet: string, rows: Row[], afterRow: number, size: number, height: number) => {
   const newRows: Row[] = [...rows.slice(0, afterRow), ...buildRows(sheet, size, height), ...rows.slice(afterRow)];
-  arrangeRows(newRows);
-  return newRows;
+  return arrangeRows(newRows);
 };
 
 /* __________ addRows: helper: __________ */
@@ -232,6 +278,7 @@ export const arrangeRows = (oldRows: Row[], sortByRow?: boolean) => {
     row++;
     top += item.height;
   }
+  return rows;
 };
 
 export const sortRows = (rows: Row[]) => {
@@ -303,54 +350,7 @@ const SheetApi = {
   /* __________ cell: __________ */
   getCellByCursor,
   isSameCell,
-  /* __________ delete: todo __________ */
-  makeCols: (sheet: Sheet) => {
-    const cols: Col[] = [];
-    for (var c = 1; c <= sheet.colsSize; c++) {
-      cols.push({
-        col: c,
-        left: (c - 1) * SheetApi.defaultWidth,
-        width: SheetApi.defaultWidth,
-      } as Col);
-    }
-    return cols;
-  },
-
-  makeRows: (sheet: Sheet) => {
-    const rows: Row[] = [];
-    for (var r = 1; r <= sheet.rowsSize; r++) {
-      rows.push({
-        row: r,
-        top: r * SheetApi.defaultHeight,
-        height: SheetApi.defaultHeight,
-      } as Row);
-    }
-    return rows;
-  },
-
-  makeCells: (sheet: Sheet) => {
-    const cells: Cell[] = [];
-    for (var r = 1; r <= sheet.rowsSize; r++) {
-      for (var c = 1; c <= sheet.colsSize; c++) {
-        const left = SheetApi.peakWidth + (c - 1) * SheetApi.defaultWidth;
-        const top = SheetApi.defaultHeight + (r - 1) * SheetApi.defaultHeight;
-        cells.push({
-          sheet: sheet.sheet,
-          type: 'cell',
-          col: c,
-          row: r,
-          colSize: 1,
-          rowSize: 1,
-          left: left,
-          top: top,
-          width: SheetApi.defaultWidth,
-          height: SheetApi.defaultHeight,
-        });
-      }
-    }
-    return cells;
-  },
-
+  /* __________  __________ */
 };
 
 export default SheetApi;

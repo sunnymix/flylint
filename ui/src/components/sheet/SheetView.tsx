@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback } from "react";
+import React, { forwardRef, useCallback, useState } from "react";
 import { useModel } from "umi";
 import './SheetStyle.css';
 import SheetPop from "./SheetPop";
@@ -28,7 +28,6 @@ export const SheetView = () => {
       <Cols />
       <Rows />
       <Cells />
-      <CurCell />
     </div>
   );
 };
@@ -54,7 +53,7 @@ const Border = (props: {width: number, height: number, color?: string}) => {
 
 const Peak = () => {
   const {sheet} = useModel('sheet', m => ({sheet: m.sheet}));
-  console.log(`Peak: render`);
+  // console.log(`Peak: render`);
   return (
     <div className='sheet-peak' style={{width: peakWidth, height: peakHeight}}>
       <SheetPop col={0} row={0} />
@@ -67,7 +66,7 @@ const Peak = () => {
 const Cols = () => {
   const {cols, rows} = useModel('sheet', m => ({cols: m.cols, rows: m.rows}));
   const sheetHeight = SheetApi.calcSheetHeight(rows);
-  console.log(`Cols: render`);
+  // console.log(`Cols: render`);
   return (
     <div className='sheet-cols' style={{left: peakWidth, height: sheetHeight}}>
       {cols.map((col: ColData) => <Col key={`${col.col}`} col={col} />)}
@@ -79,7 +78,7 @@ const Cols = () => {
 
 const Col = (props: {col: ColData}) => {
   const {col} = props;
-  console.log(`Col: render`);
+  // console.log(`Col: render`);
   return (
     <div className='sheet-col'>
       <div className='sheet-col-header' style={{height: peakHeight, left: col.left, width: col.width}}>
@@ -96,7 +95,7 @@ const Col = (props: {col: ColData}) => {
 const Rows = () => {
   const {rows, cols} = useModel('sheet', m => ({rows: m.rows, cols: m.cols}));
   const sheetWidth = SheetApi.calcSheetWidth(cols);
-  console.log(`Rows: render`);
+  // console.log(`Rows: render`);
   return (
     <div className='sheet-rows' style={{top: peakHeight, width: sheetWidth}}>
       {rows.map((row: RowData) => <Row key={`${row.row}`} row={row} />)}
@@ -108,7 +107,7 @@ const Rows = () => {
 
 const Row = (props: {row: RowData}) => {
   const {row} = props;
-  console.log(`Row: render`);
+  // console.log(`Row: render`);
   return (
     <div className='sheet-row'>
       <div className='sheet-row-header' style={{top: row.top, height: row.height, width: peakWidth}}>
@@ -126,22 +125,13 @@ const Cells = () => {
   console.log(`Cells: render`);
   const {
     cells, cols, rows,
-    leftGap, topGap, updateCursorAndCurCell,
   } = useModel('sheet', m => ({
     cells: m.cells, cols: m.cols, rows: m.rows,
-    leftGap: m.leftGap, topGap: m.topGap, updateCursorAndCurCell: m.updateCursorAndCurCell
   }));
   const cellsWidth = SheetApi.calcSheetWidth(cols, true);
   const cellsHeight = SheetApi.calcSheetHeight(rows, true);
-  const onClick = useCallback((e: React.MouseEvent) => {
-    const left = e.clientX - leftGap - peakWidth;
-    const top = e.clientY - topGap - peakHeight;
-    if (!left || !top) return;
-    const cursor = {left, top} as CursorData;
-    updateCursorAndCurCell(cursor, cols, rows);
-  }, [cols, rows, leftGap, topGap]);
   return (
-    <div className='sheet-cells' onClick={onClick} style={{left: peakWidth, top: peakHeight, width: cellsWidth, height: cellsHeight}}>
+    <div className='sheet-cells' style={{left: peakWidth, top: peakHeight, width: cellsWidth, height: cellsHeight}}>
       {cells.map((cell: CellData) => <Cell key={`${cell.col}-${cell.row}`} cell={cell} />)}
     </div>
   );
@@ -150,11 +140,12 @@ const Cells = () => {
 /* __________ cell __________ */
 
 const Cell = (props: {cell: CellData}) => {
+  const {setCurCell} = useModel('sheet', m => ({setCurCell: m.setCurCell}));
   const {cell} = props;
   const {cols, rows} = useModel('sheet', m => ({cols: m.cols, rows: m.rows}));
   const {left, top, width, height} = SheetApi.calcCellRect(cell.col, cell.row, cols, rows);
   const onClick = useCallback((e: React.MouseEvent) => {
-    // console.log(`Cell: onClick: cell.content: `, JSON.parse(cell.content || '[]'));
+    setCurCell(cell);
   }, [cell]);
   console.log(`Cell: render`);
   return (

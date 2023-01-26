@@ -84,7 +84,7 @@ const SheetModel = () => {
     const cell = SheetApi.getCellByCursor(cursor, cols, rows);
     // if (SheetApi.isSameCell(cell, curCell)) return;
     // console.log(`set Cur Cell, isSameCell: ${SheetApi.isSameCell(cell, curCell)}, [${JSON.stringify(cell)}] [${JSON.stringify(curCell)}]`);
-    setCurCell(cell);
+    // setCurCell(cell);
   };
 
   /* __________ effect: cursor: change __________ */
@@ -96,7 +96,7 @@ const SheetModel = () => {
   /* __________ effect: curCell: change __________ */
 
   useEffect(() => {
-    console.log(`SheetModel: curCell change: curCell: ${JSON.stringify(curCell)}`);
+    console.log(`SheetModel: curCell: change: `, curCell);
   }, [curCell]);
 
   /* __________ export __________ */
@@ -107,7 +107,7 @@ const SheetModel = () => {
     cols, addCols,
     rows, addRows,
     cells, 
-    cursor, curCell, updateCursorAndCurCell,
+    cursor, curCell, setCurCell, updateCursorAndCurCell,
   };
 };
 

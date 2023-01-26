@@ -28,6 +28,7 @@ export const SheetView = () => {
       <Cols />
       <Rows />
       <Cells />
+      <CurCell />
     </div>
   );
 };
@@ -158,14 +159,15 @@ const Cell = (props: {cell: CellData}) => {
 /* __________ cur cell __________ */
 
 const CurCell = () => {
-  return <></>;
-  // const {curCell} = useModel('sheet', m => ({curCell: m.curCell}));
-  // if (!curCell) return <></>;
-  // const left = curCell.left + peakWidth, top = curCell.top + peakHeight, width = curCell.width, height = curCell.height;
-  // console.log(`CurCell: render`);
-  // return (
-  //   <div className='sheet-cells-cur-cell' style={{left, top}}>
-  //     <Border width={width} height={height} color='#1890ff' />
-  //   </div>
-  // );
+  const {curCell} = useModel('sheet', m => ({curCell: m.curCell}));
+  if (!curCell) return <></>;
+  const left = curCell.left, top = curCell.top, width = curCell.width, height = curCell.height;
+  console.log(`CurCell: render`);
+  return (
+    <div className='sheet-content-box' style={{left: peakWidth, top: peakHeight}}>
+      <div className='sheet-cells-cur-cell' style={{left, top}}>
+        <Border width={width} height={height} color='#1890ff' />
+      </div>
+    </div>
+  );
 };

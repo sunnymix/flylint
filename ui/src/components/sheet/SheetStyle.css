@@ -7,6 +7,12 @@
   top: 0;
 }
 
+/* __________ content box __________ */
+
+.sheet-content-box {
+  position: absolute;
+}
+
 /* __________ border __________ */
 
 .border > * {

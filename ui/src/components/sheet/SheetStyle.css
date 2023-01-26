@@ -19,23 +19,23 @@
   position: absolute;
   content: ' ';
 }
-.border-left {
-  left: 0;
-  top: 0;
-  width: 1px;
-}
-.border-right {
-  top: 0;
-  width: 1px;
-}
 .border-top {
   left: 0;
   top: 0;
   height: 1px;
 }
+.border-right {
+  top: 0;
+  width: 1px;
+}
 .border-bottom {
-  left: 0;
+  left: 1px;
   height: 1px;
+}
+.border-left {
+  top: 1px;
+  left: 0;
+  width: 1px;
 }
 
 /* __________ sheet-pop __________ */

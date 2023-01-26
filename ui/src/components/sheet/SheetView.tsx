@@ -42,10 +42,10 @@ const Border = (props: {width: number, height: number, color?: string}) => {
   // console.log(`Border: render`);
   return (
     <div className='border'>
-      <div className='border-left' style={{height, backgroundColor}}></div>
-      <div className='border-right' style={{height, left: width, backgroundColor}}></div>
       <div className='border-top' style={{width, backgroundColor}}></div>
+      <div className='border-right' style={{height, left: width, backgroundColor}}></div>
       <div className='border-bottom' style={{width, top: height, backgroundColor}}></div>
+      <div className='border-left' style={{height, backgroundColor}}></div>
     </div>
   );
 };

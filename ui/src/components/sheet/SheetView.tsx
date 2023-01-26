@@ -56,7 +56,7 @@ const Peak = () => {
   const {sheet} = useModel('sheet', m => ({sheet: m.sheet}));
   // console.log(`Peak: render`);
   return (
-    <div className='sheet-peak' style={{width: peakWidth, height: peakHeight}}>
+    <div className='sheet-peak sheet-pop-outer' style={{width: peakWidth, height: peakHeight}}>
       <SheetPop col={0} row={0} />
     </div>
   );
@@ -82,7 +82,7 @@ const Col = (props: {col: ColData}) => {
   // console.log(`Col: render`);
   return (
     <div className='sheet-col'>
-      <div className='sheet-col-header' style={{height: peakHeight, left: col.left, width: col.width}}>
+      <div className='sheet-col-header sheet-pop-outer' style={{height: peakHeight, left: col.left, width: col.width}}>
         {col.col}
         <SheetPop col={col.col} row={0} />
       </div>
@@ -111,7 +111,7 @@ const Row = (props: {row: RowData}) => {
   // console.log(`Row: render`);
   return (
     <div className='sheet-row'>
-      <div className='sheet-row-header' style={{top: row.top, height: row.height, width: peakWidth}}>
+      <div className='sheet-row-header sheet-pop-outer' style={{top: row.top, height: row.height, width: peakWidth}}>
         {row.row}
         <SheetPop col={0} row={row.row} />
       </div>

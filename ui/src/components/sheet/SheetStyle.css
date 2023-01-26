@@ -40,11 +40,15 @@
 
 /* __________ sheet-pop __________ */
 
+.sheet-pop-outer .sheet-pop {
+  visibility: hidden;
+}
+
+.sheet-pop-outer:hover .sheet-pop {
+  visibility: visible;
+}
+
 .sheet-pop-body {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
   display: flex;
   align-items: center;
 }
@@ -55,7 +59,7 @@
 }
 
 .sheet-pop-btn svg {
-  transform: scale(0.6);
+  transform: scale(0.7);
 }
 
 /* __________ peak __________ */
@@ -76,12 +80,12 @@
 
 .sheet-peak::after {
   position: absolute;
-  left: 1px;
-  top: 1px;
+  right: 3px;
+  bottom: 3px;
   content: ' ';
   border-style: solid;
   border-width: 6px;
-  border-color: #ccc transparent transparent #ccc;
+  border-color: transparent #bbb #bbb transparent;
 }
 
 /* __________ cols __________ */
@@ -106,6 +110,7 @@
   border-top: 1px solid #ddd;
   color: #666;
   font-size: 0.8rem;
+  padding-left: 14px;
 }
 
 .sheet-col-line {
@@ -141,6 +146,7 @@
   background-color: #f8f8f8;
   color: #666;
   font-size: 0.8rem;
+  padding-left: 14px;
 }
 
 .sheet-row-line {

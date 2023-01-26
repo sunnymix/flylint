@@ -20,6 +20,7 @@ export const SheetView = () => {
   const {cols, rows} = useModel('sheet', m => ({cols: m.cols, rows: m.rows}));
   const width = SheetApi.calcSheetWidth(cols);
   const height = SheetApi.calcSheetHeight(rows);
+  console.log(`Sheet: render`);
   return (
     <div className='sheet' style={{width, height}}>
       <Border width={width} height={height} />
@@ -27,6 +28,7 @@ export const SheetView = () => {
       <Cols />
       <Rows />
       <Cells />
+      <CurCell />
     </div>
   );
 };
@@ -37,6 +39,7 @@ export default SheetView;
 const Border = (props: {width: number, height: number, color?: string}) => {
   const {width, height, color} = props;
   const backgroundColor = color || '#ddd';
+  // console.log(`Border: render`);
   return (
     <div className='border'>
       <div className='border-left' style={{height, backgroundColor}}></div>
@@ -51,6 +54,7 @@ const Border = (props: {width: number, height: number, color?: string}) => {
 
 const Peak = () => {
   const {sheet} = useModel('sheet', m => ({sheet: m.sheet}));
+  console.log(`Peak: render`);
   return (
     <div className='sheet-peak' style={{width: peakWidth, height: peakHeight}}>
       <SheetPop col={0} row={0} />
@@ -63,6 +67,7 @@ const Peak = () => {
 const Cols = () => {
   const {cols, rows} = useModel('sheet', m => ({cols: m.cols, rows: m.rows}));
   const sheetHeight = SheetApi.calcSheetHeight(rows);
+  console.log(`Cols: render`);
   return (
     <div className='sheet-cols' style={{left: peakWidth, height: sheetHeight}}>
       {cols.map((col: ColData) => <Col key={`${col.col}`} col={col} />)}
@@ -74,6 +79,7 @@ const Cols = () => {
 
 const Col = (props: {col: ColData}) => {
   const {col} = props;
+  console.log(`Col: render`);
   return (
     <div className='sheet-col'>
       <div className='sheet-col-header' style={{height: peakHeight, left: col.left, width: col.width}}>
@@ -90,6 +96,7 @@ const Col = (props: {col: ColData}) => {
 const Rows = () => {
   const {rows, cols} = useModel('sheet', m => ({rows: m.rows, cols: m.cols}));
   const sheetWidth = SheetApi.calcSheetWidth(cols);
+  console.log(`Rows: render`);
   return (
     <div className='sheet-rows' style={{top: peakHeight, width: sheetWidth}}>
       {rows.map((row: RowData) => <Row key={`${row.row}`} row={row} />)}
@@ -101,6 +108,7 @@ const Rows = () => {
 
 const Row = (props: {row: RowData}) => {
   const {row} = props;
+  console.log(`Row: render`);
   return (
     <div className='sheet-row'>
       <div className='sheet-row-header' style={{top: row.top, height: row.height, width: peakWidth}}>
@@ -134,8 +142,24 @@ const Cells = () => {
   }, [cols, rows, leftGap, topGap, curCell]);
   return (
     <div className='sheet-cells' onClick={onClick} style={{left: peakWidth, top: peakHeight, width: cellsWidth, height: cellsHeight}}>
-      <CurCell />
       {cells.map((cell: CellData) => <Cell key={`${cell.col}-${cell.row}`} cell={cell} />)}
+    </div>
+  );
+};
+
+/* __________ cell __________ */
+
+const Cell = (props: {cell: CellData}) => {
+  const {cell} = props;
+  const {cols, rows} = useModel('sheet', m => ({cols: m.cols, rows: m.rows}));
+  const {left, top, width, height} = SheetApi.calcCellRect(cell.col, cell.row, cols, rows);
+  const onClick = useCallback((e: React.MouseEvent) => {
+    // console.log(`Cell: onClick: cell.content: `, JSON.parse(cell.content || '[]'));
+  }, [cell]);
+  console.log(`Cell: render`);
+  return (
+    <div className='sheet-cell' onClick={onClick} style={{left, top, width, height}}>
+      <Text content={cell.content} />
     </div>
   );
 };
@@ -145,27 +169,11 @@ const Cells = () => {
 const CurCell = () => {
   const {curCell} = useModel('sheet', m => ({curCell: m.curCell}));
   if (!curCell) return <></>;
-  const left = curCell.left, top = curCell.top, width = curCell.width, height = curCell.height;
+  const left = curCell.left + peakWidth, top = curCell.top + peakHeight, width = curCell.width, height = curCell.height;
+  console.log(`CurCell: render`);
   return (
     <div className='sheet-cells-cur-cell' style={{left, top}}>
       <Border width={width} height={height} color='#1890ff' />
-    </div>
-  );
-};
-
-/* __________ cell __________ */
-
-const Cell = (props: {cell: CellData}) => {
-  console.log(`Cell: render`);
-  const {cell} = props;
-  const {cols, rows} = useModel('sheet', m => ({cols: m.cols, rows: m.rows}));
-  const {left, top, width, height} = SheetApi.calcCellRect(cell.col, cell.row, cols, rows);
-  const onClick = useCallback((e: React.MouseEvent) => {
-    console.log(`Cell: onClick: cell.content: `, JSON.parse(cell.content || '[]'));
-  }, [cell]);
-  return (
-    <div className='sheet-cell' onClick={onClick} style={{left, top, width, height}}>
-      <Text content={cell.content} />
     </div>
   );
 };

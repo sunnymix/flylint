@@ -79,7 +79,7 @@ const SheetModel = () => {
 
   /* __________ api: cursor & curCell: update __________ */
 
-  const updateCursorAndCurCell = (cursor: CursorData, cols: ColData[], rows: RowData[], curCell: CellData|null) => {
+  const updateCursorAndCurCell = (cursor: CursorData, cols: ColData[], rows: RowData[]) => {
     // setCursor(cursor);
     const cell = SheetApi.getCellByCursor(cursor, cols, rows);
     // if (SheetApi.isSameCell(cell, curCell)) return;

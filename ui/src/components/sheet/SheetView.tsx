@@ -125,10 +125,10 @@ const Row = (props: {row: RowData}) => {
 const Cells = () => {
   console.log(`Cells: render`);
   const {
-    cells, cols, rows, curCell,
-    leftGap, topGap, updateCursorAndCurCell 
+    cells, cols, rows,
+    leftGap, topGap, updateCursorAndCurCell,
   } = useModel('sheet', m => ({
-    cells: m.cells, cols: m.cols, rows: m.rows, curCell: m.curCell,
+    cells: m.cells, cols: m.cols, rows: m.rows,
     leftGap: m.leftGap, topGap: m.topGap, updateCursorAndCurCell: m.updateCursorAndCurCell
   }));
   const cellsWidth = SheetApi.calcSheetWidth(cols, true);
@@ -138,8 +138,8 @@ const Cells = () => {
     const top = e.clientY - topGap - peakHeight;
     if (!left || !top) return;
     const cursor = {left, top} as CursorData;
-    updateCursorAndCurCell(cursor, cols, rows, curCell);
-  }, [cols, rows, leftGap, topGap, curCell]);
+    updateCursorAndCurCell(cursor, cols, rows);
+  }, [cols, rows, leftGap, topGap]);
   return (
     <div className='sheet-cells' onClick={onClick} style={{left: peakWidth, top: peakHeight, width: cellsWidth, height: cellsHeight}}>
       {cells.map((cell: CellData) => <Cell key={`${cell.col}-${cell.row}`} cell={cell} />)}
@@ -167,13 +167,14 @@ const Cell = (props: {cell: CellData}) => {
 /* __________ cur cell __________ */
 
 const CurCell = () => {
-  const {curCell} = useModel('sheet', m => ({curCell: m.curCell}));
-  if (!curCell) return <></>;
-  const left = curCell.left + peakWidth, top = curCell.top + peakHeight, width = curCell.width, height = curCell.height;
-  console.log(`CurCell: render`);
-  return (
-    <div className='sheet-cells-cur-cell' style={{left, top}}>
-      <Border width={width} height={height} color='#1890ff' />
-    </div>
-  );
+  return <></>;
+  // const {curCell} = useModel('sheet', m => ({curCell: m.curCell}));
+  // if (!curCell) return <></>;
+  // const left = curCell.left + peakWidth, top = curCell.top + peakHeight, width = curCell.width, height = curCell.height;
+  // console.log(`CurCell: render`);
+  // return (
+  //   <div className='sheet-cells-cur-cell' style={{left, top}}>
+  //     <Border width={width} height={height} color='#1890ff' />
+  //   </div>
+  // );
 };

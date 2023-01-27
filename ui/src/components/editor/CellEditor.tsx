@@ -13,7 +13,7 @@ export interface CellEditorProps {
   cell?: CellData,
   className?: string,
   style?: React.CSSProperties,
-  onChange?: (isInit: boolean, isAstChange: boolean, content: string) => void,
+  onChange?: (cell: CellData, content: string) => void,
   onFocus?: () => void,
   onBlur?: () => void,
 };
@@ -37,9 +37,11 @@ const CellEditor = forwardRef((props: CellEditorProps, ref: any) => {
 
   // __________ editor __________
 
-  const onEditorChange = useCallback((value: Descendant[]) => {
-    props.onChange?.call(null, false, EditorApi.isAstChange(editor), JSON.stringify(value));
-  }, [editor]);
+  const onEditorChange = useCallback((content: Descendant[]) => {
+    if (!props.onChange || !cell) return;
+    if (!EditorApi.isAstChange(editor)) return;
+    props.onChange(cell, JSON.stringify(content));
+  }, [editor, cell]);
 
   // __________ editor event __________
 

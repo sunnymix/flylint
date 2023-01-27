@@ -169,17 +169,13 @@ const Cell = (props: {cell: CellData}) => {
 const CurEditor = () => {
   const {curCell, updateCell} = useModel('sheet', m => ({curCell: m.curCell, updateCell: m.updateCell}));
   const rect = curCell ? (curCell as Rect) : Rect0;
-  const onEditorChange = useCallback((isInit: boolean, isAstChange: boolean, content: string) => {
-    if (isInit || !isAstChange) return;
-    updateCell(curCell, {content} as CellData);
-  }, [curCell]);
-  const onEditorFocus = useCallback(() => {
-    // setVisible(true);
-  }, []);
-  const onEditorBlur = useCallback(() => {
-    
-  }, []);
-  console.log(`CurEditor: render`);
+  const onEditorChange = (cell: CellData, content: string) => {
+    console.log(`CurEditor: onEditorChange: cell: `, cell);
+    updateCell(cell, {content} as CellData);
+  };
+  const onEditorFocus = useCallback(() => {}, []);
+  const onEditorBlur = useCallback(() => {}, []);
+  console.log(`CurEditor: render: curCell: `, curCell);
   return (
     <div className='sheet-content-box' style={{left: peakWidth, top: peakHeight}}>
       <div className='sheet-cur-eidtor' style={{...rect}}>

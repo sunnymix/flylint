@@ -150,15 +150,14 @@ const Cells = () => {
 const Cell = (props: {cell: CellData}) => {
   const {setCurCell} = useModel('sheet', m => ({setCurCell: m.setCurCell}));
   const {cell} = props;
-  const {cols, rows} = useModel('sheet', m => ({cols: m.cols, rows: m.rows}));
-  const {left, top, width, height} = SheetApi.calcCellRect(cell.col, cell.row, cols, rows);
+  const rect = cell ? (cell as Rect) : Rect0;
   const onClick = useCallback((e: React.MouseEvent) => {
     setCurCell(undefined);
     setTimeout(() => setCurCell(cell), 10);
   }, [cell]);
   console.log(`Cell: render`);
   return (
-    <div className='sheet-cell' onClick={onClick} style={{left, top, width, height}}>
+    <div className='sheet-cell' onClick={onClick} style={{...rect}}>
       <Text content={cell.content} />
     </div>
   );

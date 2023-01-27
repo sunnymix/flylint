@@ -80,7 +80,7 @@ const SheetPop = forwardRef((props: {col: number, row: number}, ref: any) => {
   ];
 
   return (
-    <Dropdown className='sheet-pop' menu={{items: items}} placement='bottomCenter'>
+    <Dropdown className='sheet-pop' menu={{items: items}} placement='bottom'>
       <div className='sheet-pop-body'>
         <Button className ='sheet-pop-btn' size='small' type='text'><CaretDownFilled /></Button>
       </div>

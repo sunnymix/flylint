@@ -185,30 +185,24 @@
   z-index: 500;
   position: absolute;
   overflow: hidden;
+  padding: 2px;
 }
 
 /* __________ block __________ */
 
 .block {
-  line-height: 30px;
+  line-height: 22px;
 }
 
 /* __________ old __________ */
 
 .sheet-cell-editor {
+  z-index: 600;
   position: absolute;
   left: 0;
   top: 0;
   right: 0;
-  border: 1px solid transparent;
-}
-
-.sheet-cell.active {
-  z-index: 300;
-}
-
-.sheet-cell.active .sheet-cell-editor {
-  border-color: #1890ff;
-  background: #fff;
-  box-shadow: 0 0 2px 1px #00000030;
+  background-color: #fff;
+  border: 1px solid #1890ff;
+  padding: 1px;
 }

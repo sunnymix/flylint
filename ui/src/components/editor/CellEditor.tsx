@@ -10,7 +10,7 @@ import './EditorStyle.css';
 import SheetApi, { Cell as CellData } from "../sheet/SheetApi";
 
 export interface CellEditorProps {
-  data: CellData,
+  content?: string,
   className?: string,
   style?: React.CSSProperties,
   onChange?: (isInit: boolean, isAstChange: boolean, content: string) => void,
@@ -19,43 +19,20 @@ export interface CellEditorProps {
 };
 
 const CellEditor = forwardRef((props: CellEditorProps, ref: any) => {
-
-  // console.log(`Editor: render: ${props.wiki.id},${props.wiki.name},${props.wiki.title}`);
+  const {content} = props;
 
   // __________ state __________
 
   const [editor] = useState(withReact(withInlines(withHistory(createEditor()))));
   const [menuShowCmd, setMenuShowCmd] = useState<string|any>();
 
-  const [data, setData] = useState<CellData|null>(null);
-
-  // __________ effect __________
-
-  const init = () => {
-  };
-
-  const destroy = () => {
-    Transforms.deselect(editor);
-  };
-
   useEffect(() => {
-    init();
-
-    if (!props.data || props.data.type != 'cell') return;
-
-    SheetApi.getServerCell(props.data.sheet, props.data.col, props.data.row, (data: CellData|null) => {
-      if (!data) return;
-      setData(data);
-    });
-
-    return () => destroy();
-  }, [props.data]);
-
-  useEffect(() => {
-    if (!data) return;
-    EditorApi.setContent(editor, data.content || '');
+    EditorApi.setContent(editor, content || '');
     EditorApi.forceRender(editor);
-  }, [data]);
+    return () => {
+      Transforms.deselect(editor);
+    };
+  }, [content]);
 
   // __________ editor __________
 
@@ -81,28 +58,14 @@ const CellEditor = forwardRef((props: CellEditorProps, ref: any) => {
   // __________ api __________
 
   useImperativeHandle(ref, () => ({
-
-    isFocused: () => {
-      return EditorApi.isFocused(editor);
-    },
-
-    tryFocus: () => {
-      EditorApi.tryFocus(editor);
-    },
-
-    focus: (index: number) => {
-      EditorApi.focusIndex(editor, index);
-    },
-
-    deselect: () => {
-      Transforms.deselect(editor);
-    },
-
+    isFocused: () => EditorApi.isFocused(editor),
+    tryFocus: () => EditorApi.tryFocus(editor),
+    focus: (index: number) => EditorApi.focusIndex(editor, index),
+    deselect: () => Transforms.deselect(editor),
     setContent: (content: string) => {
       EditorApi.setContent(editor, content);
       EditorApi.forceRender(editor);
     },
-
   }));
 
   // __________ ui ___________

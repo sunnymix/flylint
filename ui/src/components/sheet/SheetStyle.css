@@ -188,6 +188,13 @@
   padding: 2px;
 }
 
+/* editor */
+
+.sheet-cur-eidtor {
+  z-index: 700;
+  position: absolute;
+}
+
 /* __________ block __________ */
 
 .block {

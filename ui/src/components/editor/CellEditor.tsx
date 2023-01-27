@@ -10,7 +10,7 @@ import './EditorStyle.css';
 import SheetApi, { Cell as CellData } from "../sheet/SheetApi";
 
 export interface CellEditorProps {
-  content?: string,
+  cell?: CellData,
   className?: string,
   style?: React.CSSProperties,
   onChange?: (isInit: boolean, isAstChange: boolean, content: string) => void,
@@ -19,7 +19,7 @@ export interface CellEditorProps {
 };
 
 const CellEditor = forwardRef((props: CellEditorProps, ref: any) => {
-  const {content} = props;
+  const {cell} = props;
 
   // __________ state __________
 
@@ -27,12 +27,13 @@ const CellEditor = forwardRef((props: CellEditorProps, ref: any) => {
   const [menuShowCmd, setMenuShowCmd] = useState<string|any>();
 
   useEffect(() => {
-    EditorApi.setContent(editor, content || '');
+    console.log(`CellEditor: cell: change: `, cell);
+    EditorApi.setContent(editor, cell?.content);
     EditorApi.forceRender(editor);
     return () => {
       Transforms.deselect(editor);
     };
-  }, [content]);
+  }, [cell]);
 
   // __________ editor __________
 

@@ -314,7 +314,7 @@ const EditorApi = {
     }
   },
 
-  parseContent(content: string) {
+  parseContent(content?: string) {
     if (!content) {
       return EditorApi.initialContent();
     }
@@ -342,7 +342,7 @@ const EditorApi = {
     return editor.operations.some((op: any) => 'set_selection' !== op.type);
   },
 
-  setContent(editor: any, content: string) {
+  setContent(editor: any, content?: string) {
     editor.children = EditorApi.parseContent(content);
   },
 

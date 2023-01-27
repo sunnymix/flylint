@@ -11,6 +11,15 @@ export const peakHeight = 30;
 
 // __________ interface: __________
 
+export interface Size {width: number, height: number};
+export const Size0 = {width: 0, height: 0} as Size;
+
+export interface Pos {left: number, top: number};
+export const Pos0 = {left: 0, top: 0} as Pos;
+
+export interface Rect {left: number, top: number, width: number, height: number};
+export const Rect0 = {left: -1000, top: -1000, width: 0, height: 0} as Rect;
+
 export interface Sheet {
   sheet: string,
   cols: Col[],

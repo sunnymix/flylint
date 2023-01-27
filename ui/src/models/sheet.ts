@@ -7,7 +7,6 @@ import SheetApi, {
   Cell as CellData,
   defaultWidth,
   defaultHeight,
-  CursorData,
 } from "@/components/sheet/SheetApi";
 import { SheetColsAdd, SheetRowsAdd } from "@/components/common/EventBus";
 
@@ -21,8 +20,7 @@ const SheetModel = () => {
   const [cols, setCols] = useState<ColData[]>([]);
   const [rows, setRows] = useState<RowData[]>([]);
   const [cells, setCells] = useState<CellData[]>([]);
-  const [curCell, setCurCell] = useState<CellData|null>(null);
-  const [cursor, setCursor] = useState<CursorData>({left: 0, top: 0});
+  const [curCell, setCurCell] = useState<CellData>();
 
   /* __________ api: sheet: select __________ */
 
@@ -33,7 +31,6 @@ const SheetModel = () => {
   /* __________ effect: sheet: change __________ */
 
   useEffect(() => {
-    setCursor({left: 0, top: 0});
     if (!sheet) return;
     SheetApi.getServerSheet(sheet, (newSheet: SheetData|null) => {
       if (!newSheet) return;
@@ -54,7 +51,7 @@ const SheetModel = () => {
     
     SheetApi.addServerCol(sheet, afterCol, size, width, (success: boolean) => {
       if (!success) return alert('ERROR');
-      setCurCell(null);
+      setCurCell(undefined);
       const newCols = SheetApi.addCols(sheet, cols, afterCol, size, width);
       setCols(newCols);
     });
@@ -71,7 +68,7 @@ const SheetModel = () => {
 
     SheetApi.addServerRow(sheet, afterRow, size, height, (success: boolean) => {
       if (!success) return alert('ERROR');
-      setCurCell(null);
+      setCurCell(undefined);
       const newRows: RowData[] = SheetApi.addRows(sheet, rows, afterRow, size, height);
       setRows(newRows);
     });
@@ -79,19 +76,10 @@ const SheetModel = () => {
 
   /* __________ api: cursor & curCell: update __________ */
 
-  const updateCursorAndCurCell = (cursor: CursorData, cols: ColData[], rows: RowData[]) => {
-    // setCursor(cursor);
-    const cell = SheetApi.getCellByCursor(cursor, cols, rows);
-    // if (SheetApi.isSameCell(cell, curCell)) return;
-    // console.log(`set Cur Cell, isSameCell: ${SheetApi.isSameCell(cell, curCell)}, [${JSON.stringify(cell)}] [${JSON.stringify(curCell)}]`);
-    // setCurCell(cell);
+  const updateCell = (cell?: CellData, newCell?: CellData) => {
+    // TODO:
+    console.log(`SheetModel: updateCell: `, cell, newCell);
   };
-
-  /* __________ effect: cursor: change __________ */
-
-  useEffect(() => {
-    // console.log(`SheetModel: cursor change: cursor: ${JSON.stringify(cursor)}`);
-  }, [cursor]);
 
   /* __________ effect: curCell: change __________ */
 
@@ -107,7 +95,7 @@ const SheetModel = () => {
     cols, addCols,
     rows, addRows,
     cells, 
-    cursor, curCell, setCurCell, updateCursorAndCurCell,
+    curCell, setCurCell, updateCell,
   };
 };
 

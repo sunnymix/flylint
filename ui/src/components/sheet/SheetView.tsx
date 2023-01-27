@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useRef, useState } from "react";
+import React, { forwardRef, useCallback, useEffect, useRef, useState } from "react";
 import { useModel } from "umi";
 import './SheetStyle.css';
 import SheetPop from "./SheetPop";
@@ -11,6 +11,8 @@ import SheetApi, {
   Row as RowData,
   Cell as CellData,
   CursorData,
+  Rect,
+  Rect0,
 } from "./SheetApi";
 import Text from "../text/Text";
 import CellEditor from "../editor/CellEditor";
@@ -29,7 +31,6 @@ export const SheetView = () => {
       <Cols />
       <Rows />
       <Cells />
-      {/* <CurCell /> */}
       <CurEditor />
     </div>
   );
@@ -151,30 +152,14 @@ const Cell = (props: {cell: CellData}) => {
   const {cell} = props;
   const {cols, rows} = useModel('sheet', m => ({cols: m.cols, rows: m.rows}));
   const {left, top, width, height} = SheetApi.calcCellRect(cell.col, cell.row, cols, rows);
-  const [content, setContent] = useState<string|undefined>(cell.content);
   const onClick = useCallback((e: React.MouseEvent) => {
-    setCurCell(cell);
+    setCurCell(undefined);
+    setTimeout(() => setCurCell(cell), 10);
   }, [cell]);
   console.log(`Cell: render`);
   return (
     <div className='sheet-cell' onClick={onClick} style={{left, top, width, height}}>
-      <Text content={content} />
-    </div>
-  );
-};
-
-/* __________ cur cell __________ */
-
-const CurCell = () => {
-  const {curCell} = useModel('sheet', m => ({curCell: m.curCell}));
-  if (!curCell) return <></>;
-  const left = curCell.left, top = curCell.top, width = curCell.width, height = curCell.height;
-  console.log(`CurCell: render`);
-  return (
-    <div className='sheet-content-box' style={{left: peakWidth, top: peakHeight}}>
-      <div className='sheet-cells-cur-cell' style={{left, top}}>
-        <Border width={width} height={height} color='#1890ff' />
-      </div>
+      <Text content={cell.content} />
     </div>
   );
 };
@@ -182,17 +167,29 @@ const CurCell = () => {
 /* __________ cell eidtor __________ */
 
 const CurEditor = () => {
-  const {curCell} = useModel('sheet', m => ({curCell: m.curCell}));
-  if (!curCell) return <></>;
-  const left = curCell.left, top = curCell.top, width = curCell.width, height = curCell.height;
+  const {curCell, updateCell} = useModel('sheet', m => ({curCell: m.curCell, updateCell: m.updateCell}));
+  const rect = curCell ? (curCell as Rect) : Rect0;
+  const onEditorChange = useCallback((isInit: boolean, isAstChange: boolean, content: string) => {
+    if (isInit || !isAstChange) return;
+    updateCell(curCell, {content} as CellData);
+  }, [curCell]);
+  const onEditorFocus = useCallback(() => {
+    // setVisible(true);
+  }, []);
+  const onEditorBlur = useCallback(() => {
+    
+  }, []);
   console.log(`CurEditor: render`);
   return (
     <div className='sheet-content-box' style={{left: peakWidth, top: peakHeight}}>
-      <div className='sheet-cell' style={{left, top, width, height}}>
+      <div className='sheet-cur-eidtor' style={{...rect}}>
         <CellEditor
           className='sheet-cell-editor'
-          content={curCell.content}
-          style={{width, minHeight: height}} />
+          cell={curCell}
+          onChange={onEditorChange}
+          onFocus={onEditorFocus}
+          onBlur={onEditorBlur}
+          style={{width: rect.width, minHeight: rect.height}} />
       </div>
     </div>
   );

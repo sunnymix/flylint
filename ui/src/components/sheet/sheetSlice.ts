@@ -55,14 +55,16 @@ export const sheetSlice = createSlice({
     builder
     .addCase(fetchSheet.pending, (state: SheetState) => {
       state.status = 'loading';
+      state.curCell = undefined;
     })
-    .addCase(fetchSheet.fulfilled, (state, action) => {
+    .addCase(fetchSheet.fulfilled, (state: SheetState, action) => {
       state.status = 'loaded';
       const newSheet = action.payload as SheetData;
       state.sheet = newSheet.sheet;
       state.cols = newSheet.cols;
       state.rows = newSheet.rows;
       state.cells = newSheet.cells;
+      state.curCell = undefined;
     })
   },
 });

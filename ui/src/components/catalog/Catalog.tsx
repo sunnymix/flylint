@@ -24,7 +24,7 @@ export interface CatalogProps {
 
 export const Catalog = (props: CatalogProps) => {
 
-  console.log(`Catalog: render: name(${props.name}): refresh(${props.refresh})`);
+  // console.log(`Catalog: render: name(${props.name}): refresh(${props.refresh})`);
 
   // __________ state __________
 
@@ -50,7 +50,7 @@ export const Catalog = (props: CatalogProps) => {
   // __________ effect: props.name -> wiki __________
 
   useEffect(() => {
-    console.log(`Catalog: effect: name(${props.name})`)
+    // console.log(`Catalog: effect: name(${props.name})`)
     setWiki(null);
     if (!props.name) return;
     WikiApi.basic(props.name, (wiki: BasicWiki) => {

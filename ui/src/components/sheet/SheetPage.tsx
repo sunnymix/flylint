@@ -18,7 +18,7 @@ const SheetPage = forwardRef((props: SheetPageProps, ref: any) => {
 
   const [title, setTitle] = useState<string>(props.data.title);
 
-  console.log(`SheetPage: render: data(${props.data.id},${props.data.name},${props.data.title})`);
+  // console.log(`SheetPage: render: data(${props.data.id},${props.data.name},${props.data.title})`);
 
   // __________ model __________
 

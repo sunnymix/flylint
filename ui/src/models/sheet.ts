@@ -7,6 +7,7 @@ import SheetApi, {
   Cell as CellData,
   defaultWidth,
   defaultHeight,
+  isSameCell,
 } from "@/components/sheet/SheetApi";
 import { SheetColsAdd, SheetRowsAdd } from "@/components/common/EventBus";
 
@@ -43,7 +44,7 @@ const SheetModel = () => {
   /* __________ api: cols: add __________ */
 
   const addCols = (sheet: string, cols: ColData[],e: SheetColsAdd) => {
-    console.log(`SheetModel: addCols: cols: ${JSON.stringify(cols)}`);
+    console.log(`# models | sheet | addCols: cols: `, cols);
     let afterCol = e.col || 0;
     afterCol = (afterCol > 0 && e.at == 'before') ? (afterCol - 1) : afterCol;
     const size = e.size || 0;
@@ -60,7 +61,7 @@ const SheetModel = () => {
   /* __________ api: rows: add __________ */
 
   const addRows = (sheet: string, rows: RowData[], e: SheetRowsAdd) => {
-    console.log(`SheetModel: addRows: rows: ${JSON.stringify(rows)}`);
+    console.log(`# models | sheet | addRows: rows: `, rows);
     let afterRow = e.row || 0;
     afterRow = (afterRow > 0 && e.at == 'before') ? (afterRow - 1) : afterRow;
     const size = e.size || 0;
@@ -76,15 +77,30 @@ const SheetModel = () => {
 
   /* __________ api: cursor & curCell: update __________ */
 
-  const updateCell = (cell?: CellData, newCell?: CellData) => {
-    // TODO:
-    console.log(`SheetModel: updateCell: `, cell, newCell);
+  const updateCell = (cells: CellData[], cell?: CellData, newCell?: CellData) => {
+    console.log(`# models | sheet | updateCell: `, cells, cell, newCell);
+    if (!cell || !newCell) return;
+    const newCells = cells.map((item: CellData) => {
+      if (isSameCell(item, cell)) {
+        item.content = newCell.content;
+        console.log(`# models | sheet | updateCell | update: `, item);
+        return {...item};
+      }
+      return item;
+    });
+    setCells(newCells);
   };
+
+  /* cells */
+
+  useEffect(() => {
+    console.log(`# models | sheet | cells | changes: `, cells);
+  }, [cells]);
 
   /* __________ effect: curCell: change __________ */
 
   useEffect(() => {
-    console.log(`SheetModel: curCell: change: `, curCell);
+    console.log(`# models | sheet | curCell | change: `, curCell);
   }, [curCell]);
 
   /* __________ export __________ */

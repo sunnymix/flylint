@@ -27,7 +27,7 @@ const CellEditor = forwardRef((props: CellEditorProps, ref: any) => {
   const [menuShowCmd, setMenuShowCmd] = useState<string|any>();
 
   useEffect(() => {
-    console.log(`CellEditor: cell: change: `, cell);
+    // console.log(`CellEditor: cell: change: `, cell);
     EditorApi.setContent(editor, cell?.content);
     EditorApi.forceRender(editor);
     return () => {

@@ -54,7 +54,7 @@
   visibility: visible;
 }
 
-.sheet-pop-body {
+.sheet-header-title .sheet-pop-body {
   position: absolute;
   left: 100%;
   top: 0;

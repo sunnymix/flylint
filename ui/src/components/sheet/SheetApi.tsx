@@ -103,7 +103,7 @@ export const getServerSheet = (sheet: string, cb: (sheet: Sheet|null) => void) =
       const rows = arrangeRows(serverSheet.rows, true);
       const cells = arrangeCells(sheet, cols, rows, serverSheet.cells);
       const newSheet = {sheet, cols, rows, cells};
-      console.log(`SheetApi: getServerSheet: sheet: `, newSheet);
+      // console.log(`SheetApi: getServerSheet: sheet: `, newSheet);
       cb(newSheet);
     });
 };

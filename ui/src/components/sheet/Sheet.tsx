@@ -162,8 +162,9 @@ const CurEditor = () => {
   const dispatch = useAppDispatch();
   const {curCell} = useAppSelector(s => ({curCell: s.sheet.curCell}));
   const rect = curCell ? (curCell as Rect) : Rect0;
-  const onEditorChange = (cell: CellData, content: string) => {
-    dispatch(updateCell({cell, newCell: {content} as CellData}));
+  const onEditorChange = async (cell: CellData, content: string) => {
+    const success = await SheetApi.saveCellContent(cell.sheet, cell.col, cell.row, content);
+    if (success) dispatch(updateCell({cell, newCell: {content} as CellData}));
   };
   const onEditorFocus = useCallback(() => {}, []);
   const onEditorBlur = useCallback((cell: CellData, content: string) => {}, []);

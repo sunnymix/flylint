@@ -111,16 +111,16 @@ export const getServerSheet = (sheet: string, cb: (sheet: Sheet|null) => void) =
 export const fetchSheet = (sheet: string) => {
   return new Promise((resolve, reject) => {
     axios.get(`${Constant.API_BASE}/sheet/${sheet}`)
-    .then(res => {
-      const serverSheet = res.data?.data as Sheet || null;
-      if (!serverSheet) reject('ERROR');
-      const sheet = serverSheet.sheet;
-      const cols = arrangeCols(serverSheet.cols, true);
-      const rows = arrangeRows(serverSheet.rows, true);
-      const cells = arrangeCells(sheet, cols, rows, serverSheet.cells);
-      const newSheet = {sheet, cols, rows, cells};
-      resolve(newSheet);
-    });
+      .then(res => {
+        const serverSheet = res.data?.data as Sheet || null;
+        if (!serverSheet) reject('SERVER ERROR');
+        const sheet = serverSheet.sheet;
+        const cols = arrangeCols(serverSheet.cols, true);
+        const rows = arrangeRows(serverSheet.rows, true);
+        const cells = arrangeCells(sheet, cols, rows, serverSheet.cells);
+        const newSheet = {sheet, cols, rows, cells};
+        resolve(newSheet);
+      });
   });
 };
 
@@ -138,6 +138,16 @@ export const saveServerCellContent = (sheet: string, col: number, row: number, c
       const success = res.data?.success || false;
       cb(success);
     });
+};
+
+export const saveCellContent = (sheet: string, col: number, row: number, content: string) => {
+  return new Promise((resolve, reject) => {
+    axios.post(`${Constant.API_BASE}/sheet/cell/${sheet}/${col}/${row}`, {content})
+      .then(res => {
+        const success = res.data?.success || false;
+        success ? resolve(true) : reject('SERVER ERROR');
+      });
+  });
 };
 
 export const addServerCol = (sheet: string, afterCol: number, size: number, width: number, cb: (success: boolean) => void) => {
@@ -359,6 +369,8 @@ const SheetApi = {
   peakHeight,
   /* __________ server api: __________ */
   fetchSheet,
+  saveCellContent,
+  // deperacate:
   getServerSheet,
   getServerCell,
   saveServerCellContent,

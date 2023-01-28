@@ -70,6 +70,7 @@ export type SheetTarget = 'col' | 'row' | 'cell';
 export type SheetAt = 'self' | 'before' | 'after';
 
 export interface SheetUpdate {
+  sheet: string,
   target: SheetTarget,
   col?: number,
   row?: number,
@@ -140,7 +141,7 @@ export const saveServerCellContent = (sheet: string, col: number, row: number, c
     });
 };
 
-export const saveCellContent = (sheet: string, col: number, row: number, content: string) => {
+export const postCellContent = (sheet: string, col: number, row: number, content: string) => {
   return new Promise((resolve, reject) => {
     axios.post(`${Constant.API_BASE}/sheet/cell/${sheet}/${col}/${row}`, {content})
       .then(res => {
@@ -159,6 +160,17 @@ export const addServerCol = (sheet: string, afterCol: number, size: number, widt
     });
 };
 
+export const postCols = (sheet: string, afterCol: number, size: number, width: number) => {
+  return new Promise<boolean>((resolve, reject) => {
+    const addColData = {afterCol, size, width};
+    axios.post(`${Constant.API_BASE}/sheet/col/${sheet}`, addColData)
+      .then(res => {
+        const success = res.data?.success || false;
+        success ? resolve(true) : reject('SERVER ERROR');
+      });
+  });
+};
+
 export const addServerRow = (sheet: string, afterRow: number, size: number, height: number, cb: (success: boolean) => void) => {
   const addRowData = {afterRow, size, height};
   axios.post(`${Constant.API_BASE}/sheet/row/${sheet}`, addRowData)
@@ -166,6 +178,17 @@ export const addServerRow = (sheet: string, afterRow: number, size: number, heig
       const success = res.data?.success || false;
       cb(success);
     });
+};
+
+export const postRows = (sheet: string, afterRow: number, size: number, height: number) => {
+  return new Promise<boolean>((resolve, reject) => {
+    const addRowData = {afterRow, size, height};
+    axios.post(`${Constant.API_BASE}/sheet/row/${sheet}`, addRowData)
+      .then(res => {
+        const success = res.data?.success || false;
+        success ? resolve(true) : reject('SERVER ERROR');
+      });
+  });
 };
 
 /* __________ sheet: helper: __________ */
@@ -248,9 +271,10 @@ export const buildCell = (sheet: string, col: Col, row: Row): Cell => {
 
 /* __________ addCols: __________ */
 
-export const addCols = (sheet: string, cols: Col[], afterCol: number, size: number, width: number) => {
-  if (afterCol < 0 || size < 1 || width < 0) return cols;
-  return addColsAfterCol(sheet, cols, afterCol, size, width);
+export const addCols = (sheet: string, cols: Col[], e: SheetColsAdd): Col[] => {
+  const {col, size, width} = e;
+  if (!col || col < 0 || !size || size < 1 || !width || width < 0) return cols;
+  return addColsAfterCol(sheet, cols, col, size, width);
 };
 
 export const addColsAfterCol = (sheet: string, cols: Col[], afterCol: number, size: number, width: number) => {
@@ -285,9 +309,10 @@ export const sortCols = (cols: Col[]) => {
 
 /* __________ addRows: __________ */
 
-export const addRows = (sheet: string, rows: Row[], afterRow: number, size: number, height: number) => {
-  if (afterRow < 0 || size < 1 || height < 0) return rows;
-  return addRowsAfterRow(sheet, rows, afterRow, size, height);
+export const addRows = (sheet: string, rows: Row[], e: SheetRowsAdd) => {
+  const {row, size, height} = e;
+  if (!row || row < 0 || !size || size < 1 || !height || height < 0) return rows;
+  return addRowsAfterRow(sheet, rows, row, size, height);
 };
 
 export const addRowsAfterRow = (sheet: string, rows: Row[], afterRow: number, size: number, height: number) => {
@@ -369,7 +394,9 @@ const SheetApi = {
   peakHeight,
   /* __________ server api: __________ */
   fetchSheet,
-  saveCellContent,
+  postCellContent,
+  postCols,
+  postRows,
   // deperacate:
   getServerSheet,
   getServerCell,
@@ -388,6 +415,7 @@ const SheetApi = {
   /* __________ cell: __________ */
   getCellByCursor,
   isSameCell,
+  arrangeCells,
   /* __________  __________ */
 };
 

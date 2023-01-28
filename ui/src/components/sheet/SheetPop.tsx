@@ -4,43 +4,28 @@ import { ArrowLeftOutlined, ArrowRightOutlined, ArrowUpOutlined, ArrowDownOutlin
 import { SheetColsAdd, SheetRowsAdd } from './SheetApi';
 import LocalStore from "../common/LocalStore";
 import { useModel } from "umi";
+import { addCols, addRows } from '@/components/sheet/sheetSlice';
+import { useAppDispatch } from "@/hook/hook";
 
-const SheetPop = forwardRef((props: {col: number, row: number}, ref: any) => {
-  const {col, row} = props;
-
-  const {
-    sheet,
-    cols,
-    addCols,
-    rows,
-    addRows,
-  } = useModel('sheet', m => ({
-    sheet: m.sheet,
-    cols: m.cols,
-    addCols: m.addCols,
-    rows: m.rows,
-    addRows: m.addRows,
-  }));
+const SheetPop = forwardRef((props: {sheet: string, col: number, row: number}, ref: any) => {
+  const {sheet, col, row} = props;
+  const dispatch = useAppDispatch();
 
   const onColsAddBefore = useCallback((e: React.UIEvent) => {
-    if (!sheet) return;
-    addCols(sheet, cols, {target: 'col', col, row, at: 'before', size: 1} as SheetColsAdd);
-  }, [sheet, cols, col, row]);
+    dispatch(addCols({sheet, target: 'col', col, row, at: 'before', size: 1} as SheetColsAdd));
+  }, []);
 
   const onColsAddAfter = useCallback((e: React.UIEvent) => {
-    if (!sheet) return;
-    addCols(sheet, cols, {target: 'col', col, row, at: 'after', size: 1} as SheetColsAdd);
-  }, [sheet, cols, col, row]);
+    dispatch(addCols({sheet, target: 'col', col, row, at: 'after', size: 1} as SheetColsAdd));
+  }, []);
 
   const onRowsAddBefore = useCallback((e: React.UIEvent) => {
-    if (!sheet) return;
-    addRows(sheet, rows, {target: 'row', col, row, at: 'before', size: 1} as SheetRowsAdd);
-  }, [sheet, rows, col, row]);
+    dispatch(addRows({sheet, target: 'row', col, row, at: 'before', size: 1} as SheetRowsAdd));
+  }, []);
 
   const onRowsAddAfter = useCallback((e: React.UIEvent) => {
-    if (!sheet) return;
-    addRows(sheet, rows, {target: 'row', col, row, at: 'after', size: 1} as SheetRowsAdd);
-  }, [sheet, rows, col, row]);
+    dispatch(addRows({sheet, target: 'row', col, row, at: 'after', size: 1} as SheetRowsAdd));
+  }, []);
 
   const colItems = [
     {key: 'divider-col', type: 'divider'},

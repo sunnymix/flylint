@@ -122,4 +122,20 @@ public class CellDao {
         return CELL.SHEET.eq(sheet).and(CELL.COL.eq(col)).and(CELL.ROW.eq(row));
     }
 
+    public void moveAfterCol(String sheet, Integer afterCol, Integer moveSize) {
+        dsl
+            .update(CELL)
+            .set(CELL.COL, CELL.COL.add(moveSize))
+            .where(CELL.SHEET.eq(sheet).and(CELL.COL.gt(afterCol)))
+            .execute();
+    }
+
+    public void moveAfterRow(String sheet, Integer afterRow, Integer moveSize) {
+        dsl
+            .update(CELL)
+            .set(CELL.ROW, CELL.ROW.add(moveSize))
+            .where(CELL.SHEET.eq(sheet).and(CELL.ROW.gt(afterRow)))
+            .execute();
+    }
+
 }

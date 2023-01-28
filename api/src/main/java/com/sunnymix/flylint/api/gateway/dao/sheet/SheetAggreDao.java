@@ -2,8 +2,11 @@ package com.sunnymix.flylint.api.gateway.dao.sheet;
 
 import com.sunnymix.flylint.api.gateway.dao.wiki.WikiDao;
 import com.sunnymix.flylint.api.model.sheet.Sheet;
+import com.sunnymix.flylint.api.model.sheet.col.AddCol;
+import com.sunnymix.flylint.api.model.sheet.col.AddRow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -42,6 +45,18 @@ public class SheetAggreDao {
         s.cells(cells);
         var _sheet = s.build();
         return Optional.of(_sheet);
+    }
+
+    @Transactional
+    public void addCol(String sheet, AddCol add) {
+        colDao.add(sheet, add);
+        cellDao.moveAfterCol(sheet, add.getAfterCol(), add.getSize());
+    }
+
+    @Transactional
+    public void addRow(String sheet, AddRow add) {
+        rowDao.add(sheet, add);
+        cellDao.moveAfterRow(sheet, add.getAfterRow(), add.getSize());
     }
 
 }

@@ -80,13 +80,28 @@ export interface SheetUpdate {
   height?: number,
 };
 
-export interface SheetColsAdd extends SheetUpdate {};
+export interface SheetColsAdd {
+  sheet: string;
+  afterCol: number;
+  size: number;
+  width: number;
+};
 
-export interface SheetColsDelete extends SheetUpdate {};
+export interface SheetRowsAdd {
+  sheet: string;
+  afterRow: number;
+  size: number;
+  height: number;
+};
+
+export interface SheetColsDelete {
+  sheet: string;
+  target: SheetTarget;
+  col: number;
+  size: number;
+};
 
 export interface SheetColsWidthUpdate extends SheetUpdate {};
-
-export interface SheetRowsAdd extends SheetUpdate {};
 
 export interface SheetRowsDelete extends SheetUpdate {};
 
@@ -133,14 +148,6 @@ export const getServerCell = (sheet: string, col: number, row: number, cb: (data
     });
 };
 
-export const saveServerCellContent = (sheet: string, col: number, row: number, content: string, cb: (success: boolean) => void) => {
-  axios.post(`${Constant.API_BASE}/sheet/cell/${sheet}/${col}/${row}`, {content})
-    .then(res => {
-      const success = res.data?.success || false;
-      cb(success);
-    });
-};
-
 export const postCellContent = (sheet: string, col: number, row: number, content: string) => {
   return new Promise((resolve, reject) => {
     axios.post(`${Constant.API_BASE}/sheet/cell/${sheet}/${col}/${row}`, {content})
@@ -151,16 +158,8 @@ export const postCellContent = (sheet: string, col: number, row: number, content
   });
 };
 
-export const addServerCol = (sheet: string, afterCol: number, size: number, width: number, cb: (success: boolean) => void) => {
-  const addColData = {afterCol, size, width};
-  axios.post(`${Constant.API_BASE}/sheet/col/${sheet}`, addColData)
-    .then(res => {
-      const success = res.data?.success || false;
-      cb(success);
-    });
-};
-
-export const postCols = (sheet: string, afterCol: number, size: number, width: number) => {
+export const postCols = (e: SheetColsAdd) => {
+  const {sheet, afterCol, size, width} = e;
   return new Promise<boolean>((resolve, reject) => {
     const addColData = {afterCol, size, width};
     axios.post(`${Constant.API_BASE}/sheet/col/${sheet}`, addColData)
@@ -171,16 +170,8 @@ export const postCols = (sheet: string, afterCol: number, size: number, width: n
   });
 };
 
-export const addServerRow = (sheet: string, afterRow: number, size: number, height: number, cb: (success: boolean) => void) => {
-  const addRowData = {afterRow, size, height};
-  axios.post(`${Constant.API_BASE}/sheet/row/${sheet}`, addRowData)
-    .then(res => {
-      const success = res.data?.success || false;
-      cb(success);
-    });
-};
-
-export const postRows = (sheet: string, afterRow: number, size: number, height: number) => {
+export const postRows = (e: SheetRowsAdd) => {
+  const {sheet, afterRow, size, height} = e;
   return new Promise<boolean>((resolve, reject) => {
     const addRowData = {afterRow, size, height};
     axios.post(`${Constant.API_BASE}/sheet/row/${sheet}`, addRowData)
@@ -272,9 +263,9 @@ export const buildCell = (sheet: string, col: Col, row: Row): Cell => {
 /* __________ addCols: __________ */
 
 export const addCols = (sheet: string, cols: Col[], e: SheetColsAdd): Col[] => {
-  const {col, size, width} = e;
-  if (!col || col < 0 || !size || size < 1 || !width || width < 0) return cols;
-  return addColsAfterCol(sheet, cols, col, size, width);
+  const {afterCol, size, width} = e;
+  if (afterCol < 0 || size < 1 || width < 0) return cols;
+  return addColsAfterCol(sheet, cols, afterCol, size, width);
 };
 
 export const addColsAfterCol = (sheet: string, cols: Col[], afterCol: number, size: number, width: number) => {
@@ -307,12 +298,26 @@ export const sortCols = (cols: Col[]) => {
   return cols.sort((a, b) => a.col - b.col);
 };
 
+export const moveCellsAfterCol = (sheet: string, cells: Cell[], afterCol: number, moveSize: number) => {
+  if (isArrEmpty(cells) || afterCol < 0 || moveSize < 1) return cells;
+  const newCells = cells.map(item => {
+    if (item.col > afterCol) {
+      return {
+        ...item,
+        col: item.col + moveSize,
+      };
+    }
+    return item;
+  });
+  return newCells;
+};
+
 /* __________ addRows: __________ */
 
 export const addRows = (sheet: string, rows: Row[], e: SheetRowsAdd) => {
-  const {row, size, height} = e;
-  if (!row || row < 0 || !size || size < 1 || !height || height < 0) return rows;
-  return addRowsAfterRow(sheet, rows, row, size, height);
+  const {afterRow, size, height} = e;
+  if (afterRow < 0 || size < 1 || height < 0) return rows;
+  return addRowsAfterRow(sheet, rows, afterRow, size, height);
 };
 
 export const addRowsAfterRow = (sheet: string, rows: Row[], afterRow: number, size: number, height: number) => {
@@ -343,6 +348,20 @@ export const arrangeRows = (oldRows: Row[], sortByRow?: boolean) => {
 
 export const sortRows = (rows: Row[]) => {
   return rows.sort((a, b) => a.row - b.row);
+};
+
+export const moveCellsAfterRow = (sheet: string, cells: Cell[], afterRow: number, moveSize: number) => {
+  if (isArrEmpty(cells) || afterRow < 0 || moveSize < 1) return cells;
+  const newCells = cells.map(item => {
+    if (item.row > afterRow) {
+      return {
+        ...item,
+        row: item.row + moveSize,
+      };
+    }
+    return item;
+  });
+  return newCells;
 };
 
 /* __________ calc: cursor: cur cell __________ */
@@ -400,9 +419,6 @@ const SheetApi = {
   // deperacate:
   getServerSheet,
   getServerCell,
-  saveServerCellContent,
-  addServerCol,
-  addServerRow,
   /* __________ sheet: helper __________ */
   calcSheetWidth,
   calcSheetHeight,
@@ -416,6 +432,8 @@ const SheetApi = {
   getCellByCursor,
   isSameCell,
   arrangeCells,
+  moveCellsAfterCol,
+  moveCellsAfterRow,
   /* __________  __________ */
 };
 

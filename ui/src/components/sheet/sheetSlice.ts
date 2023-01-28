@@ -80,8 +80,8 @@ export const sheetSlice = createSlice({
       const e = action.payload as SheetColsAdd;
       const newCols = SheetApi.addCols(e.sheet, state.cols, e);
       state.cols = newCols;
-      if (!state.sheet) return;
-      const newCells = SheetApi.arrangeCells(state.sheet, state.cols, state.rows, state.cells);
+      let newCells = SheetApi.moveCellsAfterCol(e.sheet, state.cells, e.afterCol, e.size);
+      newCells = SheetApi.arrangeCells(e.sheet, state.cols, state.rows, newCells);
       state.cells = newCells;
     })
     .addCase(addRows.pending, state => {
@@ -93,8 +93,8 @@ export const sheetSlice = createSlice({
       const e = action.payload as SheetRowsAdd;
       const newRows = SheetApi.addRows(e.sheet, state.rows, e);
       state.rows = newRows;
-      if (!state.sheet) return;
-      const newCells = SheetApi.arrangeCells(state.sheet, state.cols, state.rows, state.cells);
+      let newCells = SheetApi.moveCellsAfterRow(e.sheet, state.cells, e.afterRow, e.size);
+      newCells = SheetApi.arrangeCells(e.sheet, state.cols, state.rows, newCells);
       state.cells = newCells;
     })
   },
@@ -111,34 +111,16 @@ export const fetchSheet = createAsyncThunk(
 export const addCols = createAsyncThunk(
   'sheet/postCols',
   async (e: SheetColsAdd): Promise<SheetColsAdd|undefined> => {
-    let afterCol = e.col || 0;
-    afterCol = (afterCol > 0 && e.at == 'before') ? (afterCol - 1) : afterCol;
-    const size = e.size || 0;
-    const width = defaultWidth;
-    const success = await SheetApi.postCols(e.sheet, afterCol, size, width);
-    return success ? {
-      ...e,
-      col: afterCol,
-      width,
-      size,
-    } : undefined;
+    const success = await SheetApi.postCols(e);
+    return success ? e : undefined;
   },
 );
 
 export const addRows = createAsyncThunk(
   'sheet/postRows',
   async (e: SheetRowsAdd): Promise<SheetRowsAdd|undefined> => {
-    let afterRow = e.row || 0;
-    afterRow = (afterRow > 0 && e.at == 'before') ? (afterRow - 1) : afterRow;
-    const size = e.size || 0;
-    const height = defaultHeight;
-    const success = await SheetApi.postRows(e.sheet, afterRow, size, height);
-    return success ? {
-      ...e,
-      row: afterRow,
-      height,
-      size,
-    } : undefined;
+    const success = await SheetApi.postRows(e);
+    return success ? e : undefined;
   },
 );
 

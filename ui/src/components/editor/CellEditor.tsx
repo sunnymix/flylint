@@ -15,7 +15,7 @@ export interface CellEditorProps {
   style?: React.CSSProperties,
   onChange?: (cell: CellData, content: string) => void,
   onFocus?: () => void,
-  onBlur?: () => void,
+  onBlur?: (cell: CellData, content: string) => void,
 };
 
 const CellEditor = forwardRef((props: CellEditorProps, ref: any) => {
@@ -54,9 +54,10 @@ const CellEditor = forwardRef((props: CellEditorProps, ref: any) => {
   }, []);
 
   const onEditorBlur = useCallback((e: any) => {
-    props.onBlur?.call(null);
+    if (!cell) return;
+    props.onBlur?.call(null, cell, JSON.stringify(editor.children));
     setMenuShowCmd(null);
-  }, []);
+  }, [cell]);
 
   // __________ api __________
 

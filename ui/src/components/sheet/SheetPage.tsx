@@ -9,6 +9,7 @@ import { LoadingOutlined } from '@ant-design/icons';
 import { useModel } from "umi";
 import Sheet from "./Sheet";
 import User from "../user/User";
+import './SheetStyle.css';
 
 export interface SheetPageProps {
   data: BasicWiki,
@@ -87,8 +88,8 @@ const SheetPage = forwardRef((props: SheetPageProps, ref: any) => {
         </div>
         <div className="wiki-body" ref={bodyRef}>
           {/* <SheetView /> */}
-          {/* <Sheet /> */}
-          <User />
+          <Sheet sheet={props.data.name} />
+          {/* <User /> */}
         </div>
       </div>
     </div>

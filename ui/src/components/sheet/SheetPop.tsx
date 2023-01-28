@@ -64,21 +64,6 @@ const SheetPop = forwardRef((props: {col: number, row: number}, ref: any) => {
   if (row > 0) items = [...rowItems];
   if (col == 0 && row == 0) items = [...colItems, ...rowItems];
 
-  const menuItems = [
-    {key: 'divider1', type: 'divider'},
-    {key: 'cols-add-before', label: <a onClick={onColsAddBefore} type="text"><ArrowLeftOutlined /> 向左插入1列</a>},
-    {key: 'cols-add-after', label: <a onClick={onColsAddAfter} type="text"><ArrowRightOutlined /> 向右插入1列</a>},
-    {key: 'cols-set-width', label: <a type="text">列宽设置</a>},
-    {key: 'cols-delete', label: <a type="text">删除列</a>},
-    {key: 'divider2', type: 'divider'},
-    {key: 'rows-add-before', label: <a onClick={onRowsAddBefore} type="text"><ArrowUpOutlined /> 向上插入1行</a>},
-    {key: 'rows-add-after', label: <a onClick={onRowsAddAfter} type="text"><ArrowDownOutlined /> 向下插入1行</a>},
-    {key: 'rows-set-width', label: <a type="text">行高设置</a>},
-    {key: 'rows-auto-width', label: <a type="text">行高自适应</a>},
-    {key: 'rows-delete', label: <a type="text">删除行</a>},
-    {key: 'divider3', type: 'divider'},
-  ];
-
   return (
     <Dropdown className='sheet-pop' menu={{items: items}} placement='bottom'>
       <div className='sheet-pop-body'>

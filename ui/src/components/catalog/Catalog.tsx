@@ -55,7 +55,7 @@ export const Catalog = (props: CatalogProps) => {
     if (!props.name) return;
     WikiApi.basic(props.name, (wiki: BasicWiki) => {
       setWiki(wiki);
-      selectSheet(wiki.type == 'sheet' ? wiki.name : null);
+      // selectSheet(wiki.type == 'sheet' ? wiki.name : null);
     });
   }, [props.name]);
 

@@ -108,6 +108,22 @@ export const getServerSheet = (sheet: string, cb: (sheet: Sheet|null) => void) =
     });
 };
 
+export const fetchSheet = (sheet: string) => {
+  return new Promise((resolve, reject) => {
+    axios.get(`${Constant.API_BASE}/sheet/${sheet}`)
+    .then(res => {
+      const serverSheet = res.data?.data as Sheet || null;
+      if (!serverSheet) reject('ERROR');
+      const sheet = serverSheet.sheet;
+      const cols = arrangeCols(serverSheet.cols, true);
+      const rows = arrangeRows(serverSheet.rows, true);
+      const cells = arrangeCells(sheet, cols, rows, serverSheet.cells);
+      const newSheet = {sheet, cols, rows, cells};
+      resolve(newSheet);
+    });
+  });
+};
+
 export const getServerCell = (sheet: string, col: number, row: number, cb: (data: Cell|null) => void) => {
   axios.get(`${Constant.API_BASE}/sheet/cell/${sheet}/${col}/${row}`)
     .then(res => {
@@ -342,6 +358,7 @@ const SheetApi = {
   peakWidth,
   peakHeight,
   /* __________ server api: __________ */
+  fetchSheet,
   getServerSheet,
   getServerCell,
   saveServerCellContent,

@@ -19,6 +19,7 @@ const User = () => {
 
 const UserList = () => {
   const users = useAppSelector(state => state.user.users);
+  console.log(`UserList`);
   return (
     <div>
       {users.map((user: UserData, i: number) => <UserItem key={i} user={user} />)}
@@ -27,6 +28,7 @@ const UserList = () => {
 };
 
 const UserItem = (props: {user: UserData}) => {
+  console.log(`UserItem`);
   return (
     <div>
       <Input value={props.user.name} />

@@ -1,12 +1,12 @@
 import { createSlice, configureStore, PayloadAction } from '@reduxjs/toolkit';
 import counter from './counter';
-import sheet from './sheet';
+import sheetSlice from '@/components/sheet/sheetSlice';
 import user from './user';
 
 export const store = configureStore({
   reducer: {
     counter: counter.reducer,
-    sheet: sheet.reducer,
+    sheet: sheetSlice.reducer,
     user: user.reducer,
   },
 });

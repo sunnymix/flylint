@@ -94,13 +94,13 @@ const SheetModel = () => {
   /* cells */
 
   useEffect(() => {
-    console.log(`# models | sheet | cells | changes: `, cells);
+    // console.log(`# models | sheet | cells | changes: `, cells);
   }, [cells]);
 
   /* __________ effect: curCell: change __________ */
 
   useEffect(() => {
-    console.log(`# models | sheet | curCell | change: `, curCell);
+    // console.log(`# models | sheet | curCell | change: `, curCell);
   }, [curCell]);
 
   /* __________ export __________ */

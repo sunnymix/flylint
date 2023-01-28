@@ -32,12 +32,7 @@ export const Catalog = (props: CatalogProps) => {
   const [refreshCatalog, setRefreshCatalog] = useState<string>(props.refresh || 'init');
   const [wiki, setWiki] = useState<BasicWiki|null>(null);
 
-  // __________ model __________
-
-  const {selectSheet, setLeftGap} = useModel('sheet', m => ({selectSheet: m.selectSheet, setLeftGap: m.setleftGap}));
-
   useEffect(() => {
-    setLeftGap(catalogWidth);
   }, [catalogWidth]);
 
   // __________ effect: refresh -> CatalogTree __________

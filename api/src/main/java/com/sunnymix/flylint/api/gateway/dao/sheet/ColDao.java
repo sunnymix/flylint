@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.sunnymix.flylint.dao.jooq.Tables.COL;
 
@@ -41,17 +42,11 @@ public class ColDao {
 
     @Transactional
     public void add(String sheet, AddCol add) {
-        moveBackward(sheet, add.getAfterCol(), add.getSize());
-        createBatch(sheet, add.getAfterCol(), add.getSize(), add.getWidth());
-    }
-
-    public void moveBackward(String sheet, Integer afterCol, Integer size) {
-        var startCol = afterCol + 1;
-        dsl
-            .update(COL)
-            .set(COL.COL_, COL.COL_.add(size))
-            .where(COL.SHEET.eq(sheet).and(COL.COL_.ge(startCol)))
-            .execute();
+        var afterCol = add.getAfterCol();
+        var size = add.getSize();
+        var width = add.getWidth();
+        moveSectionBackwardWithSize(sheet, afterCol + 1, Optional.empty(), size);
+        createBatch(sheet, afterCol, size, width);
     }
 
     public void createBatch(String sheet, Integer afterCol, Integer size, Integer width) {
@@ -79,15 +74,82 @@ public class ColDao {
         return record;
     }
 
-    public void move(String sheet, MoveCol move) {
+    /* __________ move one __________ */
+
+    public boolean moveOne(String sheet, MoveCol move) {
         var col = move.getCol();
         var toCol = move.getToCol();
+        if (col.equals(toCol)) return true;
+        if (toCol < col) return moveOneForward(sheet, col, toCol);
+        return moveOneBackward(sheet, col, toCol);
+    }
+
+    /* __________ move one: helpers __________ */
+
+    private boolean moveOneForward(String sheet, Integer col, Integer toCol) {
+        // EG: col:4 >> toCol:1
+        if (toCol >= col) return true;
+        // move to negative:
+        moveToNegative(sheet, col, toCol); // EG: 4 >> -1
+        // move section backward with 1:
+        moveSectionBackwardWithSize(sheet, toCol, Optional.of(col - 1), 1); // EG: [1, 4-1] >> +1
+        // move to positive:
+        moveToPositive(sheet, toCol); // EG: -1 >> 1
+        return true;
+    }
+
+    private boolean moveOneBackward(String sheet, Integer col, Integer toCol) {
+        // EG: col:1 >> toCol:4
+        if (toCol <= col) return true;
+        // move to negative:
+        moveToNegative(sheet, col, toCol); // EG: 1 >> -4
+        // move section forward with 1:
+        moveSectionForwardWithSize(sheet, col + 1, Optional.of(toCol), 1); // EG: [1+1, 4] << -1
+        // move to positive:
+        moveToPositive(sheet, toCol); // EG: -4 >> 4
+        return true;
+    }
+
+    private void moveToNegative(String sheet, Integer col, Integer toCol) {
         dsl
             .update(COL)
-            .set(COL.COL_, toCol)
+            .set(COL.COL_, -toCol)
             .where(COL.SHEET.eq(sheet).and(COL.COL_.eq(col)))
             .execute();
     }
+
+    private void moveToPositive(String sheet, Integer col) {
+        dsl
+            .update(COL)
+            .set(COL.COL_, col)
+            .where(COL.SHEET.eq(sheet).and(COL.COL_.eq(-col)))
+            .execute();
+    }
+
+    private void moveSectionForwardWithSize(String sheet, Integer start, Optional<Integer> endOpt, Integer moveSize) {
+        if (endOpt.isPresent() && endOpt.get() <= start) return;
+        if (start - moveSize < 1) return;
+        var condition = COL.SHEET.eq(sheet).and(COL.COL_.ge(start));
+        endOpt.ifPresent(end -> condition.and(COL.COL_.le(end)));
+        dsl
+            .update(COL)
+            .set(COL.COL_, COL.COL_.minus(moveSize))
+            .where(condition)
+            .execute();
+    }
+
+    private void moveSectionBackwardWithSize(String sheet, Integer start, Optional<Integer> endOpt, Integer moveSize) {
+        if (endOpt.isPresent() && endOpt.get() <= start) return;
+        var condition = COL.SHEET.eq(sheet).and(COL.COL_.ge(start));
+        endOpt.ifPresent(end -> condition.and(COL.COL_.le(end)));
+        dsl
+            .update(COL)
+            .set(COL.COL_, COL.COL_.add(moveSize))
+            .where(condition)
+            .execute();
+    }
+
+    /* __________ remove __________ */
 
     @Transactional
     public void remove(String sheet, RemoveCol remove) {

@@ -65,7 +65,7 @@ public class SheetAggreDao {
 
     @Transactional
     public void moveCol(String sheet, MoveCol move) {
-        colDao.move(sheet, move);
+        colDao.moveOne(sheet, move);
         cellDao.moveCol(sheet, move);
     }
 
@@ -77,7 +77,7 @@ public class SheetAggreDao {
 
     @Transactional
     public void moveRow(String sheet, MoveRow move) {
-        rowDao.move(sheet, move);
+        rowDao.moveOne(sheet, move);
         cellDao.moveRow(sheet, move);
     }
 

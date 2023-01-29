@@ -141,6 +141,8 @@ public class CellDao {
             .execute();
     }
 
+    /* __________ move col __________ */
+
     public void moveCol(String sheet, MoveCol move) {
         var col = move.getCol();
         var toCol = move.getToCol();
@@ -150,6 +152,8 @@ public class CellDao {
             .where(CELL.SHEET.eq(sheet).and(CELL.COL.eq(col)))
             .execute();
     }
+
+    /* __________ remove col __________ */
 
     public void removeCol(String sheet, RemoveCol remove) {
         var col = remove.getCol();
@@ -164,15 +168,82 @@ public class CellDao {
             .execute();
     }
 
-    public void moveRow(String sheet, MoveRow move) {
+    /* __________ move row __________ */
+
+    public boolean moveRow(String sheet, MoveRow move) {
         var row = move.getRow();
         var toRow = move.getToRow();
+        if (toRow.equals(row)) return true;
+        if (toRow < row) return moveRowForward(sheet, row, toRow);
+        return moveRowBackward(sheet, row, toRow);
+    }
+
+    /* __________ move row: helpers __________ */
+
+    private boolean moveRowForward(String sheet, Integer row, Integer toRow) {
+        // EG: row:4 >> toRow:1
+        if (toRow >= row) return true;
+        // move to negative:
+        moveRowToNegative(sheet, row, -toRow); // EG: 4 >> -1
+        // move section backward with 1:
+        moveRowSectionBackwardWithSize(sheet, toRow, Optional.of(row - 1), 1); // EG: [1, 4-1] >> +1
+        // move to positive:
+        moveRowToPositive(sheet, -toRow); // EG: -1 >> 1
+        return true;
+    }
+
+    private boolean moveRowBackward(String sheet, Integer row, Integer toRow) {
+        // EG: row:1 >> toRow:4
+        if (toRow <= row) return true;
+        // move to negative:
+        moveRowToNegative(sheet, row, -toRow); // EG: 1 >> -4
+        // move section forward with 1:
+        moveRowSectionForwardWithSize(sheet, row + 1, Optional.of(toRow), 1); // EG: [1+1, 4] << -1
+        // move to positive:
+        moveRowToPositive(sheet, -toRow); // EG: -4 >> 4
+        return true;
+    }
+
+    private void moveRowToNegative(String sheet, Integer row, Integer toRow) {
         dsl
             .update(CELL)
-            .set(CELL.ROW, toRow)
+            .set(CELL.ROW, -toRow)
             .where(CELL.SHEET.eq(sheet).and(CELL.ROW.eq(row)))
             .execute();
     }
+
+    private void moveRowToPositive(String sheet, Integer row) {
+        dsl
+            .update(CELL)
+            .set(CELL.ROW, row)
+            .where(CELL.SHEET.eq(sheet).and(CELL.ROW.eq(-row)))
+            .execute();
+    }
+
+    private void moveRowSectionForwardWithSize(String sheet, Integer start, Optional<Integer> endOpt, Integer moveSize) {
+        if (endOpt.isPresent() && endOpt.get() <= start) return;
+        if (start - moveSize < 1) return;
+        var condition = CELL.SHEET.eq(sheet).and(CELL.ROW.ge(start));
+        endOpt.ifPresent(end -> condition.and(CELL.ROW.le(end)));
+        dsl
+            .update(CELL)
+            .set(CELL.ROW, CELL.ROW.minus(moveSize))
+            .where(condition)
+            .execute();
+    }
+
+    private void moveRowSectionBackwardWithSize(String sheet, Integer start, Optional<Integer> endOpt, Integer moveSize) {
+        if (endOpt.isPresent() && endOpt.get() <= start) return;
+        var condition = CELL.SHEET.eq(sheet).and(CELL.ROW.ge(start));
+        endOpt.ifPresent(end -> condition.and(CELL.ROW.le(end)));
+        dsl
+            .update(CELL)
+            .set(CELL.ROW, CELL.ROW.add(moveSize))
+            .where(condition)
+            .execute();
+    }
+
+    /* __________ remove row __________ */
 
     public void removeRow(String sheet, RemoveRow remove) {
         var row = remove.getRow();

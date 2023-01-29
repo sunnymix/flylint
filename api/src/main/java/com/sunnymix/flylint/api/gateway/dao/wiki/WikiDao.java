@@ -36,8 +36,7 @@ public class WikiDao {
     private DSLContext dsl;
 
     @Transactional
-    public String create(Optional<String> catalogNameOpt,
-                         Optional<String> type) {
+    public String create(Optional<String> catalogNameOpt, Optional<String> type) {
         if (catalogNameOpt.isEmpty()) {
             return create(type);
         }
@@ -67,11 +66,11 @@ public class WikiDao {
      * the lowest create method
      */
     private String __create(String path, Integer pathIndex, Optional<String> type) {
-        var randomName = new WikiName().name();
+        var name = new WikiName().name();
         var record = new WikiRecord();
         record.setId(null);
         record.setType(type.orElse("wiki"));
-        record.setName(randomName);
+        record.setName(name);
         record.setPath(path);
         record.setPathIndex(pathIndex);
         record.setTitle(new WikiTitle().title());
@@ -79,7 +78,7 @@ public class WikiDao {
         record.setCreated(OffsetDateTime.now());
         record.setUpdated(OffsetDateTime.now());
         dsl.executeInsert(record);
-        return randomName;
+        return name;
     }
 
     public Optional<String> updateTitle(String name, String title) {

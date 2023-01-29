@@ -1,6 +1,7 @@
 package com.sunnymix.flylint.api.controller;
 
 import com.sunnymix.flylint.api.common.io.Out;
+import com.sunnymix.flylint.api.gateway.dao.sheet.SheetAggreDao;
 import com.sunnymix.flylint.api.gateway.dao.wiki.WikiDao;
 import com.sunnymix.flylint.api.model.wiki.BasicWiki;
 import com.sunnymix.flylint.api.model.wiki.CreateWiki;
@@ -8,6 +9,7 @@ import com.sunnymix.flylint.api.model.wiki.DetailWiki;
 import com.sunnymix.flylint.api.model.wiki.UpdateWiki;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +25,9 @@ public class WikiController {
     @Autowired
     private WikiDao wikiDao;
 
+    @Autowired
+    private SheetAggreDao sheetAggreDao;
+
     @GetMapping(path = {"", "/"}, produces = MediaType.TEXT_PLAIN_VALUE)
     public String index() {
         StringBuilder sb = new StringBuilder();
@@ -32,9 +37,13 @@ public class WikiController {
     }
 
     @PostMapping("/create")
+    @Transactional
     public Out<String> create(@RequestBody CreateWiki createWiki) {
-        var path = wikiDao.create(createWiki.getCatalogName(), createWiki.getType());
-        return Out.ok(path);
+        var name = wikiDao.create(createWiki.getCatalogName(), createWiki.getType());
+        if (createWiki.getType().orElse("wiki").equals("sheet")) {
+            sheetAggreDao.init(name);
+        }
+        return Out.ok(name);
     }
 
     @PostMapping("/{name}/update/name/{newName}")
@@ -58,6 +67,7 @@ public class WikiController {
     @PostMapping("/{name}/remove")
     public Out<Void> remove(@PathVariable String name) {
         var success = wikiDao.remove(name);
+        // TODO: remove cols, rows, cells
         return Out.of(success);
     }
 

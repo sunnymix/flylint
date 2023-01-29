@@ -95,4 +95,9 @@ public class SheetAggreDao {
         cellDao.removeRow(sheet, remove);
     }
 
+    public void init(String sheet) {
+        colDao.add(sheet, AddCol.builder().afterCol(0).size(10).width(200).build());
+        rowDao.add(sheet, AddRow.builder().afterRow(0).size(50).height(30).build());
+    }
+
 }

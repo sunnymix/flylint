@@ -79,7 +79,8 @@ public class ColDao {
     public boolean moveOne(String sheet, MoveCol move) {
         var col = move.getCol();
         var toCol = move.getToCol();
-        if (col.equals(toCol)) return true;
+        if (toCol < 1) return false;
+        if (col.equals(toCol)) return false;
         if (toCol < col) return moveOneForward(sheet, col, toCol);
         return moveOneBackward(sheet, col, toCol);
     }

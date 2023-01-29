@@ -79,7 +79,8 @@ public class RowDao {
     public boolean moveOne(String sheet, MoveRow move) {
         var row = move.getRow();
         var toRow = move.getToRow();
-        if (row.equals(toRow)) return true;
+        if (toRow < 1) return false;
+        if (row.equals(toRow)) return false;
         if (toRow < row) return moveOneForward(sheet, row, toRow);
         return moveOneBackward(sheet, row, toRow);
     }

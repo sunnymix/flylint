@@ -66,17 +66,19 @@ public class SheetAggreDao {
     }
 
     @Transactional
-    public void moveCol(String sheet, MoveCol move) {
+    public boolean moveCol(String sheet, MoveCol move) {
         // TODO: check boundary
-        colDao.moveOne(sheet, move);
-        cellDao.moveCol(sheet, move);
+        var moveCol = colDao.moveOne(sheet, move);
+        if (!moveCol) return false;
+        return cellDao.moveCol(sheet, move);
     }
 
     @Transactional
-    public void moveRow(String sheet, MoveRow move) {
+    public boolean moveRow(String sheet, MoveRow move) {
         // TODO: check boundary
-        rowDao.moveOne(sheet, move);
-        cellDao.moveRow(sheet, move);
+        var moveRow = rowDao.moveOne(sheet, move);
+        if (!moveRow) return false;
+        return cellDao.moveRow(sheet, move);
     }
 
     @Transactional

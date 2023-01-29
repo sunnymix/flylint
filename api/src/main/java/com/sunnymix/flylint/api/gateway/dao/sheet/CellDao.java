@@ -146,7 +146,8 @@ public class CellDao {
     public boolean moveCol(String sheet, MoveCol move) {
         var col = move.getCol();
         var toCol = move.getToCol();
-        if (toCol.equals(col)) return true;
+        if (toCol < 1) return false;
+        if (toCol.equals(col)) return false;
         if (toCol < col) return moveColForward(sheet, col, toCol);
         return moveColBackward(sheet, col, toCol);
     }
@@ -236,7 +237,8 @@ public class CellDao {
     public boolean moveRow(String sheet, MoveRow move) {
         var row = move.getRow();
         var toRow = move.getToRow();
-        if (toRow.equals(row)) return true;
+        if (toRow < 1) return false;
+        if (toRow.equals(row)) return false;
         if (toRow < row) return moveRowForward(sheet, row, toRow);
         return moveRowBackward(sheet, row, toRow);
     }

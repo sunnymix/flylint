@@ -12,12 +12,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AddRow {
+public class RemoveCol {
 
-    private Integer afterRow;
-
-    private Integer size;
-
-    private Integer height;
+    private Integer col;
 
 }

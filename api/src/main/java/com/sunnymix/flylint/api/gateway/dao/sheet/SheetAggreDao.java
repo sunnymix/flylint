@@ -3,7 +3,7 @@ package com.sunnymix.flylint.api.gateway.dao.sheet;
 import com.sunnymix.flylint.api.gateway.dao.wiki.WikiDao;
 import com.sunnymix.flylint.api.model.sheet.Sheet;
 import com.sunnymix.flylint.api.model.sheet.col.AddCol;
-import com.sunnymix.flylint.api.model.sheet.col.AddRow;
+import com.sunnymix.flylint.api.model.sheet.row.AddRow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

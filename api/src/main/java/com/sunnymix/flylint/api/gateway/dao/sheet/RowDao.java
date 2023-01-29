@@ -1,6 +1,6 @@
 package com.sunnymix.flylint.api.gateway.dao.sheet;
 
-import com.sunnymix.flylint.api.model.sheet.col.AddRow;
+import com.sunnymix.flylint.api.model.sheet.row.AddRow;
 import com.sunnymix.flylint.dao.jooq.tables.pojos.Row;
 import com.sunnymix.flylint.dao.jooq.tables.records.RowRecord;
 import lombok.Getter;

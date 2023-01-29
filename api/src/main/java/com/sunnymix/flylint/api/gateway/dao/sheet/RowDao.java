@@ -1,6 +1,10 @@
 package com.sunnymix.flylint.api.gateway.dao.sheet;
 
+import com.sunnymix.flylint.api.model.sheet.col.MoveCol;
+import com.sunnymix.flylint.api.model.sheet.col.RemoveCol;
 import com.sunnymix.flylint.api.model.sheet.row.AddRow;
+import com.sunnymix.flylint.api.model.sheet.row.MoveRow;
+import com.sunnymix.flylint.api.model.sheet.row.RemoveRow;
 import com.sunnymix.flylint.dao.jooq.tables.pojos.Row;
 import com.sunnymix.flylint.dao.jooq.tables.records.RowRecord;
 import lombok.Getter;
@@ -14,6 +18,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.sunnymix.flylint.dao.jooq.Tables.COL;
 import static com.sunnymix.flylint.dao.jooq.Tables.ROW;
 
 /**
@@ -75,6 +80,30 @@ public class RowDao {
         record.setCreated(OffsetDateTime.now());
         record.setUpdated(OffsetDateTime.now());
         return record;
+    }
+
+    public void move(String sheet, MoveRow move) {
+        var row = move.getRow();
+        var toRow = move.getToRow();
+        dsl
+            .update(ROW)
+            .set(ROW.ROW_, toRow)
+            .where(ROW.SHEET.eq(sheet).and(ROW.ROW_.eq(row)))
+            .execute();
+    }
+
+    @Transactional
+    public void remove(String sheet, RemoveRow remove) {
+        var row = remove.getRow();
+        dsl
+            .deleteFrom(ROW)
+            .where(ROW.SHEET.eq(sheet).and(ROW.ROW_.eq(row)))
+            .execute();
+        dsl
+            .update(ROW)
+            .set(ROW.ROW_, ROW.ROW_.minus(1))
+            .where(ROW.SHEET.eq(sheet).and(ROW.ROW_.gt(row)))
+            .execute();
     }
 
 }

@@ -1,7 +1,7 @@
 import React, { forwardRef, useCallback } from "react";
 import { Button, Dropdown, Popconfirm } from "antd";
 import { ArrowLeftOutlined, ArrowRightOutlined, ArrowUpOutlined, ArrowDownOutlined, EllipsisOutlined, DownOutlined, MoreOutlined, CaretDownFilled } from '@ant-design/icons';
-import { SheetColsAdd, SheetRowsAdd, defaultWidth, defaultHeight } from './SheetApi';
+import { AddCols, AddRows, defaultWidth, defaultHeight } from './SheetApi';
 import LocalStore from "../common/LocalStore";
 import { useModel } from "umi";
 import { addCols, addRows } from '@/components/sheet/sheetSlice';
@@ -12,19 +12,19 @@ const SheetPop = forwardRef((props: {sheet: string, col: number, row: number}, r
   const dispatch = useAppDispatch();
 
   const onColsAddBefore = useCallback((e: React.UIEvent) => {
-    dispatch(addCols({sheet, afterCol: col - 1, size: 1, width: defaultWidth} as SheetColsAdd));
+    dispatch(addCols({sheet, afterCol: col - 1, size: 1, width: defaultWidth} as AddCols));
   }, []);
 
   const onColsAddAfter = useCallback((e: React.UIEvent) => {
-    dispatch(addCols({sheet, afterCol: col, size: 1, width: defaultWidth} as SheetColsAdd));
+    dispatch(addCols({sheet, afterCol: col, size: 1, width: defaultWidth} as AddCols));
   }, []);
 
   const onRowsAddBefore = useCallback((e: React.UIEvent) => {
-    dispatch(addRows({sheet, afterRow: row - 1, size: 1, height: defaultHeight} as SheetRowsAdd));
+    dispatch(addRows({sheet, afterRow: row - 1, size: 1, height: defaultHeight} as AddRows));
   }, []);
 
   const onRowsAddAfter = useCallback((e: React.UIEvent) => {
-    dispatch(addRows({sheet, afterRow: row, size: 1, height: defaultHeight} as SheetRowsAdd));
+    dispatch(addRows({sheet, afterRow: row, size: 1, height: defaultHeight} as AddRows));
   }, []);
 
   const colItems = [

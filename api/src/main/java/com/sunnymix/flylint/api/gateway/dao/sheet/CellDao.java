@@ -2,6 +2,10 @@ package com.sunnymix.flylint.api.gateway.dao.sheet;
 
 import com.sunnymix.flylint.api.common.Strings;
 import com.sunnymix.flylint.api.model.sheet.cell.SaveCell;
+import com.sunnymix.flylint.api.model.sheet.col.MoveCol;
+import com.sunnymix.flylint.api.model.sheet.col.RemoveCol;
+import com.sunnymix.flylint.api.model.sheet.row.MoveRow;
+import com.sunnymix.flylint.api.model.sheet.row.RemoveRow;
 import com.sunnymix.flylint.dao.jooq.tables.pojos.Cell;
 import com.sunnymix.flylint.dao.jooq.tables.records.CellRecord;
 import lombok.Getter;
@@ -17,7 +21,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.sunnymix.flylint.dao.jooq.Tables.CELL;
-import static org.jooq.impl.DSL.inline;
 
 /**
  * @author sunnymix
@@ -135,6 +138,52 @@ public class CellDao {
             .update(CELL)
             .set(CELL.ROW, CELL.ROW.add(moveSize))
             .where(CELL.SHEET.eq(sheet).and(CELL.ROW.gt(afterRow)))
+            .execute();
+    }
+
+    public void moveCol(String sheet, MoveCol move) {
+        var col = move.getCol();
+        var toCol = move.getToCol();
+        dsl
+            .update(CELL)
+            .set(CELL.COL, toCol)
+            .where(CELL.SHEET.eq(sheet).and(CELL.COL.eq(col)))
+            .execute();
+    }
+
+    public void removeCol(String sheet, RemoveCol remove) {
+        var col = remove.getCol();
+        dsl
+            .deleteFrom(CELL)
+            .where(CELL.SHEET.eq(sheet).and(CELL.COL.eq(col)))
+            .execute();
+        dsl
+            .update(CELL)
+            .set(CELL.COL, CELL.COL.minus(1))
+            .where(CELL.SHEET.eq(sheet).and(CELL.COL.gt(col)))
+            .execute();
+    }
+
+    public void moveRow(String sheet, MoveRow move) {
+        var row = move.getRow();
+        var toRow = move.getToRow();
+        dsl
+            .update(CELL)
+            .set(CELL.ROW, toRow)
+            .where(CELL.SHEET.eq(sheet).and(CELL.ROW.eq(row)))
+            .execute();
+    }
+
+    public void removeRow(String sheet, RemoveRow remove) {
+        var row = remove.getRow();
+        dsl
+            .deleteFrom(CELL)
+            .where(CELL.SHEET.eq(sheet).and(CELL.ROW.eq(row)))
+            .execute();
+        dsl
+            .update(CELL)
+            .set(CELL.ROW, CELL.ROW.minus(1))
+            .where(CELL.SHEET.eq(sheet).and(CELL.ROW.gt(row)))
             .execute();
     }
 

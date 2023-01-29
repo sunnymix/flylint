@@ -1,7 +1,6 @@
 package com.sunnymix.flylint.api.controller.sheet;
 
 import com.sunnymix.flylint.api.common.io.Out;
-import com.sunnymix.flylint.api.gateway.dao.sheet.ColDao;
 import com.sunnymix.flylint.api.gateway.dao.sheet.SheetAggreDao;
 import com.sunnymix.flylint.api.model.sheet.col.AddCol;
 import com.sunnymix.flylint.api.model.sheet.col.MoveCol;
@@ -17,9 +16,6 @@ import org.springframework.web.bind.annotation.*;
 public class ColController {
 
     @Autowired
-    private ColDao colDao;
-
-    @Autowired
     private SheetAggreDao sheetAggreDao;
 
     @PostMapping("/{sheet}")
@@ -30,13 +26,13 @@ public class ColController {
 
     @PutMapping("/move/{sheet}")
     public Out<Void> move(@PathVariable String sheet, @RequestBody MoveCol move) {
-        // TODO
+        sheetAggreDao.moveCol(sheet, move);
         return Out.ok();
     }
 
     @PutMapping("/remove/{sheet}")
     public Out<Void> remove(@PathVariable String sheet, @RequestBody RemoveCol remove) {
-        // TODO
+        sheetAggreDao.removeCol(sheet, remove);
         return Out.ok();
     }
 

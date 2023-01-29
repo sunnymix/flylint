@@ -6,8 +6,8 @@ import SheetApi, {
   Cell as CellData,
   defaultWidth,
   defaultHeight,
-  SheetColsAdd,
-  SheetRowsAdd,
+  AddCols,
+  AddRows,
 } from '@/components/sheet/SheetApi';
 import { store } from '@/store/store';
 
@@ -77,7 +77,7 @@ export const sheetSlice = createSlice({
     })
     .addCase(addCols.fulfilled, (state, action) => {
       state.status = 'loaded';
-      const e = action.payload as SheetColsAdd;
+      const e = action.payload as AddCols;
       const newCols = SheetApi.addCols(e.sheet, state.cols, e);
       state.cols = newCols;
       let newCells = SheetApi.moveCellsAfterCol(e.sheet, state.cells, e.afterCol, e.size);
@@ -90,7 +90,7 @@ export const sheetSlice = createSlice({
     })
     .addCase(addRows.fulfilled, (state, action) => {
       state.status = 'loaded';
-      const e = action.payload as SheetRowsAdd;
+      const e = action.payload as AddRows;
       const newRows = SheetApi.addRows(e.sheet, state.rows, e);
       state.rows = newRows;
       let newCells = SheetApi.moveCellsAfterRow(e.sheet, state.cells, e.afterRow, e.size);
@@ -110,7 +110,7 @@ export const fetchSheet = createAsyncThunk(
 
 export const addCols = createAsyncThunk(
   'sheet/postCols',
-  async (e: SheetColsAdd): Promise<SheetColsAdd|undefined> => {
+  async (e: AddCols): Promise<AddCols|undefined> => {
     const success = await SheetApi.postCols(e);
     return success ? e : undefined;
   },
@@ -118,7 +118,7 @@ export const addCols = createAsyncThunk(
 
 export const addRows = createAsyncThunk(
   'sheet/postRows',
-  async (e: SheetRowsAdd): Promise<SheetRowsAdd|undefined> => {
+  async (e: AddRows): Promise<AddRows|undefined> => {
     const success = await SheetApi.postRows(e);
     return success ? e : undefined;
   },

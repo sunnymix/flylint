@@ -1,6 +1,8 @@
 package com.sunnymix.flylint.api.gateway.dao.sheet;
 
 import com.sunnymix.flylint.api.model.sheet.col.AddCol;
+import com.sunnymix.flylint.api.model.sheet.col.MoveCol;
+import com.sunnymix.flylint.api.model.sheet.col.RemoveCol;
 import com.sunnymix.flylint.dao.jooq.tables.pojos.Col;
 import com.sunnymix.flylint.dao.jooq.tables.records.ColRecord;
 import lombok.Getter;
@@ -75,6 +77,30 @@ public class ColDao {
         record.setCreated(OffsetDateTime.now());
         record.setUpdated(OffsetDateTime.now());
         return record;
+    }
+
+    public void move(String sheet, MoveCol move) {
+        var col = move.getCol();
+        var toCol = move.getToCol();
+        dsl
+            .update(COL)
+            .set(COL.COL_, toCol)
+            .where(COL.SHEET.eq(sheet).and(COL.COL_.eq(col)))
+            .execute();
+    }
+
+    @Transactional
+    public void remove(String sheet, RemoveCol remove) {
+        var col = remove.getCol();
+        dsl
+            .deleteFrom(COL)
+            .where(COL.SHEET.eq(sheet).and(COL.COL_.eq(col)))
+            .execute();
+        dsl
+            .update(COL)
+            .set(COL.COL_, COL.COL_.minus(1))
+            .where(COL.SHEET.eq(sheet).and(COL.COL_.gt(col)))
+            .execute();
     }
 
 }

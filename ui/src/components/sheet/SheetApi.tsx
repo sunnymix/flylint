@@ -80,14 +80,14 @@ export interface SheetUpdate {
   height?: number,
 };
 
-export interface SheetColsAdd {
+export interface AddCols {
   sheet: string;
   afterCol: number;
   size: number;
   width: number;
 };
 
-export interface SheetRowsAdd {
+export interface AddRows {
   sheet: string;
   afterRow: number;
   size: number;
@@ -158,7 +158,7 @@ export const postCellContent = (sheet: string, col: number, row: number, content
   });
 };
 
-export const postCols = (e: SheetColsAdd) => {
+export const postCols = (e: AddCols) => {
   const {sheet, afterCol, size, width} = e;
   return new Promise<boolean>((resolve, reject) => {
     const addColData = {afterCol, size, width};
@@ -170,7 +170,7 @@ export const postCols = (e: SheetColsAdd) => {
   });
 };
 
-export const postRows = (e: SheetRowsAdd) => {
+export const postRows = (e: AddRows) => {
   const {sheet, afterRow, size, height} = e;
   return new Promise<boolean>((resolve, reject) => {
     const addRowData = {afterRow, size, height};
@@ -181,6 +181,8 @@ export const postRows = (e: SheetRowsAdd) => {
       });
   });
 };
+
+
 
 /* __________ sheet: helper: __________ */
 
@@ -262,7 +264,7 @@ export const buildCell = (sheet: string, col: Col, row: Row): Cell => {
 
 /* __________ addCols: __________ */
 
-export const addCols = (sheet: string, cols: Col[], e: SheetColsAdd): Col[] => {
+export const addCols = (sheet: string, cols: Col[], e: AddCols): Col[] => {
   const {afterCol, size, width} = e;
   if (afterCol < 0 || size < 1 || width < 0) return cols;
   return addColsAfterCol(sheet, cols, afterCol, size, width);
@@ -314,7 +316,7 @@ export const moveCellsAfterCol = (sheet: string, cells: Cell[], afterCol: number
 
 /* __________ addRows: __________ */
 
-export const addRows = (sheet: string, rows: Row[], e: SheetRowsAdd) => {
+export const addRows = (sheet: string, rows: Row[], e: AddRows) => {
   const {afterRow, size, height} = e;
   if (afterRow < 0 || size < 1 || height < 0) return rows;
   return addRowsAfterRow(sheet, rows, afterRow, size, height);

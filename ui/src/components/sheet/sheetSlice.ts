@@ -14,6 +14,7 @@ import SheetApi, {
   RemoveRow,
 } from '@/components/sheet/SheetApi';
 import { store } from '@/store/store';
+import Time from '../common/Time';
 
 export type SheetStatus = 'empty' | 'loading' | 'loaded' | 'error';
 
@@ -118,9 +119,17 @@ export const sheetSlice = createSlice({
     })
     .addCase(moveCol.fulfilled, (state, action) => {
       state.status = 'loaded';
-      const e = action.payload as MoveCol;
+      state.reload = `${+(new Date())}`;
     })
     /* __________ moveRow __________ */
+    .addCase(moveRow.pending, state => {
+      state.status = 'loading';
+      state.curCell = undefined;
+    })
+    .addCase(moveRow.fulfilled, (state, action) => {
+      state.status = 'loaded';
+      state.reload = Time.reloadSignal();
+    });
     /* __________ removeCol __________ */
     /* __________ removeRow __________ */
   },

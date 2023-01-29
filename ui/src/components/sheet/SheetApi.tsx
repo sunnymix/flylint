@@ -195,7 +195,7 @@ export const putMoveCol = (e: MoveCol) => {
   const {sheet, col, toCol} = e;
   return new Promise<boolean>((resolve, reject) => {
     const body = {col, toCol};
-    axios.post(`${Constant.API_BASE}/sheet/col/move/${sheet}`, body)
+    axios.put(`${Constant.API_BASE}/sheet/col/move/${sheet}`, body)
       .then(res => {
         const success = res.data?.success || false;
         success ? resolve(true) : reject('SERVER ERROR');
@@ -207,7 +207,7 @@ export const putMoveRow = (e: MoveRow) => {
   const {sheet, row, toRow} = e;
   return new Promise<boolean>((resolve, reject) => {
     const body = {row, toRow};
-    axios.post(`${Constant.API_BASE}/sheet/row/move/${sheet}`, body)
+    axios.put(`${Constant.API_BASE}/sheet/row/move/${sheet}`, body)
       .then(res => {
         const success = res.data?.success || false;
         success ? resolve(true) : reject('SERVER ERROR');
@@ -219,7 +219,7 @@ export const putRemoveCol = (e: RemoveCol) => {
   const {sheet, col} = e;
   return new Promise<boolean>((resolve, reject) => {
     const body = {col};
-    axios.post(`${Constant.API_BASE}/sheet/col/remove/${sheet}`, body)
+    axios.put(`${Constant.API_BASE}/sheet/col/remove/${sheet}`, body)
       .then(res => {
         const success = res.data?.success || false;
         success ? resolve(true) : reject('SERVER ERROR');
@@ -231,7 +231,7 @@ export const putRemoveRow = (e: RemoveRow) => {
   const {sheet, row} = e;
   return new Promise<boolean>((resolve, reject) => {
     const body = {row};
-    axios.post(`${Constant.API_BASE}/sheet/row/remove/${sheet}`, body)
+    axios.put(`${Constant.API_BASE}/sheet/row/remove/${sheet}`, body)
       .then(res => {
         const success = res.data?.success || false;
         success ? resolve(true) : reject('SERVER ERROR');

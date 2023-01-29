@@ -1,4 +1,19 @@
 
+.catalog-side {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+}
+
+.catalog-side-body {
+  position: absolute;
+  border-right: 1px solid #ddd;
+  left: 0;
+  right: 20px;
+  top: 0;
+  bottom: 0;
+}
+
 .catalog-header {
   display: flex;
   align-items: center;
@@ -6,13 +21,6 @@
   padding: 0 10px;
   border-bottom: 1px solid #eee;
   background-color: #fff;
-}
-
-.catalog-side {
-  border-right: 1px solid #ddd;
-  position: fixed;
-  top: 0;
-  bottom: 0;
 }
 
 .catalog_node_title {

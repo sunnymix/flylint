@@ -72,13 +72,13 @@ export const sheetSlice = createSlice({
       state.curCell = undefined;
     })
     .addCase(fetchSheet.fulfilled, (state, action) => {
-      state.status = 'loaded';
       const newSheet = action.payload as SheetData;
       state.sheet = newSheet.sheet;
       state.cols = newSheet.cols;
       state.rows = newSheet.rows;
       state.cells = newSheet.cells;
       state.curCell = undefined;
+      state.status = 'loaded';
     })
     /* __________ addCols __________ */
     .addCase(addCols.pending, state => {
@@ -87,10 +87,10 @@ export const sheetSlice = createSlice({
     })
     .addCase(addCols.fulfilled, (state, action) => {
       state.status = 'loaded';
-      const e = action.payload as AddCols;
       state.reload = `${+(new Date())}`;
       return;
       // client hot load:
+      const e = action.payload as AddCols;
       const newCols = SheetApi.addCols(e.sheet, state.cols, e);
       state.cols = newCols;
       let newCells = SheetApi.moveCellsAfterCol(e.sheet, state.cells, e.afterCol, e.size);

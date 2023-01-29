@@ -14,7 +14,7 @@
 /* __________ wiki-top __________ */
 
 .wiki-head {
-  padding: 0 10px;
+  background: #fff;
 }
 
 .wiki-title {
@@ -31,7 +31,6 @@
 .wiki-body {
   position: relative;
   overflow: auto;
-  padding: 0 10px;
 }
 
 .wiki_content {

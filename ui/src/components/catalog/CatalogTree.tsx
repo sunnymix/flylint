@@ -126,37 +126,39 @@ export default (props: CatalogTreeProps) => {
 
   return (
     <div className={props.className} ref={rootRef} style={{width: props.width || 400}}>
-      <div className="catalog-header">
-        <div className="com-ops">
-          <WikiCreateButton mode="catalog" className="com-op" catalogName="/" />
-          <Button onClick={onShrinkAll} className="com-op" type="text" size="small"><VerticalAlignMiddleOutlined /></Button>
-          <Button onClick={onExpandAll} className="com-op" type="text" size="small"><ColumnHeightOutlined /></Button>
+      <div className='catalog-side-body'>
+        <div className="catalog-header">
+          <div className="com-ops">
+            <WikiCreateButton mode="catalog" className="com-op" catalogName="/" />
+            <Button onClick={onShrinkAll} className="com-op" type="text" size="small"><VerticalAlignMiddleOutlined /></Button>
+            <Button onClick={onExpandAll} className="com-op" type="text" size="small"><ColumnHeightOutlined /></Button>
+          </div>
         </div>
-      </div>
-      <div className="catalog-body">
-        <Tree
-          style={{paddingRight: 10}}
-          ref={treeRef}
-          height={bodyHeight}
-          switcherIcon={<CaretDownFilled />}
-          expandedKeys={expandedKeys}
-          selectedKeys={selectedKeys}
-          onExpand={onExpand}
-          onSelect={onSelect}
-          treeData={trees}
-          onDrop={TreeDragDrop.onDrop}
-          blockNode
-          draggable
-          titleRender={(node: any) => (
-            <div className="catalog_node_title">
-              <div className="catalog_node_title_text">{node.title}</div>
-              <div className="catalog_node_title_ops">
-                <WikiCreateButton mode="catalog" catalogName={node.name} />
-                <WikiOps mode="catalog" className="com_op" name={node.name} title={node.title} />
+        <div className="catalog-body">
+          <Tree
+            style={{paddingRight: 10}}
+            ref={treeRef}
+            height={bodyHeight}
+            switcherIcon={<CaretDownFilled />}
+            expandedKeys={expandedKeys}
+            selectedKeys={selectedKeys}
+            onExpand={onExpand}
+            onSelect={onSelect}
+            treeData={trees}
+            onDrop={TreeDragDrop.onDrop}
+            blockNode
+            draggable
+            titleRender={(node: any) => (
+              <div className="catalog_node_title">
+                <div className="catalog_node_title_text">{node.title}</div>
+                <div className="catalog_node_title_ops">
+                  <WikiCreateButton mode="catalog" catalogName={node.name} />
+                  <WikiOps mode="catalog" className="com_op" name={node.name} title={node.title} />
+                </div>
               </div>
-            </div>
-          )}
-        />
+            )}
+          />
+        </div>
       </div>
     </div>
   );

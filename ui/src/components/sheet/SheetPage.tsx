@@ -1,3 +1,4 @@
+import { useAppSelector, useAppDispatch } from '@/hook/hook';
 import { useCallback, useEffect, useState, useRef, forwardRef } from "react";
 import { BasicWiki, WikiType } from "../wiki/WikiModel";
 import Time from "@/components/common/Time";
@@ -13,7 +14,7 @@ export interface SheetPageProps {
   data: BasicWiki,
 };
 
-const SheetPage = forwardRef((props: SheetPageProps, ref: any) => {
+export default function SheetPage (props: SheetPageProps) {
 
   // __________ state __________
 
@@ -65,7 +66,7 @@ const SheetPage = forwardRef((props: SheetPageProps, ref: any) => {
   if (props.data.type != 'sheet') return <div>not a sheet</div>
 
   return (
-    <div className="wiki" ref={ref}>
+    <div className="wiki">
       <div className="wiki-page">
         <div className='wiki-top' ref={topRef}>
           <div className="wiki-head">
@@ -80,13 +81,21 @@ const SheetPage = forwardRef((props: SheetPageProps, ref: any) => {
           </div>
         </div>
         <div className="wiki-body" ref={bodyRef}>
-          {/* <SheetView /> */}
+          <Loading />         
           <Sheet sheet={props.data.name} />
-          {/* <User /> */}
         </div>
       </div>
     </div>
   );
-});
+};
 
-export default SheetPage;
+/* __________ loading __________ */
+
+function Loading () {
+  const {status} = useAppSelector(s => ({status: s.sheet.status}));
+  return (
+    <div className='sheet-loading' style={{visibility: status != 'loaded' ? 'visible' : 'collapse'}}>
+      <div className='sheet-loading-info'><LoadingOutlined /> {status}</div>
+    </div>
+  );
+};

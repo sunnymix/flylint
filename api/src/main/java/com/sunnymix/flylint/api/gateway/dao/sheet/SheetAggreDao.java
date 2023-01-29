@@ -53,36 +53,42 @@ public class SheetAggreDao {
 
     @Transactional
     public void addCol(String sheet, AddCol add) {
+        // TODO: check boundary
         colDao.add(sheet, add);
         cellDao.moveAfterCol(sheet, add.getAfterCol(), add.getSize());
     }
 
     @Transactional
     public void addRow(String sheet, AddRow add) {
+        // TODO: check boundary
         rowDao.add(sheet, add);
         cellDao.moveAfterRow(sheet, add.getAfterRow(), add.getSize());
     }
 
     @Transactional
     public void moveCol(String sheet, MoveCol move) {
+        // TODO: check boundary
         colDao.moveOne(sheet, move);
         cellDao.moveCol(sheet, move);
     }
 
     @Transactional
-    public void removeCol(String sheet, RemoveCol remove) {
-        colDao.remove(sheet, remove);
-        cellDao.removeCol(sheet, remove);
-    }
-
-    @Transactional
     public void moveRow(String sheet, MoveRow move) {
+        // TODO: check boundary
         rowDao.moveOne(sheet, move);
         cellDao.moveRow(sheet, move);
     }
 
     @Transactional
+    public void removeCol(String sheet, RemoveCol remove) {
+        // TODO: check boundary
+        colDao.remove(sheet, remove);
+        cellDao.removeCol(sheet, remove);
+    }
+
+    @Transactional
     public void removeRow(String sheet, RemoveRow remove) {
+        // TODO: check boundary
         rowDao.remove(sheet, remove);
         cellDao.removeRow(sheet, remove);
     }

@@ -130,7 +130,7 @@ public class ColDao {
         if (endOpt.isPresent() && endOpt.get() < start) return;
         if (start - moveSize < 1) return;
         var condition = COL.SHEET.eq(sheet).and(COL.COL_.ge(start));
-        endOpt.ifPresent(end -> condition.and(COL.COL_.le(end)));
+        if (endOpt.isPresent()) condition = condition.and(COL.COL_.le(endOpt.get()));
         dsl
             .update(COL)
             .set(COL.COL_, COL.COL_.minus(moveSize))
@@ -141,7 +141,7 @@ public class ColDao {
     private void moveSectionBackwardWithSize(String sheet, Integer start, Optional<Integer> endOpt, Integer moveSize) {
         if (endOpt.isPresent() && endOpt.get() < start) return;
         var condition = COL.SHEET.eq(sheet).and(COL.COL_.ge(start));
-        endOpt.ifPresent(end -> condition.and(COL.COL_.le(end)));
+        if (endOpt.isPresent()) condition = condition.and(COL.COL_.le(endOpt.get()));
         dsl
             .update(COL)
             .set(COL.COL_, COL.COL_.add(moveSize))

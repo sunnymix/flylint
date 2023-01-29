@@ -21,35 +21,43 @@ const SheetPop = forwardRef((props: {sheet: string, col: number, row: number}, r
 
   const addColsForward = useCallback((e: React.UIEvent) => {
     dispatch(addCols({sheet, afterCol: col - 1, size: 1, width: defaultWidth}));
-  }, []);
+  }, [sheet, col]);
 
   const addColsBackward = useCallback((e: React.UIEvent) => {
     dispatch(addCols({sheet, afterCol: col, size: 1, width: defaultWidth}));
-  }, []);
+  }, [sheet, col]);
 
   const addRowForward = useCallback((e: React.UIEvent) => {
     dispatch(addRows({sheet, afterRow: row - 1, size: 1, height: defaultHeight}));
-  }, []);
+  }, [sheet, row]);
 
   const addRowsBackward = useCallback((e: React.UIEvent) => {
     dispatch(addRows({sheet, afterRow: row, size: 1, height: defaultHeight}));
-  }, []);
+  }, [sheet, row]);
 
   const moveColForward = useCallback((e: React.UIEvent) => {
     dispatch(moveCol({sheet, col, toCol: col - 1}));
-  }, []);
+  }, [sheet, col]);
 
   const moveColBackward = useCallback((e: React.UIEvent) => {
     dispatch(moveCol({sheet, col, toCol: col + 1}));
-  }, []);
+  }, [sheet, col]);
 
   const moveRowForward = useCallback((e: React.UIEvent) => {
     dispatch(moveRow({sheet, row, toRow: row - 1}));
-  }, []);
+  }, [sheet, row]);
 
   const moveRowBackward = useCallback((e: React.UIEvent) => {
     dispatch(moveRow({sheet, row, toRow: row + 1}));
-  }, []);
+  }, [sheet, row]);
+
+  const onRemoveCol = useCallback((e: React.UIEvent) => {
+    dispatch(removeCol({sheet, col}));
+  }, [sheet, col]);
+
+  const onRemoveRow = useCallback((e: React.UIEvent) => {
+    dispatch(removeRow({sheet, row}));
+  }, [sheet, row]);
 
   const colItems = [
     {key: 'divider-col', type: 'divider'},
@@ -58,7 +66,7 @@ const SheetPop = forwardRef((props: {sheet: string, col: number, row: number}, r
     {key: 'cols-move-before', label: <a onClick={moveColForward} type="text"><ArrowLeftOutlined /> 左移</a>},
     {key: 'cols-move-after', label: <a onClick={moveColBackward} type="text"><ArrowRightOutlined /> 右移</a>},
     {key: 'cols-set-width', label: <a type="text">列宽设置</a>},
-    {key: 'cols-delete', label: <a type="text">删除列</a>},
+    {key: 'cols-delete', label: <a onClick={onRemoveCol} type="text">删除列</a>},
   ];
 
   const rowItems = [
@@ -69,7 +77,7 @@ const SheetPop = forwardRef((props: {sheet: string, col: number, row: number}, r
     {key: 'rows-move-after', label: <a onClick={moveRowBackward} type="text"><ArrowDownOutlined /> 下移</a>},
     {key: 'rows-set-width', label: <a type="text">行高设置</a>},
     {key: 'rows-auto-width', label: <a type="text">行高自适应</a>},
-    {key: 'rows-delete', label: <a type="text">删除行</a>},
+    {key: 'rows-delete', label: <a onClick={onRemoveRow} type="text">删除行</a>},
   ];
 
   let items: any[] = [];

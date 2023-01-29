@@ -119,7 +119,7 @@ export const sheetSlice = createSlice({
     })
     .addCase(moveCol.fulfilled, (state, action) => {
       state.status = 'loaded';
-      state.reload = `${+(new Date())}`;
+      state.reload = Time.reloadSignal();
     })
     /* __________ moveRow __________ */
     .addCase(moveRow.pending, state => {
@@ -129,9 +129,25 @@ export const sheetSlice = createSlice({
     .addCase(moveRow.fulfilled, (state, action) => {
       state.status = 'loaded';
       state.reload = Time.reloadSignal();
-    });
+    })
     /* __________ removeCol __________ */
+    .addCase(removeCol.pending, state => {
+      state.status = 'loading';
+      state.curCell = undefined;
+    })
+    .addCase(removeCol.fulfilled, (state, action) => {
+      state.status = 'loaded';
+      state.reload = Time.reloadSignal();
+    })
     /* __________ removeRow __________ */
+    .addCase(removeRow.pending, state => {
+      state.status = 'loading';
+      state.curCell = undefined;
+    })
+    .addCase(removeRow.fulfilled, (state, action) => {
+      state.status = 'loaded';
+      state.reload = Time.reloadSignal();
+    })
   },
 });
 

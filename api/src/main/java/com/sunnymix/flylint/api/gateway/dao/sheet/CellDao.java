@@ -197,7 +197,7 @@ public class CellDao {
         if (endOpt.isPresent() && endOpt.get() < start) return;
         if (start - moveSize < 1) return;
         var condition = CELL.SHEET.eq(sheet).and(CELL.COL.ge(start));
-        endOpt.ifPresent(end -> condition.and(CELL.COL.le(end)));
+        if (endOpt.isPresent()) condition = condition.and(CELL.COL.le(endOpt.get()));
         dsl
             .update(CELL)
             .set(CELL.COL, CELL.COL.minus(moveSize))
@@ -208,7 +208,7 @@ public class CellDao {
     private void moveColSectionBackwardWithSize(String sheet, Integer start, Optional<Integer> endOpt, Integer moveSize) {
         if (endOpt.isPresent() && endOpt.get() < start) return;
         var condition = CELL.SHEET.eq(sheet).and(CELL.COL.ge(start));
-        endOpt.ifPresent(end -> condition.and(CELL.COL.le(end)));
+        if (endOpt.isPresent()) condition = condition.and(CELL.COL.le(endOpt.get()));
         dsl
             .update(CELL)
             .set(CELL.COL, CELL.COL.add(moveSize))
@@ -287,7 +287,7 @@ public class CellDao {
         if (endOpt.isPresent() && endOpt.get() < start) return;
         if (start - moveSize < 1) return;
         var condition = CELL.SHEET.eq(sheet).and(CELL.ROW.ge(start));
-        endOpt.ifPresent(end -> condition.and(CELL.ROW.le(end)));
+        if (endOpt.isPresent()) condition = condition.and(CELL.ROW.le(endOpt.get()));
         dsl
             .update(CELL)
             .set(CELL.ROW, CELL.ROW.minus(moveSize))
@@ -298,7 +298,7 @@ public class CellDao {
     private void moveRowSectionBackwardWithSize(String sheet, Integer start, Optional<Integer> endOpt, Integer moveSize) {
         if (endOpt.isPresent() && endOpt.get() < start) return;
         var condition = CELL.SHEET.eq(sheet).and(CELL.ROW.ge(start));
-        endOpt.ifPresent(end -> condition.and(CELL.ROW.le(end)));
+        if (endOpt.isPresent()) condition = condition.and(CELL.ROW.le(endOpt.get()));
         dsl
             .update(CELL)
             .set(CELL.ROW, CELL.ROW.add(moveSize))

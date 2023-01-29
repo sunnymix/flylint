@@ -130,7 +130,7 @@ public class RowDao {
         if (endOpt.isPresent() && endOpt.get() < start) return;
         if (start - moveSize < 1) return;
         var condition = ROW.SHEET.eq(sheet).and(ROW.ROW_.ge(start));
-        endOpt.ifPresent(end -> condition.and(ROW.ROW_.le(end)));
+        if (endOpt.isPresent()) condition = condition.and(ROW.ROW_.le(endOpt.get()));
         dsl
             .update(ROW)
             .set(ROW.ROW_, ROW.ROW_.minus(moveSize))
@@ -141,7 +141,7 @@ public class RowDao {
     private void moveSectionBackwardWithSize(String sheet, Integer start, Optional<Integer> endOpt, Integer moveSize) {
         if (endOpt.isPresent() && endOpt.get() < start) return;
         var condition = ROW.SHEET.eq(sheet).and(ROW.ROW_.ge(start));
-        endOpt.ifPresent(end -> condition.and(ROW.ROW_.le(end)));
+        if (endOpt.isPresent()) condition = condition.and(ROW.ROW_.le(endOpt.get()));
         dsl
             .update(ROW)
             .set(ROW.ROW_, ROW.ROW_.add(moveSize))
@@ -151,7 +151,6 @@ public class RowDao {
 
     /* __________ remove __________ */
 
-    @Transactional
     public void remove(String sheet, RemoveRow remove) {
         var row = remove.getRow();
         dsl

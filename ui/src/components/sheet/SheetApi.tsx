@@ -94,18 +94,27 @@ export interface AddRows {
   height: number;
 };
 
-export interface SheetColsDelete {
+export interface MoveCol {
   sheet: string;
-  target: SheetTarget;
   col: number;
-  size: number;
+  toCol: number;
 };
 
-export interface SheetColsWidthUpdate extends SheetUpdate {};
+export interface MoveRow {
+  sheet: string;
+  row: number;
+  toRow: number;
+};
 
-export interface SheetRowsDelete extends SheetUpdate {};
+export interface RemoveCol {
+  sheet: string,
+  col: number,
+}
 
-export interface SheetRowsHeightUpdate extends SheetUpdate {};
+export interface RemoveRow {
+  sheet: string,
+  row: number,
+}
 
 // __________ server api: __________
 
@@ -182,7 +191,53 @@ export const postRows = (e: AddRows) => {
   });
 };
 
+export const putMoveCol = (e: MoveCol) => {
+  const {sheet, col, toCol} = e;
+  return new Promise<boolean>((resolve, reject) => {
+    const body = {col, toCol};
+    axios.post(`${Constant.API_BASE}/sheet/col/move/${sheet}`, body)
+      .then(res => {
+        const success = res.data?.success || false;
+        success ? resolve(true) : reject('SERVER ERROR');
+      });
+  });
+};
 
+export const putMoveRow = (e: MoveRow) => {
+  const {sheet, row, toRow} = e;
+  return new Promise<boolean>((resolve, reject) => {
+    const body = {row, toRow};
+    axios.post(`${Constant.API_BASE}/sheet/row/move/${sheet}`, body)
+      .then(res => {
+        const success = res.data?.success || false;
+        success ? resolve(true) : reject('SERVER ERROR');
+      });
+  });
+};
+
+export const putRemoveCol = (e: RemoveCol) => {
+  const {sheet, col} = e;
+  return new Promise<boolean>((resolve, reject) => {
+    const body = {col};
+    axios.post(`${Constant.API_BASE}/sheet/col/remove/${sheet}`, body)
+      .then(res => {
+        const success = res.data?.success || false;
+        success ? resolve(true) : reject('SERVER ERROR');
+      });
+  });
+};
+
+export const putRemoveRow = (e: RemoveRow) => {
+  const {sheet, row} = e;
+  return new Promise<boolean>((resolve, reject) => {
+    const body = {row};
+    axios.post(`${Constant.API_BASE}/sheet/row/remove/${sheet}`, body)
+      .then(res => {
+        const success = res.data?.success || false;
+        success ? resolve(true) : reject('SERVER ERROR');
+      });
+  });
+};
 
 /* __________ sheet: helper: __________ */
 
@@ -418,6 +473,10 @@ const SheetApi = {
   postCellContent,
   postCols,
   postRows,
+  putMoveCol,
+  putMoveRow,
+  putRemoveCol,
+  putRemoveRow,
   // deperacate:
   getServerSheet,
   getServerCell,

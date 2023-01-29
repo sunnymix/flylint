@@ -25,12 +25,13 @@ const {selectCell, updateCell} = sheetSlice.actions;
 export default function Sheet(props: {sheet: string}) {
   const {sheet} = props;
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    dispatch(fetchSheet(sheet));
-  }, [sheet]);
-  const {cols, rows} = useAppSelector(s => ({cols: s.sheet.cols, rows: s.sheet.rows}));
+  const {reload, cols, rows} = useAppSelector(s => ({reload: s.sheet.reload, cols: s.sheet.cols, rows: s.sheet.rows}));
   const width = SheetApi.calcSheetWidth(cols);
   const height = SheetApi.calcSheetHeight(rows);
+  useEffect(() => {
+    console.log(`| Sheet | effect | [sheet, reload] `, sheet, reload);
+    dispatch(fetchSheet(sheet));
+  }, [sheet, reload]);
   return (
     <div className='sheet' style={{width, height}}>
       <Border sheet={sheet} width={width} height={height} />

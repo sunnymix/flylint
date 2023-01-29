@@ -12,6 +12,8 @@ import SheetApi, {
   MoveRow,
   RemoveCol,
   RemoveRow,
+  ResizeRow,
+  ResizeCol,
 } from '@/components/sheet/SheetApi';
 import { store } from '@/store/store';
 import Time from '../common/Time';
@@ -148,6 +150,24 @@ export const sheetSlice = createSlice({
       state.status = 'loaded';
       state.reload = Time.reloadSignal();
     })
+    /* __________ resizeCol __________ */
+    .addCase(resizeCol.pending, state => {
+      state.status = 'loading';
+      state.curCell = undefined;
+    })
+    .addCase(resizeCol.fulfilled, (state, action) => {
+      state.status = 'loaded';
+      state.reload = Time.reloadSignal();
+    })
+    /* __________ resizeRow __________ */
+    .addCase(resizeRow.pending, state => {
+      state.status = 'loading';
+      state.curCell = undefined;
+    })
+    .addCase(resizeRow.fulfilled, (state, action) => {
+      state.status = 'loaded';
+      state.reload = Time.reloadSignal();
+    })
   },
 });
 
@@ -203,6 +223,22 @@ export const removeRow = createAsyncThunk(
   'sheet/removeRow',
   async (e: RemoveRow): Promise<RemoveRow|undefined> => {
     const success = await SheetApi.putRemoveRow(e);
+    return success ? e : undefined;
+  },
+);
+
+export const resizeCol = createAsyncThunk(
+  'sheet/resizeCol',
+  async (e: ResizeCol): Promise<ResizeCol|undefined> => {
+    const success = await SheetApi.putResizeCol(e);
+    return success ? e : undefined;
+  },
+);
+
+export const resizeRow = createAsyncThunk(
+  'sheet/resizeRow',
+  async (e: ResizeRow): Promise<ResizeRow|undefined> => {
+    const success = await SheetApi.putResizeRow(e);
     return success ? e : undefined;
   },
 );

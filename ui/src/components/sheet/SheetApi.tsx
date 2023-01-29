@@ -107,13 +107,25 @@ export interface MoveRow {
 };
 
 export interface RemoveCol {
-  sheet: string,
-  col: number,
-}
+  sheet: string;
+  col: number;
+};
 
 export interface RemoveRow {
-  sheet: string,
-  row: number,
+  sheet: string;
+  row: number;
+};
+
+export interface ResizeCol {
+  sheet: string;
+  col: number;
+  width: number;
+}
+
+export interface ResizeRow {
+  sheet: string;
+  row: number;
+  height: number;
 }
 
 // __________ server api: __________
@@ -232,6 +244,30 @@ export const putRemoveRow = (e: RemoveRow) => {
   return new Promise<boolean>((resolve, reject) => {
     const body = {row};
     axios.put(`${Constant.API_BASE}/sheet/row/remove/${sheet}`, body)
+      .then(res => {
+        const success = res.data?.success || false;
+        success ? resolve(true) : reject('SERVER ERROR');
+      });
+  });
+};
+
+export const putResizeCol = (e: ResizeCol) => {
+  const {sheet, col, width} = e;
+  return new Promise<boolean>((resolve, reject) => {
+    const body = {col, width};
+    axios.put(`${Constant.API_BASE}/sheet/col/resize/${sheet}`, body)
+      .then(res => {
+        const success = res.data?.success || false;
+        success ? resolve(true) : reject('SERVER ERROR');
+      });
+  });
+};
+
+export const putResizeRow = (e: ResizeRow) => {
+  const {sheet, row, height} = e;
+  return new Promise<boolean>((resolve, reject) => {
+    const body = {row, height};
+    axios.put(`${Constant.API_BASE}/sheet/row/resize/${sheet}`, body)
       .then(res => {
         const success = res.data?.success || false;
         success ? resolve(true) : reject('SERVER ERROR');
@@ -477,6 +513,8 @@ const SheetApi = {
   putMoveRow,
   putRemoveCol,
   putRemoveRow,
+  putResizeCol,
+  putResizeRow,
   // deperacate:
   getServerSheet,
   getServerCell,

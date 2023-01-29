@@ -6,17 +6,17 @@ import {
 } from '@ant-design/icons';
 import { 
   defaultWidth, defaultHeight,
-  AddCols, AddRows,
-  MoveCol, MoveRow,
-  RemoveCol, RemoveRow,
 } from './SheetApi';
 import LocalStore from "../common/LocalStore";
 import { useModel } from "umi";
-import { addCols, addRows, moveCol, moveRow, removeCol, removeRow } from '@/components/sheet/sheetSlice';
+import { 
+  addCols, addRows, moveCol, moveRow, removeCol, removeRow, resizeCol, resizeRow,
+} from '@/components/sheet/sheetSlice';
 import { useAppDispatch } from "@/hook/hook";
+import Ts, { parseNum } from "../common/Ts";
 
-const SheetPop = forwardRef((props: {sheet: string, col: number, row: number}, ref: any) => {
-  const {sheet, col, row} = props;
+const SheetPop = forwardRef((props: {sheet: string, col: number, row: number, width?: number, height?: number}, ref: any) => {
+  const {sheet, col, row, width, height} = props;
   const dispatch = useAppDispatch();
 
   const addColsForward = useCallback((e: React.UIEvent) => {
@@ -59,13 +59,27 @@ const SheetPop = forwardRef((props: {sheet: string, col: number, row: number}, r
     dispatch(removeRow({sheet, row}));
   }, [sheet, row]);
 
+  const onResizeCol = useCallback((e: React.UIEvent) => {
+    const value = prompt('列宽：', `${width || defaultWidth}`);
+    if (!value) return;
+    const newWidth = parseNum(value, defaultWidth);
+    dispatch(resizeCol({sheet, col, width: newWidth}));
+  }, [sheet, col, width]);
+
+  const onResizeRow = useCallback((e: React.UIEvent) => {
+    const value = prompt('行高：', `${height || defaultHeight}`);
+    if (!value) return;
+    const newHeight = parseNum(value, defaultHeight);
+    dispatch(resizeRow({sheet, row, height: newHeight}));
+  }, [sheet, row, height]);
+
   const colItems = [
     {key: 'divider-col', type: 'divider'},
     {key: 'cols-add-before', label: <a onClick={addColsForward} type="text"><PlusOutlined /> 向左插入1列</a>},
     {key: 'cols-add-after', label: <a onClick={addColsBackward} type="text"><PlusOutlined /> 向右插入1列</a>},
     {key: 'cols-move-before', label: <a onClick={moveColForward} type="text"><ArrowLeftOutlined /> 左移</a>},
     {key: 'cols-move-after', label: <a onClick={moveColBackward} type="text"><ArrowRightOutlined /> 右移</a>},
-    {key: 'cols-set-width', label: <a type="text">列宽设置</a>},
+    {key: 'cols-set-width', label: <a onClick={onResizeCol} type="text">列宽设置</a>},
     {key: 'cols-delete', label: <a onClick={onRemoveCol} type="text">删除列</a>},
   ];
 
@@ -75,8 +89,7 @@ const SheetPop = forwardRef((props: {sheet: string, col: number, row: number}, r
     {key: 'rows-add-after', label: <a onClick={addRowsBackward} type="text"><PlusOutlined /> 向下插入1行</a>},
     {key: 'rows-move-before', label: <a onClick={moveRowForward} type="text"><ArrowUpOutlined /> 上移</a>},
     {key: 'rows-move-after', label: <a onClick={moveRowBackward} type="text"><ArrowDownOutlined /> 下移</a>},
-    {key: 'rows-set-width', label: <a type="text">行高设置</a>},
-    {key: 'rows-auto-width', label: <a type="text">行高自适应</a>},
+    {key: 'rows-set-width', label: <a onClick={onResizeRow} type="text">行高设置</a>},
     {key: 'rows-delete', label: <a onClick={onRemoveRow} type="text">删除行</a>},
   ];
 

@@ -20,6 +20,15 @@ export const isNotEmpty = (o: any) => !isEmpty(o);
 
 export const randomKey = () => `${Math.floor(Math.random()*100000000)}`;
 
+export const isNum = (o: any) => typeof o === 'number';
+
+export const isNotNum = (o: any) => !isNum(o);
+
+export const parseNum = (o: any, defaultValue: number): number => {
+  if (!isNotNum(o)) return defaultValue;
+  return +o;
+};
+
 export const Ts = {
   isArr, isArrEmpty, isArrNotEmpty,
   isStr,
@@ -29,5 +38,6 @@ export const Ts = {
   isNotNull,
   isEmpty, isNotEmpty,
   randomKey,
+  isNum, isNotNum,
 };
 export default Ts;

@@ -1,10 +1,12 @@
 package com.sunnymix.flylint.api.controller.sheet;
 
 import com.sunnymix.flylint.api.common.io.Out;
+import com.sunnymix.flylint.api.gateway.dao.sheet.RowDao;
 import com.sunnymix.flylint.api.gateway.dao.sheet.SheetAggreDao;
 import com.sunnymix.flylint.api.model.sheet.row.AddRow;
 import com.sunnymix.flylint.api.model.sheet.row.MoveRow;
 import com.sunnymix.flylint.api.model.sheet.row.RemoveRow;
+import com.sunnymix.flylint.api.model.sheet.row.ResizeRow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +16,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/sheet/row")
 public class RowController {
+
+    @Autowired
+    private RowDao rowDao;
 
     @Autowired
     private SheetAggreDao sheetAggreDao;
@@ -34,6 +39,12 @@ public class RowController {
     public Out<Void> remove(@PathVariable String sheet, @RequestBody RemoveRow remove) {
         sheetAggreDao.removeRow(sheet, remove);
         return Out.ok();
+    }
+
+    @PutMapping("/resize/{sheet}")
+    public Out<Void> resize(@PathVariable String sheet, @RequestBody ResizeRow resize) {
+        var ok = rowDao.resize(sheet, resize);
+        return Out.of(ok);
     }
 
 }

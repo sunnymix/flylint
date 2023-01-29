@@ -3,6 +3,7 @@ package com.sunnymix.flylint.api.gateway.dao.sheet;
 import com.sunnymix.flylint.api.model.sheet.col.AddCol;
 import com.sunnymix.flylint.api.model.sheet.col.MoveCol;
 import com.sunnymix.flylint.api.model.sheet.col.RemoveCol;
+import com.sunnymix.flylint.api.model.sheet.col.ResizeCol;
 import com.sunnymix.flylint.dao.jooq.tables.pojos.Col;
 import com.sunnymix.flylint.dao.jooq.tables.records.ColRecord;
 import lombok.Getter;
@@ -164,6 +165,22 @@ public class ColDao {
             .set(COL.COL_, COL.COL_.minus(1))
             .where(COL.SHEET.eq(sheet).and(COL.COL_.gt(col)))
             .execute();
+    }
+
+    /* __________ resize __________ */
+
+    public boolean resize(String sheet, ResizeCol resize) {
+        var col = resize.getCol();
+        var width = resize.getWidth();
+        if (col < 0 || width < 10) return false;
+        var cond = COL.SHEET.eq(sheet);
+        if (col > 0) cond = cond.and(COL.COL_.eq(col));
+        dsl
+            .update(COL)
+            .set(COL.WIDTH, width)
+            .where(cond)
+            .execute();
+        return true;
     }
 
 }

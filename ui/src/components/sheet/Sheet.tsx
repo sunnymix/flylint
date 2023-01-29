@@ -92,7 +92,7 @@ const Col = (props: {sheet: string, col: ColData}) => {
       <div className='sheet-col-header sheet-pop-outer' style={{height: peakHeight, left: col.left, width: col.width}}>
         <div className='sheet-header-title'>
           {col.col}
-          <SheetPop sheet={sheet} col={col.col} row={0} />
+          <SheetPop sheet={sheet} col={col.col} row={0} width={col.width} />
         </div>
       </div>
       <div className='sheet-col-line' style={{left: col.left}}></div>
@@ -122,7 +122,7 @@ const Row = (props: {sheet: string, row: RowData}) => {
       <div className='sheet-row-header sheet-pop-outer' style={{top: row.top, height: row.height, width: peakWidth}}>
         <div className='sheet-header-title'>
           {row.row}
-          <SheetPop sheet={sheet} col={0} row={row.row} />
+          <SheetPop sheet={sheet} col={0} row={row.row} height={row.height} />
         </div>
       </div>
       <div className='sheet-row-line' style={{top: row.top}}></div>

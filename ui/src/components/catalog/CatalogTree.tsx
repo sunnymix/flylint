@@ -139,7 +139,6 @@ export default (props: CatalogTreeProps) => {
             style={{paddingRight: 10}}
             ref={treeRef}
             height={bodyHeight}
-            switcherIcon={<CaretDownFilled />}
             expandedKeys={expandedKeys}
             selectedKeys={selectedKeys}
             onExpand={onExpand}

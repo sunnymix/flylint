@@ -19,7 +19,6 @@
   align-items: center;
   height: 40px;
   padding: 0 10px;
-  border-bottom: 1px solid #eee;
   background-color: #fff;
 }
 
@@ -54,11 +53,11 @@
 }
 
 .ant-tree .ant-tree-treenode {
-  padding: 0 0 0 0;
+  padding: 0 0 2px 0;
 }
 
 .ant-tree .ant-tree-node-content-wrapper {
-  border-radius: 0;
+  border-radius: 4px;
   line-height: 30px;
   min-height: 30px;
   padding: 0 6px;

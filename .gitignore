@@ -23,6 +23,8 @@ gradle-app.setting
 .gradletasknamecache
 ## Spring
 application-local.properties
+## Out
+**/nohup.out
 
 # Intellij
 .idea
@@ -38,3 +40,4 @@ out/
 
 # Nodejs
 node_modules
+
